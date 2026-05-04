@@ -1472,11 +1472,9 @@ The plan must include:
                 return;
             }
 
-            let text = `${new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })} - ${workout.description}\n\n`;
-
-            workout.exercises.forEach(ex => {
-                text += `${ex.name} | ${ex.sets} x ${ex.reps} | ${ex.duration}\n`;
-            });
+            const dateStr = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+            const exercises = workout.exercises.map(ex => `${ex.name} (${ex.sets}x${ex.reps}, ${ex.duration})`).join(' | ');
+            const text = `${dateStr} - ${workout.description}: ${exercises}`;
 
             navigator.clipboard.writeText(text).then(() => {
                 const btn = document.getElementById('copy-workout-btn');
