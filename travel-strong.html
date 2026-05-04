@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Strong</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #3D2B1F;
+            --accent: #C4773B;
+            --light: #FAF7F2;
+            --neutral: #9A8B7E;
+            --success: #6B9E7F;
+            --warning: #D4A574;
+            --error: #C65D5D;
+            --white: #FFFFFF;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--light);
+            color: var(--primary);
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #4a3a2e 100%);
+            color: var(--light);
+            padding: 2rem 2rem 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 0.3rem;
+            letter-spacing: -0.5px;
+        }
+
+        header .subtitle {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        /* Main Container */
+        .container {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Sidebar Nav */
+        .sidebar {
+            width: 220px;
+            background: var(--white);
+            border-right: 1px solid #E8E3DC;
+            overflow-y: auto;
+            padding: 1.5rem 0;
+            box-shadow: inset -2px 0 6px rgba(0, 0, 0, 0.02);
+        }
+
+        .nav-item {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--primary);
+            user-select: none;
+        }
+
+        .nav-item:hover {
+            background: rgba(196, 119, 59, 0.08);
+            border-left-color: var(--accent);
+            padding-left: 1.65rem;
+        }
+
+        .nav-item.active {
+            background: rgba(196, 119, 59, 0.15);
+            border-left-color: var(--accent);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Content Area */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+            background: linear-gradient(180deg, var(--light) 0%, rgba(250, 247, 242, 0.5) 100%);
+        }
+
+        .view {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Setup View */
+        .setup-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .setup-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .setup-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--primary);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #E8E3DC;
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(196, 119, 59, 0.1);
+        }
+
+        .btn {
+            background: var(--accent);
+            color: var(--white);
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .btn:hover {
+            background: #b8652e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(196, 119, 59, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--neutral);
+            color: var(--white);
+        }
+
+        .btn-secondary:hover {
+            background: #8a7a6d;
+        }
+
+        /* Daily Workout View */
+        .workout-header {
+            margin-bottom: 2rem;
+        }
+
+        .workout-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .phase-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--white);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .workout-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            border-left: 4px solid var(--accent);
+        }
+
+        .exercise-item {
+            background: rgba(250, 247, 242, 0.5);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.2rem;
+            border: 2px solid #E8E3DC;
+            transition: all 0.2s ease;
+        }
+
+        .exercise-item.completed {
+            background: rgba(107, 158, 127, 0.08);
+            border-color: var(--success);
+        }
+
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .exercise-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--primary);
+            flex: 1;
+        }
+
+        .exercise-checkbox {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: var(--success);
+            flex-shrink: 0;
+            margin-left: 1rem;
+        }
+
+        .exercise-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            color: var(--neutral);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .exercise-description {
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            color: #5a5a5a;
+            font-size: 0.95rem;
+        }
+
+        .exercise-form {
+            background: var(--white);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--warning);
+        }
+
+        .exercise-form p {
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+            color: #4a4a4a;
+            line-height: 1.4;
+        }
+
+        .exercise-form strong {
+            color: var(--primary);
+        }
+
+        .exercise-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .link-btn {
+            background: none;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .link-btn:hover {
+            background: var(--accent);
+            color: var(--white);
+        }
+
+        .feedback-select {
+            width: 100%;
+            padding: 0.6rem;
+            border: 2px solid #E8E3DC;
+            border-radius: 6px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .feedback-select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .copy-workout-btn {
+            width: 100%;
+            margin-top: 1.5rem;
+        }
+
+        /* Progress View */
+        .progress-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 0.5rem 0;
+        }
+
+        .stat-label {
+            color: var(--neutral);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .calendar-container {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .calendar-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .calendar-nav button {
+            background: var(--accent);
+            color: var(--white);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .calendar-nav button:hover {
+            background: #b8652e;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+
+        .calendar-day-label {
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--neutral);
+            padding: 0.5rem;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            background: #F5F0EA;
+        }
+
+        .calendar-day.completed {
+            background: var(--success);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .calendar-day.today {
+            border-color: var(--accent);
+            background: rgba(196, 119, 59, 0.1);
+        }
+
+        .calendar-day.other-month {
+            color: #ccc;
+            pointer-events: none;
+        }
+
+        .calendar-day:hover:not(.other-month) {
+            border-color: var(--accent);
+        }
+
+        /* AI Advisor */
+        .advisor-form {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .advisor-form h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #E8E3DC;
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(196, 119, 59, 0.1);
+        }
+
+        .advisor-response {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            border-left: 4px solid var(--accent);
+        }
+
+        .advisor-response h4 {
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+
+        .advisor-response p {
+            line-height: 1.6;
+            color: #5a5a5a;
+            margin-bottom: 0.8rem;
+        }
+
+        .advisor-response p:last-child {
+            margin-bottom: 0;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--neutral);
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #E8E3DC;
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Trip Info */
+        .trip-info {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .trip-info h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .trip-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .detail-item {
+            padding: 1rem;
+            background: rgba(250, 247, 242, 0.5);
+            border-radius: 8px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            font-size: 1.1rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--neutral);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #E8E3DC;
+                display: flex;
+                overflow-x: auto;
+                padding: 0;
+                height: auto;
+            }
+
+            .nav-item {
+                padding: 1rem;
+                white-space: nowrap;
+                flex-shrink: 0;
+                border-left: none;
+                border-bottom: 3px solid transparent;
+            }
+
+            .nav-item:hover,
+            .nav-item.active {
+                border-left: none;
+                border-bottom-color: var(--accent);
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .content {
+                padding: 1.5rem;
+            }
+
+            .setup-card {
+                padding: 1.5rem;
+            }
+
+            .progress-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .calendar-grid {
+                gap: 0.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Travel Strong</h1>
+        <div class="subtitle">Prepare for Scandinavia & Ireland</div>
+    </header>
+
+    <div class="container">
+        <div class="sidebar">
+            <div class="nav-item active" data-view="trip">Trip Profile</div>
+            <div class="nav-item" data-view="today">Today's Workout</div>
+            <div class="nav-item" data-view="progress">Progress</div>
+            <div class="nav-item" data-view="advisor">AI Advisor</div>
+            <div class="nav-item" data-view="settings">Settings</div>
+        </div>
+
+        <div class="content">
+            <!-- Trip Profile View -->
+            <div class="view active" id="trip-view">
+                <div class="setup-container">
+                    <div id="setup-form" style="display: none;">
+                        <div class="setup-card">
+                            <h2>Set Up Your Trip</h2>
+                            <form id="trip-form">
+                                <div class="form-group">
+                                    <label>Departure Date</label>
+                                    <input type="date" id="departure-date" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Fitness Level</label>
+                                    <select id="fitness-level" required>
+                                        <option value="">Select your fitness level</option>
+                                        <option value="sedentary">Sedentary</option>
+                                        <option value="lightly-active">Lightly Active</option>
+                                        <option value="moderately-active">Moderately Active</option>
+                                        <option value="very-active">Very Active</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Any Injuries or Limitations (Brief)</label>
+                                    <input type="text" id="injuries" placeholder="e.g., ankle soreness, knee issues">
+                                </div>
+                                <button type="submit" class="btn">Generate Training Plan</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div id="trip-display" style="display: none;">
+                        <div class="trip-info">
+                            <h3>Your Trip Profile</h3>
+                            <div class="trip-details">
+                                <div class="detail-item">
+                                    <div class="detail-label">Departure</div>
+                                    <div class="detail-value" id="display-departure">—</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Days Until Trip</div>
+                                    <div class="detail-value" id="display-countdown">—</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Fitness Level</div>
+                                    <div class="detail-value" id="display-fitness">—</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Training Days</div>
+                                    <div class="detail-value">6 per week</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Session Duration</div>
+                                    <div class="detail-value">25-30 min</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Limitations</div>
+                                    <div class="detail-value" id="display-injuries">—</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 2rem;">
+                            <button class="btn btn-secondary" onclick="resetTrip()">Reset Trip</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Today's Workout View -->
+            <div class="view" id="today-view">
+                <div id="no-plan" style="text-align: center; padding: 3rem;">
+                    <p style="font-size: 1.1rem; color: var(--neutral); margin-bottom: 1rem;">No training plan yet. Set up your trip first!</p>
+                </div>
+                <div id="workout-display" style="display: none;">
+                    <div class="workout-header">
+                        <h2 id="workout-date">Today's Workout</h2>
+                        <div id="phase-info" class="phase-badge" style="display: none;"></div>
+                    </div>
+                    <div id="exercises-container"></div>
+                    <div class="workout-card">
+                        <button id="copy-workout-btn" class="btn copy-workout-btn">Copy Workout to Clipboard</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress View -->
+            <div class="view" id="progress-view">
+                <div id="no-progress" style="text-align: center; padding: 3rem;">
+                    <p style="font-size: 1.1rem; color: var(--neutral);">Start your training to see progress!</p>
+                </div>
+                <div id="progress-display" style="display: none;">
+                    <div class="progress-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">Workouts Completed</div>
+                            <div class="stat-value" id="stat-completed">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Current Week</div>
+                            <div class="stat-value" id="stat-week">—</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Current Phase</div>
+                            <div class="stat-value" id="stat-phase">—</div>
+                        </div>
+                    </div>
+                    <div class="calendar-container">
+                        <div class="calendar-header">
+                            <h3 id="calendar-month">May 2026</h3>
+                            <div class="calendar-nav">
+                                <button id="prev-month">←</button>
+                                <button id="next-month">→</button>
+                            </div>
+                        </div>
+                        <div class="calendar-grid" id="calendar-grid"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Advisor View -->
+            <div class="view" id="advisor-view">
+                <div id="no-advisor" style="text-align: center; padding: 3rem;">
+                    <p style="font-size: 1.1rem; color: var(--neutral);">Set up your trip to use the AI advisor!</p>
+                </div>
+                <div id="advisor-display" style="display: none;">
+                    <div class="advisor-form">
+                        <h3>Ask the AI Coach</h3>
+                        <p style="margin-bottom: 1rem; color: var(--neutral);">Ask about modifications, pain, form, or anything related to your training.</p>
+                        <form id="advisor-form" onsubmit="askAdvisor(event)">
+                            <div class="form-group">
+                                <label>Your Question</label>
+                                <textarea id="advisor-question" placeholder="e.g., 'My ankle is sore today, what should I modify?' or 'How can I do push-ups safely with my shoulder?'" required></textarea>
+                            </div>
+                            <button type="submit" class="btn">Get Advice</button>
+                        </form>
+                    </div>
+                    <div id="advisor-responses"></div>
+                </div>
+            </div>
+
+            <!-- Settings View -->
+            <div class="view" id="settings-view">
+                <div class="setup-card" style="max-width: 600px; margin: 0 auto;">
+                    <h2>Settings & Info</h2>
+                    <p style="margin: 1.5rem 0; color: var(--neutral); line-height: 1.6;">
+                        <strong>Travel Strong</strong> is a personal fitness trainer for your Scandinavia & Ireland adventure.
+                    </p>
+                    <div style="margin: 2rem 0; padding: 1rem; background: rgba(107, 158, 127, 0.08); border-radius: 8px; border-left: 3px solid var(--success);">
+                        <p style="margin: 0; color: var(--primary); font-weight: 500;">✓ Data is stored locally on your device</p>
+                        <p style="margin: 0.5rem 0 0 0; color: var(--neutral); font-size: 0.9rem;">No sync, no cloud, just your personal app</p>
+                    </div>
+                    <div style="margin-top: 2rem; padding: 1rem; background: rgba(212, 165, 116, 0.1); border-radius: 8px; border-left: 3px solid var(--warning);">
+                        <p style="margin: 0; color: var(--primary); font-weight: 500;">💡 Tip: Copy workouts to your task planner</p>
+                        <p style="margin: 0.5rem 0 0 0; color: var(--neutral); font-size: 0.9rem;">Use the "Copy Workout" button to paste into your Outlook/To Do tasks</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="showDataSize()" style="margin-top: 2rem; width: 100%;">Check Data Size</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============ CONSTANTS & SETUP ============
+        const CLOUDFLARE_WORKER_URL = 'https://egcw-proxy.ed-53c.workers.dev';
+        const STORAGE_KEY = 'travelStrong';
+        const DEPARTURE_DATE = new Date('2026-07-24');
+
+        // ============ STATE ============
+        let appState = {
+            tripProfile: null,
+            trainingPlan: null,
+            dailyLogs: {}, // { 'YYYY-MM-DD': { completed: [], feedback: {} } }
+            advisorHistory: []
+        };
+
+        // ============ INITIALIZATION ============
+        document.addEventListener('DOMContentLoaded', () => {
+            registerServiceWorker();
+            loadState();
+            setupNavigation();
+            setupEventListeners();
+            updateUI();
+        });
+
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js').catch(() => {
+                    // Service worker registration failed, but app continues to work
+                });
+            }
+        }
+
+        function loadState() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                appState = JSON.parse(saved);
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+        }
+
+        // ============ NAVIGATION ============
+        function setupNavigation() {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    const viewName = e.target.getAttribute('data-view');
+                    switchView(viewName);
+                });
+            });
+        }
+
+        function switchView(viewName) {
+            // Hide all views
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+            // Show selected view
+            document.getElementById(`${viewName}-view`).classList.add('active');
+            event.target.classList.add('active');
+
+            // Update view-specific content
+            if (viewName === 'today') {
+                updateTodayView();
+            } else if (viewName === 'progress') {
+                updateProgressView();
+            }
+        }
+
+        // ============ TRIP SETUP ============
+        function setupEventListeners() {
+            const tripForm = document.getElementById('trip-form');
+            if (tripForm) {
+                tripForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    await generateTrainingPlan();
+                });
+            }
+
+            // Calendar navigation
+            document.getElementById('prev-month')?.addEventListener('click', () => {
+                currentCalendarMonth.setMonth(currentCalendarMonth.getMonth() - 1);
+                renderCalendar();
+            });
+
+            document.getElementById('next-month')?.addEventListener('click', () => {
+                currentCalendarMonth.setMonth(currentCalendarMonth.getMonth() + 1);
+                renderCalendar();
+            });
+
+            // Copy workout button
+            document.getElementById('copy-workout-btn')?.addEventListener('click', copyWorkoutToClipboard);
+        }
+
+        async function generateTrainingPlan() {
+            const departureInput = document.getElementById('departure-date').value;
+            const fitnessLevel = document.getElementById('fitness-level').value;
+            const injuries = document.getElementById('injuries').value;
+
+            appState.tripProfile = {
+                departureDate: new Date(departureInput),
+                fitnessLevel,
+                injuries,
+                createdAt: new Date().toISOString()
+            };
+
+            // Show loading
+            const formEl = document.getElementById('trip-form');
+            const originalBtn = formEl.querySelector('button');
+            const loadingBtn = originalBtn.cloneNode(true);
+            loadingBtn.textContent = 'Generating Plan...';
+            loadingBtn.disabled = true;
+            originalBtn.replaceWith(loadingBtn);
+
+            try {
+                const plan = await fetchAIGeneratedPlan();
+                appState.trainingPlan = plan;
+                saveState();
+                updateUI();
+            } catch (err) {
+                alert('Error generating plan: ' + err.message);
+                console.error(err);
+            }
+        }
+
+        async function fetchAIGeneratedPlan() {
+            const departure = appState.tripProfile.departureDate;
+            const today = new Date();
+            const weeksUntilTrip = Math.ceil((departure - today) / (7 * 24 * 60 * 60 * 1000));
+
+            const prompt = `Generate a detailed 11-week fitness training plan for someone preparing for an 11-day Scandinavia tour (heavy daily walking) followed by a week of golf in Ireland (walking courses daily).
+
+User Profile:
+- Height: 6'3", Weight: 250 lbs
+- Current fitness: Athletic background but currently less active
+- Current capacity: Can walk 2-3 miles/day with some soreness
+- Injuries/Limitations: ${appState.tripProfile.injuries || 'None specified'}
+- Fitness Level: ${appState.tripProfile.fitnessLevel}
+- Training commitment: 6 days/week, 25-30 min per session
+- Equipment: Bodyweight only, no gym equipment
+- Days until departure: ${weeksUntilTrip} weeks
+
+The plan should include:
+
+1. **Three Phases:**
+   - Phase 1 (Weeks 1-4): Foundation & Mobility - ankle mobility, knee stability, shoulder prep, core activation
+   - Phase 2 (Weeks 5-9): Building Endurance & Strength - walking distance, leg resilience, functional strength
+   - Phase 3 (Weeks 10-11): Taper & Peak Prep - maintain fitness, reduce soreness, travel-day routines
+
+2. **For each day, include:**
+   - 4-8 exercises
+   - Sets, reps/duration
+   - Clear form instructions with common mistakes
+   - External links to YouTube/PT videos for form checking (use realistic PT channels)
+   - 1 rest day per week (suggest Friday or Sunday)
+
+3. **Exercise priorities:**
+   - Ankle work: dorsiflexion, plantarflexion, inversion/eversion, single-leg balance, calf raises
+   - Knee resilience: glute activation, hip mobility, VMO work, light single-leg work
+   - Shoulder: rotator cuff (external rotation, no pushups), scapular stability
+   - Core: planks, Pallof presses, dead bugs, bird dogs
+   - Walking prep: progressive distance, uneven surface simulation
+
+4. **Avoid:**
+   - Pushups (subscapularis concern)
+   - Heavy impact on ankles/knees
+   - Deep knee flexion without support
+
+Return the plan as a JSON object with this structure:
+{
+  "phases": [
+    {
+      "name": "Phase 1: Foundation & Mobility",
+      "weeks": [1, 2, 3, 4],
+      "days": [
+        {
+          "dayOfWeek": "Monday",
+          "restDay": false,
+          "description": "Lower Body Mobility",
+          "exercises": [
+            {
+              "name": "Ankle Circles",
+              "sets": 2,
+              "reps": "10 each direction",
+              "duration": "2 min",
+              "description": "Gentle ankle mobility preparation",
+              "form": "Sit or stand. Keep weight on outer foot edge. Rotate ankle slowly through full range. Work both clockwise and counterclockwise. No pain.",
+              "videoLinks": [
+                {
+                  "title": "PT Ankle Mobility",
+                  "url": "https://www.youtube.com/results?search_query=physical+therapy+ankle+circles"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+Make it realistic, specific, and immediately actionable. Every exercise should have a YouTube link or PT resource.`;
+
+            const response = await fetch(CLOUDFLARE_WORKER_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    model: 'claude-sonnet-4-5',
+                    max_tokens: 4000,
+                    messages: [{ role: 'user', content: prompt }]
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`API error: ${response.status}`);
+            }
+
+            const data = await response.json();
+            const content = data.content[0]?.text || '';
+
+            // Parse JSON from response
+            const jsonMatch = content.match(/\{[\s\S]*\}/);
+            if (!jsonMatch) {
+                throw new Error('Could not parse plan from response');
+            }
+
+            return JSON.parse(jsonMatch[0]);
+        }
+
+        function resetTrip() {
+            if (confirm('Reset your trip profile and training plan?')) {
+                appState.tripProfile = null;
+                appState.trainingPlan = null;
+                appState.dailyLogs = {};
+                appState.advisorHistory = [];
+                saveState();
+                updateUI();
+            }
+        }
+
+        // ============ UI UPDATES ============
+        function updateUI() {
+            if (!appState.tripProfile) {
+                // Show setup form
+                document.getElementById('setup-form').style.display = 'block';
+                document.getElementById('trip-display').style.display = 'none';
+                document.getElementById('no-plan').style.display = 'block';
+                document.getElementById('workout-display').style.display = 'none';
+                document.getElementById('no-progress').style.display = 'block';
+                document.getElementById('progress-display').style.display = 'none';
+                document.getElementById('no-advisor').style.display = 'block';
+                document.getElementById('advisor-display').style.display = 'none';
+            } else {
+                // Hide setup form, show trip info
+                document.getElementById('setup-form').style.display = 'none';
+                document.getElementById('trip-display').style.display = 'block';
+
+                // Update trip display
+                document.getElementById('display-departure').textContent = appState.tripProfile.departureDate.split('T')[0];
+                const daysLeft = Math.ceil((new Date(appState.tripProfile.departureDate) - new Date()) / (24 * 60 * 60 * 1000));
+                document.getElementById('display-countdown').textContent = daysLeft + ' days';
+                document.getElementById('display-fitness').textContent = appState.tripProfile.fitnessLevel;
+                document.getElementById('display-injuries').textContent = appState.tripProfile.injuries || 'None';
+
+                // Show advisor
+                document.getElementById('no-advisor').style.display = 'none';
+                document.getElementById('advisor-display').style.display = 'block';
+            }
+        }
+
+        function updateTodayView() {
+            if (!appState.trainingPlan) {
+                document.getElementById('no-plan').style.display = 'block';
+                document.getElementById('workout-display').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('no-plan').style.display = 'none';
+            document.getElementById('workout-display').style.display = 'block';
+
+            const todayWorkout = getTodayWorkout();
+            if (!todayWorkout) {
+                document.getElementById('exercises-container').innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--neutral);">No workout for today (rest day)</div>';
+                document.getElementById('phase-info').style.display = 'none';
+                return;
+            }
+
+            const dateStr = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+            document.getElementById('workout-date').textContent = dateStr;
+
+            // Show phase
+            const phase = getTodayPhase();
+            if (phase) {
+                document.getElementById('phase-info').textContent = phase.name;
+                document.getElementById('phase-info').style.display = 'inline-block';
+            }
+
+            // Render exercises
+            const container = document.getElementById('exercises-container');
+            container.innerHTML = '';
+
+            todayWorkout.exercises.forEach((exercise, idx) => {
+                const today = new Date().toISOString().split('T')[0];
+                const log = appState.dailyLogs[today] || {};
+                const isCompleted = log.completed?.includes(idx);
+                const feedback = log.feedback?.[idx] || '';
+
+                const exerciseEl = document.createElement('div');
+                exerciseEl.className = `exercise-item ${isCompleted ? 'completed' : ''}`;
+                exerciseEl.innerHTML = `
+                    <div class="exercise-header">
+                        <div class="exercise-name">${exercise.name}</div>
+                        <input type="checkbox" class="exercise-checkbox" ${isCompleted ? 'checked' : ''} onchange="toggleExercise(${idx})">
+                    </div>
+                    <div class="exercise-meta">
+                        <div class="meta-item">📊 ${exercise.sets} x ${exercise.reps}</div>
+                        <div class="meta-item">⏱️ ${exercise.duration}</div>
+                    </div>
+                    <div class="exercise-description">${exercise.description}</div>
+                    <div class="exercise-form">
+                        <strong>Form:</strong>
+                        <p>${exercise.form}</p>
+                    </div>
+                    ${exercise.videoLinks && exercise.videoLinks.length > 0 ? `
+                        <div class="exercise-links">
+                            ${exercise.videoLinks.map(link => `
+                                <a href="${link.url}" target="_blank" class="link-btn">📹 ${link.title}</a>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                    <div class="form-group">
+                        <label>How did this feel?</label>
+                        <select class="feedback-select" onchange="setFeedback(${idx}, this.value)">
+                            <option value="">No feedback</option>
+                            <option value="easy" ${feedback === 'easy' ? 'selected' : ''}>Easy</option>
+                            <option value="good" ${feedback === 'good' ? 'selected' : ''}>Just right</option>
+                            <option value="hard" ${feedback === 'hard' ? 'selected' : ''}>Challenging</option>
+                            <option value="painful" ${feedback === 'painful' ? 'selected' : ''}>Painful</option>
+                        </select>
+                    </div>
+                `;
+                container.appendChild(exerciseEl);
+            });
+        }
+
+        function updateProgressView() {
+            if (!appState.trainingPlan) {
+                document.getElementById('no-progress').style.display = 'block';
+                document.getElementById('progress-display').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('no-progress').style.display = 'none';
+            document.getElementById('progress-display').style.display = 'block';
+
+            // Calculate stats
+            const completedDays = Object.keys(appState.dailyLogs).filter(date => {
+                const log = appState.dailyLogs[date];
+                return log.completed && log.completed.length > 0;
+            }).length;
+
+            document.getElementById('stat-completed').textContent = completedDays;
+
+            const daysUntilTrip = Math.ceil((appState.tripProfile.departureDate - new Date()) / (24 * 60 * 60 * 1000));
+            const weeksUntilTrip = Math.ceil(daysUntilTrip / 7);
+            document.getElementById('stat-week').textContent = `${weeksUntilTrip} weeks`;
+
+            const phase = getTodayPhase();
+            document.getElementById('stat-phase').textContent = phase?.name || '—';
+
+            renderCalendar();
+        }
+
+        // ============ CALENDAR ============
+        let currentCalendarMonth = new Date();
+
+        function renderCalendar() {
+            const year = currentCalendarMonth.getFullYear();
+            const month = currentCalendarMonth.getMonth();
+
+            const monthName = currentCalendarMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            document.getElementById('calendar-month').textContent = monthName;
+
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const prevLastDay = new Date(year, month, 0);
+
+            const calendarGrid = document.getElementById('calendar-grid');
+            calendarGrid.innerHTML = '';
+
+            // Day labels
+            const dayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            dayLabels.forEach(label => {
+                const labelEl = document.createElement('div');
+                labelEl.className = 'calendar-day-label';
+                labelEl.textContent = label;
+                calendarGrid.appendChild(labelEl);
+            });
+
+            // Previous month days
+            for (let i = prevLastDay.getDate() - firstDay.getDay() + 1; i <= prevLastDay.getDate(); i++) {
+                const dayEl = document.createElement('div');
+                dayEl.className = 'calendar-day other-month';
+                dayEl.textContent = i;
+                calendarGrid.appendChild(dayEl);
+            }
+
+            // Current month days
+            for (let i = 1; i <= lastDay.getDate(); i++) {
+                const dayEl = document.createElement('div');
+                dayEl.className = 'calendar-day';
+                dayEl.textContent = i;
+
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                const isCompleted = appState.dailyLogs[dateStr] && appState.dailyLogs[dateStr].completed?.length > 0;
+                const isToday = dateStr === new Date().toISOString().split('T')[0];
+
+                if (isCompleted) {
+                    dayEl.classList.add('completed');
+                }
+                if (isToday) {
+                    dayEl.classList.add('today');
+                }
+
+                dayEl.addEventListener('click', () => {
+                    // Could navigate to that day's workout
+                });
+
+                calendarGrid.appendChild(dayEl);
+            }
+
+            // Next month days
+            const remainingDays = 42 - calendarGrid.children.length + 7; // Adjust for day labels
+            for (let i = 1; i < remainingDays; i++) {
+                const dayEl = document.createElement('div');
+                dayEl.className = 'calendar-day other-month';
+                dayEl.textContent = i;
+                calendarGrid.appendChild(dayEl);
+            }
+        }
+
+        // ============ WORKOUT LOGIC ============
+        function getTodayWorkout() {
+            if (!appState.trainingPlan) return null;
+
+            const today = new Date();
+            const dayOfWeek = today.toLocaleDateString('en-US', { weekday: 'long' });
+
+            for (const phase of appState.trainingPlan.phases) {
+                for (const day of phase.days) {
+                    if (day.dayOfWeek === dayOfWeek && !day.restDay) {
+                        return day;
+                    }
+                }
+            }
+            return null;
+        }
+
+        function getTodayPhase() {
+            if (!appState.trainingPlan) return null;
+
+            const today = new Date();
+            const departure = new Date(appState.tripProfile.departureDate);
+            const daysUntilTrip = Math.ceil((departure - today) / (24 * 60 * 60 * 1000));
+            const weeksUntilTrip = Math.ceil(daysUntilTrip / 7);
+
+            for (const phase of appState.trainingPlan.phases) {
+                // Simple phase detection based on week
+                const maxWeek = Math.max(...phase.weeks);
+                const minWeek = Math.min(...phase.weeks);
+                if (weeksUntilTrip <= maxWeek && weeksUntilTrip >= minWeek) {
+                    return phase;
+                }
+            }
+            return appState.trainingPlan.phases[0];
+        }
+
+        function toggleExercise(idx) {
+            const today = new Date().toISOString().split('T')[0];
+            if (!appState.dailyLogs[today]) {
+                appState.dailyLogs[today] = { completed: [], feedback: {} };
+            }
+
+            const completed = appState.dailyLogs[today].completed;
+            if (completed.includes(idx)) {
+                completed.splice(completed.indexOf(idx), 1);
+            } else {
+                completed.push(idx);
+            }
+
+            saveState();
+            updateTodayView();
+        }
+
+        function setFeedback(idx, value) {
+            const today = new Date().toISOString().split('T')[0];
+            if (!appState.dailyLogs[today]) {
+                appState.dailyLogs[today] = { completed: [], feedback: {} };
+            }
+            if (value) {
+                appState.dailyLogs[today].feedback[idx] = value;
+            } else {
+                delete appState.dailyLogs[today].feedback[idx];
+            }
+            saveState();
+        }
+
+        function copyWorkoutToClipboard() {
+            const workout = getTodayWorkout();
+            if (!workout) {
+                alert('No workout for today');
+                return;
+            }
+
+            let text = `${new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })} - ${workout.description}\n\n`;
+
+            workout.exercises.forEach(ex => {
+                text += `${ex.name} | ${ex.sets} x ${ex.reps} | ${ex.duration}\n`;
+            });
+
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.getElementById('copy-workout-btn');
+                const originalText = btn.textContent;
+                btn.textContent = '✓ Copied to clipboard!';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 2000);
+            }).catch(err => {
+                alert('Failed to copy: ' + err.message);
+            });
+        }
+
+        // ============ AI ADVISOR ============
+        async function askAdvisor(event) {
+            event.preventDefault();
+            const question = document.getElementById('advisor-question').value;
+
+            appState.advisorHistory.push({ role: 'user', content: question });
+
+            const formEl = event.target;
+            const submitBtn = formEl.querySelector('button');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Thinking...';
+
+            const responsesContainer = document.getElementById('advisor-responses');
+            const loadingEl = document.createElement('div');
+            loadingEl.className = 'loading';
+            loadingEl.innerHTML = '<div class="spinner"></div>';
+            responsesContainer.prepend(loadingEl);
+
+            try {
+                const response = await fetch(CLOUDFLARE_WORKER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        model: 'claude-sonnet-4-5',
+                        max_tokens: 1000,
+                        system: `You are a fitness coach helping someone prepare for an 11-day Scandinavia tour and week of golf in Ireland. 
+                        
+User Profile: ${appState.tripProfile.fitnessLevel}, injuries/limitations: ${appState.tripProfile.injuries}
+
+Training Plan: ${JSON.stringify(appState.trainingPlan, null, 2)}
+
+Provide specific, actionable advice. Reference their training plan when relevant. Be encouraging and practical.`,
+                        messages: appState.advisorHistory.map(msg => ({
+                            role: msg.role,
+                            content: msg.content
+                        }))
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const adviceText = data.content[0]?.text || 'No response';
+
+                appState.advisorHistory.push({ role: 'assistant', content: adviceText });
+                saveState();
+
+                loadingEl.remove();
+
+                const responseEl = document.createElement('div');
+                responseEl.className = 'advisor-response';
+                responseEl.innerHTML = `
+                    <h4>Coach's Response</h4>
+                    <p>${adviceText.split('\n').join('</p><p>')}</p>
+                `;
+                responsesContainer.prepend(responseEl);
+
+                document.getElementById('advisor-question').value = '';
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            } catch (err) {
+                loadingEl.remove();
+                alert('Error getting advice: ' + err.message);
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        }
+
+        // ============ UTILITIES ============
+        function showDataSize() {
+            const size = new Blob([JSON.stringify(appState)]).size;
+            const kb = (size / 1024).toFixed(2);
+            alert(`Data stored: ${kb} KB\n\nYour training plan and logs are saved locally on your device.`);
+        }
+    </script>
+</body>
+</html>
