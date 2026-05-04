@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Travel Strong</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Travel Strong">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%233D2B1F' width='180' height='180'/><text x='50%' y='50%' font-family='serif' font-size='80' font-weight='bold' fill='%23C4773B' text-anchor='middle' dy='.3em'>TS</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%233D2B1F' width='180' height='180' rx='45'/><text x='50%' y='50%' font-family='serif' font-size='80' font-weight='bold' fill='%23C4773B' text-anchor='middle' dy='.3em'>TS</text></svg>">
+    
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
@@ -979,33 +987,8 @@ User Profile:
 - Equipment: Bodyweight only, no gym equipment
 - Days until departure: ${weeksUntilTrip} weeks
 
-The plan should include:
+IMPORTANT: Return ONLY valid JSON, no markdown code blocks, no extra text.
 
-1. **Three Phases:**
-   - Phase 1 (Weeks 1-4): Foundation & Mobility - ankle mobility, knee stability, shoulder prep, core activation
-   - Phase 2 (Weeks 5-9): Building Endurance & Strength - walking distance, leg resilience, functional strength
-   - Phase 3 (Weeks 10-11): Taper & Peak Prep - maintain fitness, reduce soreness, travel-day routines
-
-2. **For each day, include:**
-   - 4-8 exercises
-   - Sets, reps/duration
-   - Clear form instructions with common mistakes
-   - External links to YouTube/PT videos for form checking (use realistic PT channels)
-   - 1 rest day per week (suggest Friday or Sunday)
-
-3. **Exercise priorities:**
-   - Ankle work: dorsiflexion, plantarflexion, inversion/eversion, single-leg balance, calf raises
-   - Knee resilience: glute activation, hip mobility, VMO work, light single-leg work
-   - Shoulder: rotator cuff (external rotation, no pushups), scapular stability
-   - Core: planks, Pallof presses, dead bugs, bird dogs
-   - Walking prep: progressive distance, uneven surface simulation
-
-4. **Avoid:**
-   - Pushups (subscapularis concern)
-   - Heavy impact on ankles/knees
-   - Deep knee flexion without support
-
-Return the plan as a JSON object with this structure:
 {
   "phases": [
     {
@@ -1015,7 +998,7 @@ Return the plan as a JSON object with this structure:
         {
           "dayOfWeek": "Monday",
           "restDay": false,
-          "description": "Lower Body Mobility",
+          "description": "Lower Body Mobility Focus",
           "exercises": [
             {
               "name": "Ankle Circles",
@@ -1023,13 +1006,8 @@ Return the plan as a JSON object with this structure:
               "reps": "10 each direction",
               "duration": "2 min",
               "description": "Gentle ankle mobility preparation",
-              "form": "Sit or stand. Keep weight on outer foot edge. Rotate ankle slowly through full range. Work both clockwise and counterclockwise. No pain.",
-              "videoLinks": [
-                {
-                  "title": "PT Ankle Mobility",
-                  "url": "https://www.youtube.com/results?search_query=physical+therapy+ankle+circles"
-                }
-              ]
+              "form": "Sit or stand. Keep weight on outer foot edge. Rotate ankle slowly through full range. No pain.",
+              "videoLinks": [{"title": "PT Ankle Mobility", "url": "https://www.youtube.com/results?search_query=ankle+circles+physical+therapy"}]
             }
           ]
         }
@@ -1038,7 +1016,13 @@ Return the plan as a JSON object with this structure:
   ]
 }
 
-Make it realistic, specific, and immediately actionable. Every exercise should have a YouTube link or PT resource.`;
+The plan must include:
+- 3 phases (Foundation, Building, Taper)
+- Each phase with 4-5 days of workouts
+- 1 rest day per week
+- 4-8 exercises per day
+- Focus: ankle mobility, knee stability, shoulder work (no pushups), core, walking endurance
+- Avoid: deep knee flexion, heavy impact, pushups`;
 
             const response = await fetch(CLOUDFLARE_WORKER_URL, {
                 method: 'POST',
@@ -1055,15 +1039,36 @@ Make it realistic, specific, and immediately actionable. Every exercise should h
             }
 
             const data = await response.json();
-            const content = data.content[0]?.text || '';
+            let content = data.content[0]?.text || '';
 
-            // Parse JSON from response
+            // Remove markdown code blocks
+            content = content.replace(/```json\s*/g, '').replace(/```\s*/g, '');
+            content = content.trim();
+
+            // Extract JSON object
             const jsonMatch = content.match(/\{[\s\S]*\}/);
             if (!jsonMatch) {
-                throw new Error('Could not parse plan from response');
+                console.error('Response:', content.substring(0, 500));
+                throw new Error('Could not find JSON in response');
             }
 
-            return JSON.parse(jsonMatch[0]);
+            let jsonStr = jsonMatch[0];
+
+            // Fix common JSON issues
+            try {
+                return JSON.parse(jsonStr);
+            } catch (e) {
+                console.error('JSON parse error:', e, 'String:', jsonStr.substring(0, 500));
+                // Attempt to clean up the JSON
+                jsonStr = jsonStr.replace(/,\s*([\]}])/g, '$1')  // Remove trailing commas
+                                 .replace(/[\r\n]+/g, ' ');      // Remove newlines
+                
+                try {
+                    return JSON.parse(jsonStr);
+                } catch (e2) {
+                    throw new Error('Invalid JSON format: ' + e.message);
+                }
+            }
         }
 
         function resetTrip() {
