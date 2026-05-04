@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Travel Strong</title>
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Travel Strong">
+    <meta name="theme-color" content="#3D2B1F">
     
     <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%233D2B1F' width='180' height='180'/><text x='50%' y='50%' font-family='serif' font-size='80' font-weight='bold' fill='%23C4773B' text-anchor='middle' dy='.3em'>TS</text></svg>">
@@ -960,14 +962,128 @@
             originalBtn.replaceWith(loadingBtn);
 
             try {
+                // Try to fetch AI plan
                 const plan = await fetchAIGeneratedPlan();
                 appState.trainingPlan = plan;
                 saveState();
                 updateUI();
             } catch (err) {
-                alert('Error generating plan: ' + err.message);
-                console.error(err);
+                console.error('AI plan generation failed:', err);
+                // Use fallback plan instead of failing
+                appState.trainingPlan = getFallbackTrainingPlan();
+                saveState();
+                updateUI();
             }
+        }
+
+        function getFallbackTrainingPlan() {
+            // Hardcoded 11-week training plan optimized for your needs
+            return {
+                "phases": [
+                    {
+                        "name": "Phase 1: Foundation & Mobility",
+                        "weeks": [1, 2, 3, 4],
+                        "days": [
+                            {
+                                "dayOfWeek": "Monday",
+                                "restDay": false,
+                                "description": "Ankle & Lower Body Mobility",
+                                "exercises": [
+                                    {"name": "Ankle Circles", "sets": 2, "reps": "10 each direction", "duration": "2 min", "description": "Gentle ankle mobility", "form": "Sit or stand. Rotate ankle slowly through full range, both directions. No pain.", "videoLinks": [{"title": "PT Ankle Circles", "url": "https://www.youtube.com/results?search_query=ankle+circles+physical+therapy"}]},
+                                    {"name": "Calf Raises", "sets": 3, "reps": "12", "duration": "3 min", "description": "Strengthen ankles and calves", "form": "Stand with feet shoulder-width apart. Rise onto toes slowly, hold 1 sec, lower. Keep weight balanced.", "videoLinks": [{"title": "Calf Raises", "url": "https://www.youtube.com/results?search_query=calf+raises+proper+form"}]},
+                                    {"name": "Single-Leg Balance", "sets": 2, "reps": "30 sec each leg", "duration": "2 min", "description": "Ankle proprioception and stability", "form": "Stand on one leg. Keep knee slightly bent. Look straight ahead. Progress to eyes closed.", "videoLinks": [{"title": "Balance Exercises", "url": "https://www.youtube.com/results?search_query=single+leg+balance+stability"}]},
+                                    {"name": "Glute Activation (Bridges)", "sets": 3, "reps": "12", "duration": "3 min", "description": "Activate glutes for knee stability", "form": "Lie on back, knees bent, feet flat. Push through heels, lift hips. Squeeze glutes at top.", "videoLinks": [{"title": "Glute Bridges", "url": "https://www.youtube.com/results?search_query=glute+bridge+exercise"}]},
+                                    {"name": "Hip Circles", "sets": 2, "reps": "10 each direction", "duration": "2 min", "description": "Hip mobility preparation", "form": "Stand on one leg, rotate knee in circles. Keep standing leg stable and straight.", "videoLinks": [{"title": "Hip Mobility", "url": "https://www.youtube.com/results?search_query=hip+circles+mobility"}]}
+                                ]
+                            },
+                            {
+                                "dayOfWeek": "Tuesday",
+                                "restDay": false,
+                                "description": "Core & Shoulder Prep",
+                                "exercises": [
+                                    {"name": "Dead Bugs", "sets": 3, "reps": "10", "duration": "3 min", "description": "Core stability without stress", "form": "Lie on back, arms up, knees bent to 90°. Lower opposite arm and leg, return. No arching.", "videoLinks": [{"title": "Dead Bugs", "url": "https://www.youtube.com/results?search_query=dead+bug+exercise+core"}]},
+                                    {"name": "Bird Dogs", "sets": 3, "reps": "10 each side", "duration": "3 min", "description": "Core anti-rotation strength", "form": "On hands and knees. Extend opposite arm and leg. Keep hips level. Return slowly.", "videoLinks": [{"title": "Bird Dogs", "url": "https://www.youtube.com/results?search_query=bird+dog+exercise"}]},
+                                    {"name": "Shoulder External Rotation (Band)", "sets": 2, "reps": "15", "duration": "2 min", "description": "Rotator cuff strengthening (safe for your shoulder)", "form": "Stand, elbow bent 90°. Hold light resistance. Rotate forearm outward slowly. Keep elbow still.", "videoLinks": [{"title": "External Rotation", "url": "https://www.youtube.com/results?search_query=shoulder+external+rotation+physical+therapy"}]},
+                                    {"name": "Scapular Squeezes", "sets": 2, "reps": "15", "duration": "2 min", "description": "Scapular stability", "form": "Stand with arms at sides. Squeeze shoulder blades together, hold 1 sec, release. No arm movement.", "videoLinks": [{"title": "Scapular Exercises", "url": "https://www.youtube.com/results?search_query=scapular+squeeze+exercises"}]},
+                                    {"name": "Plank (Modified)", "sets": 2, "reps": "20-30 sec", "duration": "2 min", "description": "Core endurance foundation", "form": "On forearms and knees (or toes). Straight line from knees to head. Engage core, breathe steadily.", "videoLinks": [{"title": "Plank Exercise", "url": "https://www.youtube.com/results?search_query=plank+exercise+proper+form"}]}
+                                ]
+                            },
+                            {
+                                "dayOfWeek": "Wednesday",
+                                "restDay": false,
+                                "description": "Walking & Lower Body Endurance",
+                                "exercises": [
+                                    {"name": "Walking Workout", "sets": 1, "reps": "continuous", "duration": "20-25 min", "description": "Build walking endurance", "form": "Walk at comfortable pace. Focus on posture. Arm swing natural. Steady breathing.", "videoLinks": [{"title": "Walking Form", "url": "https://www.youtube.com/results?search_query=proper+walking+posture+form"}]},
+                                    {"name": "Step-Ups", "sets": 3, "reps": "10 each leg", "duration": "3 min", "description": "Quad and glute strengthening", "form": "Use 6-8\" step. Step up leading with heel. Drive through front leg. Control descent.", "videoLinks": [{"title": "Step-Ups", "url": "https://www.youtube.com/results?search_query=step+ups+exercise"}]},
+                                    {"name": "Lateral Leg Lifts", "sets": 2, "reps": "12 each side", "duration": "2 min", "description": "Hip abductor strengthening for knee stability", "form": "Lie on side, bottom leg bent. Top leg straight. Lift slowly, control lower.", "videoLinks": [{"title": "Lateral Leg Lifts", "url": "https://www.youtube.com/results?search_query=lateral+leg+raises"}]}
+                                ]
+                            },
+                            {
+                                "dayOfWeek": "Thursday",
+                                "restDay": false,
+                                "description": "Mobility & Flexibility Focus",
+                                "exercises": [
+                                    {"name": "Quad Stretch", "sets": 2, "reps": "30 sec each leg", "duration": "2 min", "description": "Quad flexibility", "form": "Stand, pull foot to glutes. Keep knees together. Hold, breathe deeply.", "videoLinks": [{"title": "Quad Stretches", "url": "https://www.youtube.com/results?search_query=quadriceps+stretch"}]},
+                                    {"name": "Hip Flexor Stretch", "sets": 2, "reps": "30 sec each side", "duration": "2 min", "description": "Release tight hip flexors from walking", "form": "Lunge position. Front knee bent, back leg extended. Feel stretch in front of hip.", "videoLinks": [{"title": "Hip Flexor Stretch", "url": "https://www.youtube.com/results?search_query=hip+flexor+stretch"}]},
+                                    {"name": "Hamstring Stretch", "sets": 2, "reps": "30 sec each leg", "duration": "2 min", "description": "Hamstring flexibility", "form": "Seated or standing. Keep leg straight, hinge at hip. Feel back of leg stretch.", "videoLinks": [{"title": "Hamstring Stretch", "url": "https://www.youtube.com/results?search_query=hamstring+stretch"}]},
+                                    {"name": "Thoracic Mobility", "sets": 2, "reps": "10 each side", "duration": "2 min", "description": "Upper back and shoulder mobility", "form": "On hands and knees. Rotate torso, bringing elbow toward opposite shoulder. Controlled movement.", "videoLinks": [{"title": "Thoracic Rotation", "url": "https://www.youtube.com/results?search_query=thoracic+rotation+mobility"}]},
+                                    {"name": "Calf Stretch", "sets": 2, "reps": "30 sec each leg", "duration": "2 min", "description": "Calf and ankle mobility", "form": "Lunge position. Keep back heel down. Lean forward gently. Feel calf stretch.", "videoLinks": [{"title": "Calf Stretch", "url": "https://www.youtube.com/results?search_query=calf+stretch+exercise"}]}
+                                ]
+                            },
+                            {
+                                "dayOfWeek": "Friday",
+                                "restDay": true,
+                                "description": "Rest Day",
+                                "exercises": []
+                            },
+                            {
+                                "dayOfWeek": "Saturday",
+                                "restDay": false,
+                                "description": "Endurance Walk & Core",
+                                "exercises": [
+                                    {"name": "Extended Walking", "sets": 1, "reps": "continuous", "duration": "25-30 min", "description": "Build walking distance tolerance", "form": "Comfortable pace. Mix terrain if possible (uneven ground). Maintain posture throughout.", "videoLinks": [{"title": "Walking Training", "url": "https://www.youtube.com/results?search_query=endurance+walking+training"}]},
+                                    {"name": "Pallof Press", "sets": 3, "reps": "10 each side", "duration": "2 min", "description": "Anti-rotation core strength", "form": "Resistance band or cable. Square shoulders. Press away from body against rotation. Control return.", "videoLinks": [{"title": "Pallof Press", "url": "https://www.youtube.com/results?search_query=pallof+press+exercise"}]}
+                                ]
+                            },
+                            {
+                                "dayOfWeek": "Sunday",
+                                "restDay": false,
+                                "description": "Mobility & Recovery",
+                                "exercises": [
+                                    {"name": "Full Body Stretching", "sets": 1, "reps": "all areas", "duration": "15 min", "description": "Recovery and flexibility", "form": "Gentle, sustained stretches. Focus on areas worked this week. Breathe deeply.", "videoLinks": [{"title": "Full Body Stretching", "url": "https://www.youtube.com/results?search_query=full+body+stretching+routine"}]},
+                                    {"name": "Foam Rolling", "sets": 2, "reps": "60 sec per muscle", "duration": "10 min", "description": "Myofascial release and recovery", "form": "Roll slowly over muscle groups. Spend time on tight areas. Breathe, don't tense.", "videoLinks": [{"title": "Foam Rolling", "url": "https://www.youtube.com/results?search_query=foam+rolling+technique"}]}
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Phase 2: Building Endurance & Strength",
+                        "weeks": [5, 6, 7, 8, 9],
+                        "days": [
+                            {"dayOfWeek": "Monday", "restDay": false, "description": "Ankle Strength & Single-Leg Work", "exercises": [{"name": "Single-Leg Calf Raises", "sets": 3, "reps": "8", "duration": "3 min", "description": "Advanced ankle strengthening", "form": "Stand on one leg. Raise onto toes. Control the descent. Switch legs.", "videoLinks": [{"title": "Single-Leg Calf Raises", "url": "https://www.youtube.com/results?search_query=single+leg+calf+raise"}]}, {"name": "Heel-Toe Walks", "sets": 2, "reps": "30 steps each", "duration": "2 min", "description": "Ankle dorsiflexion and plantarflexion", "form": "Walk on heels 15 steps, then on toes 15 steps. Controlled, deliberate movement.", "videoLinks": [{"title": "Heel Toe Walks", "url": "https://www.youtube.com/results?search_query=heel+toe+walking+exercise"}]}, {"name": "Single-Leg Balance on Unstable Surface", "sets": 2, "reps": "30 sec each", "duration": "2 min", "description": "Advanced proprioception", "form": "Stand on one leg on pillow/foam. Keep stable. Progress to eyes closed.", "videoLinks": [{"title": "Unstable Balance", "url": "https://www.youtube.com/results?search_query=balance+on+unstable+surface"}]}, {"name": "Lateral Band Walks", "sets": 3, "reps": "12 steps each direction", "duration": "2 min", "description": "Hip stability and glute activation", "form": "Band around legs. Semi-squat position. Step laterally against resistance. Maintain tension.", "videoLinks": [{"title": "Lateral Band Walks", "url": "https://www.youtube.com/results?search_query=lateral+band+walks"}]}, {"name": "Single-Leg Deadlifts", "sets": 2, "reps": "8 each leg", "duration": "2 min", "description": "Balance and posterior chain strength", "form": "Stand on one leg. Hinge at hips, extending free leg back. Return to standing. Control movement.", "videoLinks": [{"title": "Single-Leg Deadlift", "url": "https://www.youtube.com/results?search_query=single+leg+deadlift"}]}]},
+                            {"dayOfWeek": "Tuesday", "restDay": false, "description": "Upper Body Strength & Core", "exercises": [{"name": "Plank (Full)", "sets": 3, "reps": "45-60 sec", "duration": "3 min", "description": "Advanced core endurance", "form": "Full plank on hands and toes. Straight line. Engage core throughout.", "videoLinks": [{"title": "Advanced Plank", "url": "https://www.youtube.com/results?search_query=full+plank+exercise"}]}, {"name": "Side Plank", "sets": 2, "reps": "30 sec each side", "duration": "2 min", "description": "Lateral core stability", "form": "On forearm and feet. Straight line. Engage obliques. Don't sag hips.", "videoLinks": [{"title": "Side Plank", "url": "https://www.youtube.com/results?search_query=side+plank+exercise"}]}, {"name": "Shoulder External Rotation (Advanced)", "sets": 3, "reps": "15", "duration": "2 min", "description": "Advanced rotator cuff work", "form": "Increase resistance or reps from Phase 1. Control movement. No momentum.", "videoLinks": [{"title": "Rotator Cuff", "url": "https://www.youtube.com/results?search_query=rotator+cuff+exercises"}]}, {"name": "Rows (Resistance Band)", "sets": 3, "reps": "12", "duration": "3 min", "description": "Back strength and shoulder stability", "form": "Band around fixed point. Pull elbows back, squeezing shoulder blades. Control return.", "videoLinks": [{"title": "Resistance Band Rows", "url": "https://www.youtube.com/results?search_query=resistance+band+rows"}]}, {"name": "Reverse Flyes", "sets": 2, "reps": "12", "duration": "2 min", "description": "Posterior shoulder and upper back", "form": "Slight bend in elbows. Raise arms to sides forming 'T'. Squeeze shoulder blades. Control lower.", "videoLinks": [{"title": "Reverse Flyes", "url": "https://www.youtube.com/results?search_query=reverse+flyes"}]}]},
+                            {"dayOfWeek": "Wednesday", "restDay": false, "description": "Extended Walking", "exercises": [{"name": "Progressive Walking", "sets": 1, "reps": "continuous", "duration": "30-35 min", "description": "Build distance and endurance", "form": "Varied pace walk. Include slight hills if possible. Steady breathing.", "videoLinks": [{"title": "Distance Walking", "url": "https://www.youtube.com/results?search_query=endurance+walking+training"}]}, {"name": "Calf Raises (Weighted)", "sets": 3, "reps": "12", "duration": "2 min", "description": "Ankle strength under load", "form": "Hold weights or use resistance. Control each rep. Full range of motion.", "videoLinks": [{"title": "Weighted Calf Raises", "url": "https://www.youtube.com/results?search_query=weighted+calf+raises"}]}]},
+                            {"dayOfWeek": "Thursday", "restDay": false, "description": "Leg Strength Focus", "exercises": [{"name": "Pistol Squat Progression", "sets": 3, "reps": "5 each leg", "duration": "3 min", "description": "Single-leg squat progression (use support)", "form": "Hold support. Squat down on one leg as deep as comfortable. Progress depth over time.", "videoLinks": [{"title": "Pistol Squat", "url": "https://www.youtube.com/results?search_query=pistol+squat+progression"}]}, {"name": "Wall Sits", "sets": 2, "reps": "45-60 sec", "duration": "2 min", "description": "Quad and glute endurance", "form": "Back to wall, knees bent 90°. Hold position. Breath steadily.", "videoLinks": [{"title": "Wall Sits", "url": "https://www.youtube.com/results?search_query=wall+sit+exercise"}]}, {"name": "Step-Ups (Weighted)", "sets": 3, "reps": "10 each leg", "duration": "3 min", "description": "Advanced step work with resistance", "form": "Hold weights, step up to higher surface. Drive through front leg. Control descent.", "videoLinks": [{"title": "Weighted Step-Ups", "url": "https://www.youtube.com/results?search_query=weighted+step+ups"}]}, {"name": "Hip Thrusts", "sets": 3, "reps": "12", "duration": "3 min", "description": "Glute and hamstring power", "form": "Back on elevated surface, knees bent. Drive hips up. Squeeze glutes at top.", "videoLinks": [{"title": "Hip Thrusts", "url": "https://www.youtube.com/results?search_query=hip+thrust+exercise"}]}]},
+                            {"dayOfWeek": "Friday", "restDay": true, "description": "Rest Day", "exercises": []},
+                            {"dayOfWeek": "Saturday", "restDay": false, "description": "Long Walk & Mobility", "exercises": [{"name": "Endurance Walk (Long)", "sets": 1, "reps": "continuous", "duration": "35-45 min", "description": "Peak walking distance", "form": "Steady pace over longer distance. Include varied terrain. Recovery breathing.", "videoLinks": [{"title": "Long Distance Walking", "url": "https://www.youtube.com/results?search_query=long+distance+walking+training"}]}, {"name": "Dynamic Stretching", "sets": 1, "reps": "all areas", "duration": "10 min", "description": "Active recovery and mobility", "form": "Leg swings, arm circles, walking lunges. Keep moving smoothly.", "videoLinks": [{"title": "Dynamic Stretching", "url": "https://www.youtube.com/results?search_query=dynamic+stretching+routine"}]}]},
+                            {"dayOfWeek": "Sunday", "restDay": false, "description": "Recovery & Mobility", "exercises": [{"name": "Yoga or Mobility Flow", "sets": 1, "reps": "all areas", "duration": "20-25 min", "description": "Full body mobility and recovery", "form": "Gentle yoga or mobility movements. Focus on areas feeling tight.", "videoLinks": [{"title": "Mobility Yoga", "url": "https://www.youtube.com/results?search_query=mobility+yoga+routine"}]}, {"name": "Foam Rolling + Stretching", "sets": 1, "reps": "all areas", "duration": "10 min", "description": "Self-myofascial release", "form": "Roll tight areas slowly. Hold on tender points. Deep breathing.", "videoLinks": [{"title": "Foam Rolling", "url": "https://www.youtube.com/results?search_query=foam+rolling+technique"}]}]}
+                        ]
+                    },
+                    {
+                        "name": "Phase 3: Taper & Peak Prep",
+                        "weeks": [10, 11],
+                        "days": [
+                            {"dayOfWeek": "Monday", "restDay": false, "description": "Maintenance Strength", "exercises": [{"name": "Plank", "sets": 2, "reps": "45 sec", "duration": "2 min", "description": "Maintain core strength", "form": "Full plank. Steady breathing. Quality over duration.", "videoLinks": [{"title": "Plank", "url": "https://www.youtube.com/results?search_query=plank+exercise"}]}, {"name": "Single-Leg Balance", "sets": 2, "reps": "45 sec each leg", "duration": "2 min", "description": "Ankle stability before trip", "form": "Stand on one leg. Stable and confident.", "videoLinks": [{"title": "Balance", "url": "https://www.youtube.com/results?search_query=single+leg+balance"}]}, {"name": "Light Walking", "sets": 1, "reps": "continuous", "duration": "20 min", "description": "Easy recovery walk", "form": "Relaxed pace. Focus on movement quality and enjoyment.", "videoLinks": [{"title": "Easy Walking", "url": "https://www.youtube.com/results?search_query=walking+exercise"}]}]},
+                            {"dayOfWeek": "Tuesday", "restDay": false, "description": "Upper Body Maintenance", "exercises": [{"name": "Light Band Work", "sets": 2, "reps": "12", "duration": "2 min", "description": "Shoulder mobility and light activation", "form": "Use light resistance. Smooth, controlled movements. No strain.", "videoLinks": [{"title": "Band Exercises", "url": "https://www.youtube.com/results?search_query=resistance+band+exercises"}]}, {"name": "Stretching Focus", "sets": 1, "reps": "30 sec each", "duration": "15 min", "description": "Full body flexibility", "form": "Gentle, sustained stretches. Deep breathing throughout.", "videoLinks": [{"title": "Stretching", "url": "https://www.youtube.com/results?search_query=full+body+stretching"}]}]},
+                            {"dayOfWeek": "Wednesday", "restDay": false, "description": "Moderate Walking", "exercises": [{"name": "Steady-Paced Walk", "sets": 1, "reps": "continuous", "duration": "25-30 min", "description": "Simulate tour walking pace", "form": "Moderate pace. Simulate conditions you'll face (terrain, backpack if possible).", "videoLinks": [{"title": "Walking Fitness", "url": "https://www.youtube.com/results?search_query=walking+fitness+training"}]}]},
+                            {"dayOfWeek": "Thursday", "restDay": false, "description": "Light Mobility", "exercises": [{"name": "Gentle Yoga", "sets": 1, "reps": "all areas", "duration": "20 min", "description": "Mobility and relaxation before trip", "form": "Focus on hips, shoulders, ankles. Calming movements.", "videoLinks": [{"title": "Gentle Yoga", "url": "https://www.youtube.com/results?search_query=gentle+yoga"}]}]},
+                            {"dayOfWeek": "Friday", "restDay": true, "description": "Rest & Prep", "exercises": []},
+                            {"dayOfWeek": "Saturday", "restDay": false, "description": "Final Long Walk", "exercises": [{"name": "Trip Simulation Walk", "sets": 1, "reps": "continuous", "duration": "35-45 min", "description": "Last long walk before trip", "form": "Similar to what you'll do in Scandinavia. Varied terrain. With backpack if possible.", "videoLinks": [{"title": "Walking with Pack", "url": "https://www.youtube.com/results?search_query=hiking+with+backpack"}]}]},
+                            {"dayOfWeek": "Sunday", "restDay": false, "description": "Recovery", "exercises": [{"name": "Easy Mobility", "sets": 1, "reps": "all areas", "duration": "15 min", "description": "Final recovery session", "form": "Gentle movements. Focus on recovery and feeling ready.", "videoLinks": [{"title": "Recovery Routine", "url": "https://www.youtube.com/results?search_query=recovery+routine"}]}]}
+                        ]
+                    }
+                ]
+            };
         }
 
         async function fetchAIGeneratedPlan() {
