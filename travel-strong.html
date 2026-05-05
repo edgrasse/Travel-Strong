@@ -595,7 +595,10 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             registerServiceWorker();
-            loadAppState();
+            // Don't block app startup on Supabase errors
+            loadAppState().catch(() => {
+                console.log('Supabase load failed, starting with fresh app');
+            });
             setupNavigation();
             setupEventListeners();
         });
