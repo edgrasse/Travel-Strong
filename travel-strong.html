@@ -698,9 +698,26 @@
         }
 
         function loadState() {
+            // Try new key first
             const saved = localStorage.getItem(STORAGE_KEY);
             if (saved) {
                 appState = JSON.parse(saved);
+                return;
+            }
+
+            // If not found, try to migrate from old key
+            const oldKey = 'travelStrong';
+            const oldSaved = localStorage.getItem(oldKey);
+            if (oldSaved) {
+                try {
+                    const oldData = JSON.parse(oldSaved);
+                    // Migrate old structure to new if needed
+                    appState = oldData;
+                    saveState(); // Save under new key
+                    console.log('Migrated data from old storage key');
+                } catch (e) {
+                    console.error('Could not migrate old data:', e);
+                }
             }
         }
 
