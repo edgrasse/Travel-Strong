@@ -701,20 +701,45 @@
             // Try new key first
             const saved = localStorage.getItem(STORAGE_KEY);
             if (saved) {
-                appState = JSON.parse(saved);
-                return;
+                try {
+                    appState = JSON.parse(saved);
+                    return;
+                } catch (e) {
+                    console.error('Could not parse new key data:', e);
+                }
             }
 
-            // If not found, try to migrate from old key
+            // If not found, try to migrate from old v1 structure
             const oldKey = 'travelStrong';
             const oldSaved = localStorage.getItem(oldKey);
             if (oldSaved) {
                 try {
                     const oldData = JSON.parse(oldSaved);
-                    // Migrate old structure to new if needed
-                    appState = oldData;
+                    
+                    // v1 had: tripProfile, trainingPlan, dailyLogs, advisorHistory
+                    // v2 needs: tripProfile, checkins, workouts, feedback
+                    
+                    if (oldData.tripProfile) {
+                        // Convert v1 tripProfile to v2 format
+                        appState.tripProfile = {
+                            name: oldData.tripProfile.name || 'User',
+                            stats: oldData.tripProfile.stats || '',
+                            departureDate: oldData.tripProfile.departureDate instanceof Date 
+                                ? oldData.tripProfile.departureDate.toISOString().split('T')[0]
+                                : oldData.tripProfile.departureDate,
+                            fitnessLevel: oldData.tripProfile.fitnessLevel || 'moderately-active',
+                            injuries: oldData.tripProfile.injuries || '',
+                            createdAt: oldData.tripProfile.createdAt || new Date().toISOString()
+                        };
+                    }
+                    
+                    // Don't migrate old workouts - start fresh with v2
+                    appState.checkins = [];
+                    appState.workouts = [];
+                    appState.feedback = [];
+                    
                     saveState(); // Save under new key
-                    console.log('Migrated data from old storage key');
+                    console.log('Migrated tripProfile from v1 to v2');
                 } catch (e) {
                     console.error('Could not migrate old data:', e);
                 }
