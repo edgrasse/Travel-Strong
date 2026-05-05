@@ -608,11 +608,24 @@
 
         async function loadAppState() {
             try {
-                const { data } = await getSupabase()
+                const { data, error } = await getSupabase()
                     .from('TravelStrongUsers')
                     .select('*')
                     .limit(1)
                     .single();
+
+                if (error) {
+                    // 401 = auth error (expected for first-time users with RLS)
+                    // PGRST116 = no rows found (expected for first-time users)
+                    if (error.code === 'PGRST116' || error.status === 401 || error.status === 403) {
+                        console.log('No profile found (expected on first use), starting fresh');
+                        // Allow app to start - assessment-view is already active by default
+                        return;
+                    }
+                    // Other errors should be logged
+                    console.error('Supabase error:', error.message, error.code, error.status);
+                    return;
+                }
 
                 if (data) {
                     appState.tripProfile = data;
@@ -622,12 +635,12 @@
                     if (appState.assessment) {
                         switchView('checkin');
                     } else {
-                        switchView('detailed-assessment-view');
+                        switchView('detailed-assessment');
                     }
                     enableNav();
                 }
             } catch (err) {
-                console.log('No profile found, starting fresh');
+                console.error('Unexpected error in loadAppState:', err.message);
             }
         }
 
@@ -725,7 +738,7 @@
                 created_at: new Date().toISOString()
             };
 
-            switchView('detailed-assessment-view');
+            switchView('detailed-assessment');
             await askInitialQuestion();
         }
 
