@@ -612,7 +612,7 @@
         async function loadAppState() {
             try {
                 const { data, error } = await getSupabase()
-                    .from('TravelStrongUsers')
+                    .from('travelstrongusers')
                     .select('*')
                     .limit(1)
                     .single();
@@ -816,7 +816,7 @@ Ask ONE more detailed question. If you've asked enough questions to understand t
 
             try {
                 await getSupabase()
-                    .from('TravelStrongUsers')
+                    .from('travelstrongusers')
                     .upsert([profile], { onConflict: 'id' });
 
                 enableNav();
@@ -842,7 +842,7 @@ Ask ONE more detailed question. If you've asked enough questions to understand t
 
             try {
                 await getSupabase()
-                    .from('TravelStrongCheckins')
+                    .from('travelstrongcheckins')
                     .upsert([checkin], { onConflict: 'date' });
 
                 document.getElementById('checkin-form').style.display = 'none';
@@ -851,7 +851,7 @@ Ask ONE more detailed question. If you've asked enough questions to understand t
                 const workout = await generateWorkoutWithAI(checkin);
 
                 await getSupabase()
-                    .from('TravelStrongWorkouts')
+                    .from('travelstrongworkouts')
                     .upsert([{
                         date: appState.currentDate,
                         title: workout.title,
@@ -956,7 +956,7 @@ Return ONLY valid JSON:
 
             try {
                 await getSupabase()
-                    .from('TravelStrongFeedback')
+                    .from('travelstrongfeedback')
                     .upsert([feedback], { onConflict: 'date' });
 
                 alert('Feedback saved! Tomorrow\'s workout will adapt based on this.');
@@ -969,7 +969,7 @@ Return ONLY valid JSON:
         async function populateHistory() {
             try {
                 const { data: workouts } = await getSupabase()
-                    .from('TravelStrongWorkouts')
+                    .from('travelstrongworkouts')
                     .select('*')
                     .order('date', { ascending: false })
                     .limit(10);
@@ -982,7 +982,7 @@ Return ONLY valid JSON:
                 let html = '<div style="text-align: left;">';
                 for (const workout of workouts) {
                     const { data: feedback } = await getSupabase()
-                        .from('TravelStrongFeedback')
+                        .from('travelstrongfeedback')
                         .select('*')
                         .eq('date', workout.date)
                         .single();
@@ -1025,7 +1025,7 @@ Return ONLY valid JSON:
                 `;
 
                 supabase
-                    .from('TravelStrongWorkouts')
+                    .from('travelstrongworkouts')
                     .select('id')
                     .then(({ data }) => {
                         document.getElementById('workouts-count').textContent = (data || []).length;
@@ -1059,7 +1059,7 @@ Return ONLY valid JSON:
 
         function resetApp() {
             if (confirm('Reset everything?')) {
-                getSupabase().from('TravelStrongUsers').delete().gte('id', '0');
+                getSupabase().from('travelstrongusers').delete().gte('id', '0');
                 location.reload();
             }
         }
