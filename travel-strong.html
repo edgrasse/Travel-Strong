@@ -723,6 +723,13 @@
 
             document.getElementById(`${viewName}-view`).classList.add('active');
             document.querySelector(`[data-view="${viewName}"]`).classList.add('active');
+
+            // Populate view-specific content
+            if (viewName === 'history') {
+                populateHistory();
+            } else if (viewName === 'settings') {
+                updateTripSummary();
+            }
         }
 
         function setupEventListeners() {
@@ -796,6 +803,8 @@
 
         function updateTripSummary() {
             const profile = appState.tripProfile;
+            if (!profile) return;
+            
             const dept = new Date(profile.departureDate);
             const daysLeft = Math.ceil((dept - new Date()) / (24 * 60 * 60 * 1000));
 
@@ -952,6 +961,9 @@ Return ONLY valid JSON (no markdown):
             content.innerHTML = html;
             container.style.display = 'block';
             document.getElementById('no-workout-yet').style.display = 'none';
+            
+            // Update trip summary on settings view
+            updateTripSummary();
         }
 
         function copyWorkoutToClipboard() {
@@ -968,6 +980,54 @@ Return ONLY valid JSON (no markdown):
                 btn.textContent = '✓ Copied!';
                 setTimeout(() => { btn.textContent = original; }, 2000);
             }).catch(err => alert('Failed to copy'));
+        }
+
+        function populateHistory() {
+            const content = document.getElementById('history-content');
+            
+            if (appState.workouts.length === 0) {
+                content.innerHTML = '<p style="color: var(--neutral); padding: 2rem; text-align: center;">No workouts yet. Start with your morning check-in!</p>';
+                return;
+            }
+
+            let html = '<div style="text-align: left;">';
+            
+            // Combine workouts with feedback
+            appState.workouts.forEach((workout, idx) => {
+                const feedback = appState.feedback.find(f => f.date === workout.date);
+                const checkin = appState.checkins.find(c => c.date === workout.date);
+
+                html += `
+                    <div style="padding: 1.5rem; margin-bottom: 1rem; background: rgba(250, 247, 242, 0.5); border-radius: 8px; border-left: 3px solid var(--accent);">
+                        <div style="font-weight: 600; color: var(--primary); margin-bottom: 0.5rem;">${new Date(workout.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}</div>
+                        
+                        ${workout.content.overview ? `<p style="margin-bottom: 0.8rem; color: #5a5a5a; font-size: 0.95rem;">${workout.content.overview}</p>` : ''}
+                        
+                        <div style="color: var(--neutral); font-size: 0.9rem; margin-bottom: 0.8rem;">
+                            ${workout.content.activities ? `<strong>Activities:</strong> ${workout.content.activities.map(a => a.name).join(', ')}` : ''}
+                        </div>
+
+                        ${feedback ? `
+                            <div style="background: var(--white); padding: 1rem; border-radius: 6px; margin-top: 0.8rem; border-left: 2px solid var(--success);">
+                                <strong style="color: var(--primary);">Your Feedback:</strong>
+                                <div style="font-size: 0.9rem; color: #5a5a5a; margin-top: 0.5rem;">
+                                    Completed: ${feedback.completedCount} exercises | Difficulty: ${feedback.difficulty}
+                                    ${feedback.notes ? `<div style="margin-top: 0.5rem;"><strong>Notes:</strong> ${feedback.notes}</div>` : ''}
+                                </div>
+                            </div>
+                        ` : ''}
+
+                        ${checkin ? `
+                            <div style="font-size: 0.85rem; color: var(--neutral); margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid #E8E3DC;">
+                                Yesterday: ${checkin.yesterdayCompletion} ${checkin.didWalk === 'yes' ? `| Walked ${checkin.walkMiles || '?'} mi` : ''} ${checkin.hasSoreness === 'yes' ? `| Sore: ${checkin.soreParts.join(', ')}` : ''}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            content.innerHTML = html;
         }
 
         function resetApp() {
