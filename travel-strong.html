@@ -576,7 +576,14 @@
         const WORKER_URL = 'https://grasse-apps-proxy.ed-53c.workers.dev';
         const APP_ID = 'travelstrong';
 
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        let supabaseClient = null;
+        
+        function getSupabase() {
+            if (!supabaseClient) {
+                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            }
+            return supabaseClient;
+        }
 
         let appState = {
             tripProfile: null,
@@ -1036,7 +1043,7 @@ Return ONLY valid JSON:
 
         function resetApp() {
             if (confirm('Reset everything?')) {
-                supabase.from('TravelStrongUsers').delete().gte('id', '0');
+                getSupabase().from('TravelStrongUsers').delete().gte('id', '0');
                 location.reload();
             }
         }
