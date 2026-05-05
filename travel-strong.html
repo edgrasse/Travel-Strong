@@ -608,7 +608,7 @@
 
         async function loadAppState() {
             try {
-                const { data } = await supabase
+                const { data } = await getSupabase()
                     .from('TravelStrongUsers')
                     .select('*')
                     .limit(1)
@@ -799,7 +799,7 @@ Ask ONE more detailed question. If you've asked enough questions to understand t
             };
 
             try {
-                await supabase
+                await getSupabase()
                     .from('TravelStrongUsers')
                     .upsert([profile], { onConflict: 'id' });
 
@@ -825,7 +825,7 @@ Ask ONE more detailed question. If you've asked enough questions to understand t
             };
 
             try {
-                await supabase
+                await getSupabase()
                     .from('TravelStrongCheckins')
                     .upsert([checkin], { onConflict: 'date' });
 
@@ -834,7 +834,7 @@ Ask ONE more detailed question. If you've asked enough questions to understand t
 
                 const workout = await generateWorkoutWithAI(checkin);
 
-                await supabase
+                await getSupabase()
                     .from('TravelStrongWorkouts')
                     .upsert([{
                         date: appState.currentDate,
@@ -939,7 +939,7 @@ Return ONLY valid JSON:
             };
 
             try {
-                await supabase
+                await getSupabase()
                     .from('TravelStrongFeedback')
                     .upsert([feedback], { onConflict: 'date' });
 
@@ -952,7 +952,7 @@ Return ONLY valid JSON:
 
         async function populateHistory() {
             try {
-                const { data: workouts } = await supabase
+                const { data: workouts } = await getSupabase()
                     .from('TravelStrongWorkouts')
                     .select('*')
                     .order('date', { ascending: false })
@@ -965,7 +965,7 @@ Return ONLY valid JSON:
 
                 let html = '<div style="text-align: left;">';
                 for (const workout of workouts) {
-                    const { data: feedback } = await supabase
+                    const { data: feedback } = await getSupabase()
                         .from('TravelStrongFeedback')
                         .select('*')
                         .eq('date', workout.date)
