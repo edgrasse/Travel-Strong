@@ -593,6 +593,15 @@
             currentDate: new Date().toISOString().split('T')[0]
         };
 
+        // Generate a UUID v4
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0;
+                const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             registerServiceWorker();
             // Don't block app startup on Supabase errors
@@ -807,21 +816,38 @@ Ask ONE more detailed question. If you've asked enough questions to understand t
                 completed_at: new Date().toISOString()
             };
 
+            // Generate a unique ID for this user if not already set
+            if (!appState.tripProfile.id) {
+                appState.tripProfile.id = generateUUID();
+            }
+
             const profile = {
                 ...appState.tripProfile,
                 assessment_data: JSON.stringify(appState.assessment),
                 assessment_transcript: JSON.stringify(appState.assessmentTranscript),
-                injuries: summary
+                injuries: summary,
+                updated_at: new Date().toISOString()
             };
+
+            // LOG EXACTLY WHAT WILL BE SAVED
+            console.log('=== ABOUT TO SAVE TO SUPABASE ===');
+            console.log('Profile ID:', profile.id);
+            console.log('Name:', profile.name);
+            console.log('Assessment data length:', profile.assessment_data.length);
+            console.log('Assessment transcript length:', profile.assessment_transcript.length);
+            console.log('Full profile object:', profile);
+            console.log('=====================================');
 
             try {
                 await getSupabase()
                     .from('travelstrongusers')
                     .upsert([profile], { onConflict: 'id' });
 
+                console.log('✓ SUCCESS: Data saved to Supabase');
                 enableNav();
                 switchView('checkin');
             } catch (err) {
+                console.error('✗ FAILED: Error saving assessment:', err);
                 alert('Error saving assessment: ' + err.message);
             }
         }
