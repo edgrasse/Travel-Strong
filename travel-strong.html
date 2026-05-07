@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Version: 1.0.0 | Deployed: 2026-05-06_11-35-00 -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -635,6 +636,31 @@
             }
         }
 
+        // Helper function to safely parse JSON with repair capability
+        function safeParseJSON(jsonString, fieldName) {
+            if (!jsonString) return null;
+            
+            try {
+                return JSON.parse(jsonString);
+            } catch (initialErr) {
+                console.warn(`First parse attempt failed for ${fieldName}, attempting repair...`);
+                try {
+                    // Escape control characters that might be breaking JSON
+                    const repaired = jsonString
+                        .replace(/\n/g, '\\n')
+                        .replace(/\r/g, '\\r')
+                        .replace(/\t/g, '\\t');
+                    const result = JSON.parse(repaired);
+                    console.log(`✓ Successfully repaired ${fieldName}`);
+                    return result;
+                } catch (repairErr) {
+                    console.error(`Failed to repair ${fieldName}:`, repairErr.message);
+                    console.error(`Field length: ${jsonString.length}, Initial error: ${initialErr.message}`);
+                    return null;
+                }
+            }
+        }
+
         async function loadAppState() {
             try {
                 const { data, error } = await getSupabase()
@@ -658,8 +684,10 @@
 
                 if (data) {
                     appState.tripProfile = data;
-                    appState.assessment = data.assessment_data ? JSON.parse(data.assessment_data) : null;
-                    appState.assessmentTranscript = data.assessment_transcript ? JSON.parse(data.assessment_transcript) : [];
+                    
+                    // Use safe parsing with repair capability
+                    appState.assessment = safeParseJSON(data.assessment_data, 'assessment_data');
+                    appState.assessmentTranscript = safeParseJSON(data.assessment_transcript, 'assessment_transcript') || [];
                     
                     if (appState.assessment) {
                         switchView('checkin');
@@ -918,6 +946,19 @@ Ask ONE more detailed question. If you've asked enough questions to understand t
         }
 
         async function generateWorkoutWithAI(checkin) {
+            // Build assessment context from transcript
+            let assessmentContext = '';
+            if (appState.assessment && appState.assessment.summary) {
+                assessmentContext = appState.assessment.summary;
+            } else if (appState.assessmentTranscript && appState.assessmentTranscript.length > 0) {
+                // Fall back to formatted transcript if summary not available
+                assessmentContext = appState.assessmentTranscript
+                    .map(msg => `${msg.role === 'user' ? 'User' : 'Coach'}: ${msg.content}`)
+                    .join('\n\n');
+            } else {
+                assessmentContext = 'No assessment data available';
+            }
+
             const prompt = `Build a personalized 25-30 min workout for someone preparing for 11 days of walking in Scandinavia and 7 days of golf in Ireland.
 
 PROFILE:
@@ -926,7 +967,7 @@ PROFILE:
 - Fitness: ${appState.tripProfile.fitness_level}
 
 INITIAL ASSESSMENT:
-${appState.assessment.summary}
+${assessmentContext}
 
 TODAY'S CHECK-IN:
 - Yesterday: ${checkin.yesterday_completion} ${checkin.yesterday_notes}
@@ -950,12 +991,25 @@ Return ONLY valid JSON:
   ]
 }`;
 
-            const response = await callClaude(prompt);
-            let content = response.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
-            const jsonMatch = content.match(/\{[\s\S]*\}/);
-            if (!jsonMatch) throw new Error('Could not parse workout');
+            try {
+                const response = await callClaude(prompt);
+                let content = response.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
+                const jsonMatch = content.match(/\{[\s\S]*\}/);
+                if (!jsonMatch) {
+                    console.error('Could not find JSON in response:', response.substring(0, 200));
+                    throw new Error('Could not parse workout - no JSON found in response');
+                }
 
-            return JSON.parse(jsonMatch[0]);
+                const workout = JSON.parse(jsonMatch[0]);
+                console.log('✓ Workout generated successfully');
+                return workout;
+            } catch (err) {
+                console.error('✗ Error generating workout:', err.message);
+                console.error('Assessment context length:', assessmentContext.length);
+                console.error('appState.assessment:', appState.assessment);
+                console.error('appState.assessmentTranscript length:', appState.assessmentTranscript.length);
+                throw err;
+            }
         }
 
         function displayWorkout(workout) {
