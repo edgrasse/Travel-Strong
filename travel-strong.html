@@ -332,7 +332,7 @@
         const WORKER_URL = 'https://grasse-apps-proxy.ed-53c.workers.dev';
         const APP_ID = 'travelstrong';
 
-        let supabase = null;
+        let supabaseClient = null;
         let appState = {
             profile: null,
             assessmentAnswers: [],
@@ -345,7 +345,7 @@
 
         // Initialize
         window.addEventListener('DOMContentLoaded', async () => {
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             setupNavigation();
             await loadData();
             renderAssessment();
@@ -376,7 +376,7 @@
         async function loadData() {
             try {
                 // Load profile and assessment answers
-                const { data: profileData } = await supabase
+                const { data: profileData } = await supabaseClient
                     .from('travelstrongusers')
                     .select('*')
                     .limit(1)
@@ -394,7 +394,7 @@
                 }
 
                 // Load all workouts
-                const { data: workoutData } = await supabase
+                const { data: workoutData } = await supabaseClient
                     .from('travelstrongworkouts')
                     .select('*')
                     .order('date', { ascending: false });
@@ -402,7 +402,7 @@
                 appState.allWorkouts = workoutData || [];
 
                 // Load all check-ins
-                const { data: checkinData } = await supabase
+                const { data: checkinData } = await supabaseClient
                     .from('travelstrongcheckins')
                     .select('*')
                     .order('date', { ascending: false });
@@ -508,7 +508,7 @@
                     updated_at: new Date().toISOString()
                 };
 
-                const { error } = await supabase
+                const { error } = await supabaseClient
                     .from('travelstrongcheckins')
                     .upsert([checkinData], { onConflict: 'date' });
 
@@ -578,7 +578,7 @@
                     created_at: new Date().toISOString()
                 };
 
-                await supabase
+                await supabaseClient
                     .from('travelstrongworkouts')
                     .upsert([workoutData], { onConflict: 'date' });
 
@@ -595,7 +595,7 @@
                     updated_at: new Date().toISOString()
                 };
 
-                await supabase
+                await supabaseClient
                     .from('travelstrongcheckins')
                     .upsert([checkinData], { onConflict: 'date' });
 
