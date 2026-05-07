@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Version: 1.0.0 | Deployed: 2026-05-06_11-35-00 -->
+<!-- Version: 2.0.0 | Deployed: 2026-05-07_02-57-45 -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,19 +9,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Travel Strong">
-    <meta name="theme-color" content="#3D2B1F">
-    
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%233D2B1F' width='180' height='180'/><text x='50%' y='50%' font-family='serif' font-size='80' font-weight='bold' fill='%23C4773B' text-anchor='middle' dy='.3em'>TS</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%233D2B1F' width='180' height='180' rx='45'/><text x='50%' y='50%' font-family='serif' font-size='80' font-weight='bold' fill='%23C4773B' text-anchor='middle' dy='.3em'>TS</text></svg>">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         :root {
             --primary: #3D2B1F;
             --accent: #C4773B;
@@ -30,248 +19,152 @@
             --success: #6B9E7F;
             --warning: #D4A574;
             --error: #C65D5D;
-            --white: #FFFFFF;
         }
 
-        html, body {
-            height: 100%;
-            font-family: 'DM Sans', sans-serif;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: var(--light);
             color: var(--primary);
         }
 
-        body {
-            display: flex;
-            flex-direction: column;
-        }
-
         header {
-            background: linear-gradient(135deg, var(--primary) 0%, #4a3a2e 100%);
-            color: var(--light);
-            padding: 2rem 2rem 1.5rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            background: var(--primary);
+            color: white;
+            padding: 2rem;
+            text-align: center;
         }
 
         header h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin-bottom: 0.3rem;
-            letter-spacing: -0.5px;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
         }
 
-        header .subtitle {
-            font-size: 0.95rem;
+        header p {
+            font-size: 0.9rem;
             opacity: 0.9;
-            font-weight: 400;
         }
 
         .container {
-            flex: 1;
             display: flex;
-            overflow: hidden;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
-        .sidebar {
-            width: 220px;
-            background: var(--white);
-            border-right: 1px solid #E8E3DC;
-            overflow-y: auto;
-            padding: 1.5rem 0;
-            box-shadow: inset -2px 0 6px rgba(0, 0, 0, 0.02);
+        nav {
+            width: 200px;
+            background: white;
+            padding: 2rem 1rem;
+            border-right: 1px solid #e0e0e0;
         }
 
-        .nav-item {
-            padding: 1rem 1.5rem;
-            cursor: pointer;
-            border-left: 3px solid transparent;
-            transition: all 0.2s ease;
-            font-weight: 500;
-            font-size: 0.95rem;
+        nav button {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background: none;
+            border: none;
             color: var(--primary);
-            user-select: none;
+            cursor: pointer;
+            text-align: left;
+            border-left: 3px solid transparent;
+            font-size: 0.95rem;
+            transition: all 0.2s;
         }
 
-        .nav-item:hover {
-            background: rgba(196, 119, 59, 0.08);
-            border-left-color: var(--accent);
-            padding-left: 1.65rem;
+        nav button:hover {
+            background: var(--light);
         }
 
-        .nav-item.active {
-            background: rgba(196, 119, 59, 0.15);
+        nav button.active {
+            background: var(--light);
             border-left-color: var(--accent);
-            color: var(--accent);
             font-weight: 600;
         }
 
-        .nav-item:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .content {
+        main {
             flex: 1;
-            overflow-y: auto;
             padding: 2rem;
-            background: linear-gradient(180deg, var(--light) 0%, rgba(250, 247, 242, 0.5) 100%);
         }
 
         .view {
             display: none;
-            animation: fadeIn 0.3s ease;
         }
 
         .view.active {
             display: block;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         .card {
-            background: var(--white);
+            background: white;
             border-radius: 12px;
             padding: 2rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             border-left: 4px solid var(--accent);
-        }
-
-        .btn {
-            background: var(--accent);
-            color: var(--white);
-            border: none;
-            padding: 0.9rem 2rem;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: 'DM Sans', sans-serif;
-        }
-
-        .btn:hover {
-            background: #b8652e;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(196, 119, 59, 0.3);
-        }
-
-        .btn:disabled {
-            background: var(--neutral);
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.6rem;
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: var(--primary);
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.8rem;
-            border: 2px solid #E8E3DC;
-            border-radius: 8px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 1rem;
-            transition: border-color 0.2s ease;
-        }
-
-        .form-group textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(196, 119, 59, 0.1);
         }
 
         h2 {
             font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
         }
 
-        .workout-item {
-            background: rgba(250, 247, 242, 0.5);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 1.2rem;
-            border: 2px solid #E8E3DC;
-        }
-
-        .workout-item h4 {
-            font-weight: 600;
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            color: var(--primary);
-        }
-
-        .workout-meta {
+        form {
             display: flex;
-            gap: 1.5rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-            font-size: 0.9rem;
-            color: var(--neutral);
+            flex-direction: column;
         }
 
-        .workout-description {
-            line-height: 1.5;
-            color: #5a5a5a;
-            margin-bottom: 0.8rem;
-        }
-
-        .workout-form {
-            background: var(--white);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            border-left: 3px solid var(--warning);
-        }
-
-        .workout-form p {
-            margin: 0.5rem 0;
-            font-size: 0.9rem;
-            color: #4a4a4a;
-            line-height: 1.4;
-        }
-
-        .video-link {
-            display: inline-block;
-            color: var(--accent);
-            text-decoration: none;
+        label {
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
             font-weight: 500;
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
         }
 
-        .video-link:hover {
-            text-decoration: underline;
+        input, textarea, select {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: inherit;
+            margin-bottom: 1rem;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #b8652e;
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
         }
 
         .loading {
@@ -280,32 +173,56 @@
             color: var(--neutral);
         }
 
-        .spinner {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 4px solid #E8E3DC;
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+        .error {
+            background: #ffe0e0;
+            color: var(--error);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .success {
+            background: #e0ffe0;
+            color: var(--success);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
         }
 
-        .ai-message {
-            background: rgba(196, 119, 59, 0.08);
-            border-left: 4px solid var(--accent);
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
+        .question {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
         }
 
-        .copy-btn {
-            width: 100%;
-            margin-bottom: 1.5rem;
+        .question p {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .workout-activity {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--success);
+        }
+
+        .workout-activity h4 {
+            margin-bottom: 0.5rem;
+        }
+
+        .meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            font-size: 0.9rem;
+            color: var(--neutral);
         }
 
         @media (max-width: 768px) {
@@ -313,261 +230,99 @@
                 flex-direction: column;
             }
 
-            .sidebar {
+            nav {
                 width: 100%;
                 border-right: none;
-                border-bottom: 1px solid #E8E3DC;
+                border-bottom: 1px solid #e0e0e0;
                 display: flex;
                 overflow-x: auto;
-                padding: 0;
-                height: auto;
+                padding: 1rem 0;
             }
 
-            .nav-item {
-                padding: 1rem;
+            nav button {
                 white-space: nowrap;
-                flex-shrink: 0;
-                border-left: none;
-                border-bottom: 3px solid transparent;
-            }
-
-            .nav-item:hover,
-            .nav-item.active {
-                border-left: none;
-                border-bottom-color: var(--accent);
+                flex: 0 0 auto;
+                padding: 0.75rem 1rem;
+                margin-right: 0.5rem;
+                margin-bottom: 0;
             }
 
             header h1 {
-                font-size: 1.8rem;
+                font-size: 1.75rem;
             }
 
-            .content {
-                padding: 1.5rem;
+            main {
+                padding: 1rem;
             }
-        }
-
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--light);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--neutral);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary);
         }
     </style>
 </head>
 <body>
     <header>
         <h1>Travel Strong</h1>
-        <div class="subtitle">AI-Adaptive Fitness Training for Scandinavia & Ireland</div>
+        <p>AI-Adaptive Fitness Training for Scandinavia & Ireland</p>
     </header>
 
     <div class="container">
-        <div class="sidebar">
-            <div class="nav-item active" data-view="assessment" id="nav-assessment">Initial Assessment</div>
-            <div class="nav-item" data-view="checkin" id="nav-checkin" style="opacity: 0.5; cursor: not-allowed;">Morning Check-In</div>
-            <div class="nav-item" data-view="workout" id="nav-workout" style="opacity: 0.5; cursor: not-allowed;">Today's Workout</div>
-            <div class="nav-item" data-view="history" id="nav-history" style="opacity: 0.5; cursor: not-allowed;">History</div>
-            <div class="nav-item" data-view="settings" id="nav-settings" style="opacity: 0.5; cursor: not-allowed;">Settings</div>
-        </div>
+        <nav id="navigation">
+            <button class="nav-btn active" data-view="assessment">Initial Assessment</button>
+            <button class="nav-btn" data-view="checkin">Morning Check-In</button>
+            <button class="nav-btn" data-view="workout">Today's Workout</button>
+            <button class="nav-btn" data-view="history">History</button>
+            <button class="nav-btn" data-view="settings">Settings</button>
+        </nav>
 
-        <div class="content">
-            <!-- Initial Assessment View -->
-            <div class="view active" id="assessment-view">
+        <main id="main-content">
+            <!-- Assessment View -->
+            <div id="assessment-view" class="view active">
                 <div class="card">
-                    <h2>Let's Build Your Profile</h2>
-                    <p style="margin-bottom: 1.5rem; color: var(--neutral); line-height: 1.6;">
-                        I'll ask you detailed questions about your body, joints, and limitations. This helps me create the best workouts for you. This only happens once.
-                    </p>
-
-                    <form id="assessment-form">
-                        <div class="form-group">
-                            <label>Your Name</label>
-                            <input type="text" id="user-name" placeholder="e.g., Ed" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Height & Weight</label>
-                            <input type="text" id="user-stats" placeholder="e.g., 6'3\", 250 lbs">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Departure Date (Scandinavia)</label>
-                            <input type="date" id="departure-date" value="2026-07-24" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Current Fitness Level</label>
-                            <select id="fitness-level" required>
-                                <option value="">Select level</option>
-                                <option value="sedentary">Sedentary</option>
-                                <option value="lightly-active">Lightly Active</option>
-                                <option value="moderately-active">Moderately Active</option>
-                                <option value="very-active">Very Active</option>
-                            </select>
-                        </div>
-
-                        <button type="submit" class="btn" style="width: 100%;">Continue to Detailed Assessment</button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- AI-Driven Detailed Assessment -->
-            <div class="view" id="detailed-assessment-view">
-                <div class="card">
-                    <h2>Detailed Health Assessment</h2>
-                    <div id="assessment-chat"></div>
-                    <form id="assessment-response-form">
-                        <div class="form-group">
-                            <textarea id="assessment-response" placeholder="Your answer here..." required></textarea>
-                        </div>
-                        <button type="submit" class="btn" style="width: 100%;">Next Question</button>
-                    </form>
+                    <h2>Initial Assessment</h2>
+                    <div id="assessment-content">
+                        <p class="loading">Loading assessment...</p>
+                    </div>
                 </div>
             </div>
 
             <!-- Morning Check-In View -->
-            <div class="view" id="checkin-view">
+            <div id="checkin-view" class="view">
                 <div class="card">
                     <h2>Morning Check-In</h2>
-                    <form id="checkin-form">
-                        <h3>Yesterday's Workout</h3>
-                        <div class="form-group">
-                            <label>Did you complete yesterday's workout?</label>
-                            <select id="yesterday-completion" required>
-                                <option value="">Select...</option>
-                                <option value="none">Didn't do it</option>
-                                <option value="partial">Did some</option>
-                                <option value="all">Completed all</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group" id="partial-details" style="display: none;">
-                            <label>What did you do?</label>
-                            <textarea id="yesterday-notes" placeholder="e.g., Walking and stretches, skipped core"></textarea>
-                        </div>
-
-                        <h3 style="margin-top: 2rem;">Walking</h3>
-                        <div class="form-group">
-                            <label>Any extra walking yesterday?</label>
-                            <select id="did-walk" required>
-                                <option value="">Select...</option>
-                                <option value="no">No</option>
-                                <option value="yes">Yes</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group" id="walk-distance" style="display: none;">
-                            <label>How far? (miles)</label>
-                            <input type="number" id="walk-miles" placeholder="e.g., 2.5" step="0.1" min="0">
-                        </div>
-
-                        <h3 style="margin-top: 2rem;">How Are You Today?</h3>
-                        <div class="form-group">
-                            <label>Any new soreness or pain?</label>
-                            <select id="has-soreness" required>
-                                <option value="">Select...</option>
-                                <option value="no">No</option>
-                                <option value="yes">Yes</option>
-                            </select>
-                        </div>
-
-                        <div id="soreness-details" style="display: none;">
-                            <div class="form-group">
-                                <label>Where and describe it</label>
-                                <textarea id="soreness-description" placeholder="e.g., Dull ache in left ankle, sharp pain in right knee"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Any injuries or unusual activities?</label>
-                            <textarea id="injuries-notes" placeholder="Optional..."></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Energy level today?</label>
-                            <select id="energy-level" required>
-                                <option value="">Select...</option>
-                                <option value="low">Low</option>
-                                <option value="moderate">Moderate</option>
-                                <option value="high">High</option>
-                            </select>
-                        </div>
-
-                        <button type="submit" class="btn" style="width: 100%;">Generate Today's Workout</button>
-                    </form>
+                    <div id="checkin-content">
+                        <p class="loading">Loading check-in...</p>
+                    </div>
                 </div>
             </div>
 
             <!-- Today's Workout View -->
-            <div class="view" id="workout-view">
-                <button id="copy-btn" class="btn copy-btn" style="display: none;">📋 Copy Workout to Clipboard</button>
+            <div id="workout-view" class="view">
                 <div class="card">
-                    <h2 id="workout-title">Today's Workout</h2>
-                    <div id="workout-content"></div>
-                </div>
-
-                <div class="card">
-                    <h3>Workout Feedback</h3>
-                    <form id="workout-feedback-form">
-                        <div class="form-group">
-                            <label>Exercises completed?</label>
-                            <input type="number" id="completed-count" min="0" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Difficulty</label>
-                            <select id="difficulty" required>
-                                <option value="">Select...</option>
-                                <option value="too-easy">Too easy</option>
-                                <option value="just-right">Just right</option>
-                                <option value="challenging">Challenging</option>
-                                <option value="too-hard">Too hard</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Soreness during workout?</label>
-                            <textarea id="during-soreness" placeholder="Optional..."></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Notes for me</label>
-                            <textarea id="workout-notes" placeholder="Optional..."></textarea>
-                        </div>
-
-                        <button type="submit" class="btn" style="width: 100%;">Save Feedback</button>
-                    </form>
+                    <h2>Today's Workout</h2>
+                    <div id="workout-content">
+                        <p class="loading">Loading workout...</p>
+                    </div>
                 </div>
             </div>
 
             <!-- History View -->
-            <div class="view" id="history-view">
+            <div id="history-view" class="view">
                 <div class="card">
-                    <h2>Your Training History</h2>
-                    <div id="history-content">Loading...</div>
+                    <h2>History</h2>
+                    <div id="history-content">
+                        <p class="loading">Loading history...</p>
+                    </div>
                 </div>
             </div>
 
             <!-- Settings View -->
-            <div class="view" id="settings-view">
+            <div id="settings-view" class="view">
                 <div class="card">
                     <h2>Settings</h2>
-                    <div id="profile-summary"></div>
-                    <div style="margin-top: 2rem;">
-                        <button class="btn" style="background: var(--error);" onclick="resetApp()">Reset Everything</button>
+                    <div id="settings-content">
+                        <p>Profile information and app settings go here.</p>
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -577,540 +332,335 @@
         const WORKER_URL = 'https://grasse-apps-proxy.ed-53c.workers.dev';
         const APP_ID = 'travelstrong';
 
-        let supabaseClient = null;
-        
-        function getSupabase() {
-            if (!supabaseClient) {
-                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            }
-            return supabaseClient;
-        }
-
+        let supabase = null;
         let appState = {
-            tripProfile: null,
-            assessment: null,
-            assessmentTranscript: [],
+            profile: null,
             assessmentAnswers: [],
             todayWorkout: null,
+            todayCheckin: null,
+            allWorkouts: [],
+            allCheckins: [],
             currentDate: new Date().toISOString().split('T')[0]
         };
 
-        // EXPOSE APPSTATE GLOBALLY FOR DEBUGGING
-        window.appState = appState;
-
-        // Generate a UUID v4
-        function generateUUID() {
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                const r = Math.random() * 16 | 0;
-                const v = c === 'x' ? r : (r & 0x3 | 0x8);
-                return v.toString(16);
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            registerServiceWorker();
-            
-            // RESTORE from localStorage if assessment was in progress
-            const savedTranscript = localStorage.getItem('travelstrong_assessment_transcript');
-            const savedProfile = localStorage.getItem('travelstrong_trip_profile');
-            
-            if (savedTranscript) {
-                appState.assessmentTranscript = JSON.parse(savedTranscript);
-                console.log('Restored assessment transcript from localStorage:', appState.assessmentTranscript.length, 'messages');
-            }
-            if (savedProfile) {
-                appState.tripProfile = JSON.parse(savedProfile);
-                console.log('Restored trip profile from localStorage');
-            }
-            
-            // Don't block app startup on Supabase errors
-            loadAppState().catch(() => {
-                console.log('Supabase load failed, starting with fresh app');
-            });
+        // Initialize
+        window.addEventListener('DOMContentLoaded', async () => {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             setupNavigation();
-            setupEventListeners();
+            await loadData();
+            renderAssessment();
         });
 
-        function registerServiceWorker() {
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js').catch(() => {});
-            }
+        function setupNavigation() {
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const view = e.target.dataset.view;
+                    switchView(view);
+                });
+            });
         }
 
-        async function loadAppState() {
+        function switchView(viewName) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(`${viewName}-view`).classList.add('active');
+            event.target.classList.add('active');
+
+            if (viewName === 'assessment') renderAssessment();
+            if (viewName === 'checkin') renderCheckin();
+            if (viewName === 'workout') renderWorkout();
+            if (viewName === 'history') renderHistory();
+        }
+
+        async function loadData() {
             try {
-                const { data, error } = await getSupabase()
+                // Load profile and assessment answers
+                const { data: profileData } = await supabase
                     .from('travelstrongusers')
                     .select('*')
                     .limit(1)
                     .single();
 
-                if (error) {
-                    // 401 = auth error (expected for first-time users with RLS)
-                    // PGRST116 = no rows found (expected for first-time users)
-                    if (error.code === 'PGRST116' || error.status === 401 || error.status === 403) {
-                        console.log('No profile found (expected on first use), starting fresh');
-                        // Allow app to start - assessment-view is already active by default
-                        return;
-                    }
-                    // Other errors should be logged
-                    console.error('Supabase error:', error.message, error.code, error.status);
-                    return;
+                if (profileData) {
+                    appState.profile = profileData;
+                    appState.assessmentAnswers = [
+                        profileData.answer_1 || '',
+                        profileData.answer_2 || '',
+                        profileData.answer_3 || '',
+                        profileData.answer_4 || '',
+                        profileData.answer_5 || ''
+                    ];
                 }
 
-                if (data) {
-                    appState.tripProfile = data;
-                    
-                    // Load the 5 question/answer pairs
-                    appState.assessmentAnswers = [
-                        data.answer_1 || '',
-                        data.answer_2 || '',
-                        data.answer_3 || '',
-                        data.answer_4 || '',
-                        data.answer_5 || ''
-                    ];
-                    
-                    // Check if assessment is complete (has at least one answer)
-                    const hasAssessment = appState.assessmentAnswers.some(answer => answer && answer.length > 0);
-                    
-                    if (hasAssessment) {
-                        switchView('checkin');
-                    } else {
-                        switchView('detailed-assessment');
-                    }
-                    enableNav();
-                }
+                // Load all workouts
+                const { data: workoutData } = await supabase
+                    .from('travelstrongworkouts')
+                    .select('*')
+                    .order('date', { ascending: false });
+
+                appState.allWorkouts = workoutData || [];
+
+                // Load all check-ins
+                const { data: checkinData } = await supabase
+                    .from('travelstrongcheckins')
+                    .select('*')
+                    .order('date', { ascending: false });
+
+                appState.allCheckins = checkinData || [];
+
+                // Check if we have a check-in for today
+                appState.todayCheckin = appState.allCheckins.find(c => c.date === appState.currentDate);
+
+                // Check if we have a workout for today
+                appState.todayWorkout = appState.allWorkouts.find(w => w.date === appState.currentDate);
+
             } catch (err) {
-                console.error('Unexpected error in loadAppState:', err.message);
+                console.error('Error loading data:', err);
             }
         }
 
-        function setupNavigation() {
-            document.querySelectorAll('.nav-item').forEach(item => {
-                if (item.id && !item.id.startsWith('nav-assessment')) {
-                    item.addEventListener('click', (e) => {
-                        if (item.style.opacity !== '0.5') {
-                            const viewName = e.target.getAttribute('data-view');
-                            switchView(viewName);
-                        }
-                    });
-                }
-            });
+        function renderAssessment() {
+            const content = document.getElementById('assessment-content');
+            if (!appState.assessmentAnswers.length) {
+                content.innerHTML = '<p class="loading">No assessment found.</p>';
+                return;
+            }
 
-            document.getElementById('nav-assessment').addEventListener('click', () => switchView('assessment'));
+            const questions = [
+                'How are your knees and hips feeling these days?',
+                "Let's talk about your lower back and hips specifically. Do you experience any lower back stiffness or aching?",
+                "Let's talk about your ankles and feet. Do your ankles feel stable on uneven ground?",
+                'When you think about those long walking days, how does your cardiovascular system hold up?',
+                'Are there any upper body issues I should know about - shoulder, elbow, wrist?'
+            ];
+
+            let html = '<div>';
+            questions.forEach((q, i) => {
+                html += `
+                    <div class="question">
+                        <p><strong>Q${i+1}: ${q}</strong></p>
+                        <p>${appState.assessmentAnswers[i]}</p>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            content.innerHTML = html;
         }
 
-        function switchView(viewName) {
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        function renderCheckin() {
+            const content = document.getElementById('checkin-content');
+            
+            if (!appState.todayWorkout) {
+                content.innerHTML = '<p class="error">No workout generated yet. Please check back later.</p>';
+                return;
+            }
 
-            document.getElementById(`${viewName}-view`).classList.add('active');
-            const navItem = document.querySelector(`[data-view="${viewName}"]`);
-            if (navItem) navItem.classList.add('active');
+            if (appState.todayCheckin && appState.todayCheckin.answers && appState.todayCheckin.answers.length > 0) {
+                // Already answered today
+                let html = '<div class="success">You\'ve already checked in today!</div>';
+                appState.todayCheckin.questions.forEach((q, i) => {
+                    html += `
+                        <div class="question">
+                            <p><strong>${q}</strong></p>
+                            <p>${appState.todayCheckin.answers[i]}</p>
+                        </div>
+                    `;
+                });
+                content.innerHTML = html;
+                return;
+            }
 
-            if (viewName === 'history') populateHistory();
-            if (viewName === 'settings') populateSettings();
-        }
+            // Show form for today's dynamic questions
+            let html = '<form id="checkin-form">';
+            if (appState.todayCheckin && appState.todayCheckin.questions) {
+                appState.todayCheckin.questions.forEach((q, i) => {
+                    html += `
+                        <div class="question">
+                            <label for="answer-${i}"><strong>${q}</strong></label>
+                            <textarea id="answer-${i}" placeholder="Your answer..."></textarea>
+                        </div>
+                    `;
+                });
+            }
+            html += '<button type="submit">Save Check-In</button>';
+            html += '</form>';
+            content.innerHTML = html;
 
-        function enableNav() {
-            document.getElementById('nav-checkin').style.opacity = '1';
-            document.getElementById('nav-checkin').style.cursor = 'pointer';
-            document.getElementById('nav-workout').style.opacity = '1';
-            document.getElementById('nav-workout').style.cursor = 'pointer';
-            document.getElementById('nav-history').style.opacity = '1';
-            document.getElementById('nav-history').style.cursor = 'pointer';
-            document.getElementById('nav-settings').style.opacity = '1';
-            document.getElementById('nav-settings').style.cursor = 'pointer';
-        }
-
-        function setupEventListeners() {
-            // Initial setup
-            document.getElementById('assessment-form').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                await startDetailedAssessment();
-            });
-
-            // Detailed assessment
-            document.getElementById('assessment-response-form').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                await continueAssessment();
-            });
-
-            // Check-in form
             document.getElementById('checkin-form').addEventListener('submit', async (e) => {
                 e.preventDefault();
-                await generateWorkout();
+                await saveCheckin();
             });
-
-            // Conditional visibility
-            document.getElementById('yesterday-completion').addEventListener('change', (e) => {
-                document.getElementById('partial-details').style.display = e.target.value === 'partial' ? 'block' : 'none';
-            });
-
-            document.getElementById('did-walk').addEventListener('change', (e) => {
-                document.getElementById('walk-distance').style.display = e.target.value === 'yes' ? 'block' : 'none';
-            });
-
-            document.getElementById('has-soreness').addEventListener('change', (e) => {
-                document.getElementById('soreness-details').style.display = e.target.value === 'yes' ? 'block' : 'none';
-            });
-
-            // Feedback
-            document.getElementById('workout-feedback-form').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                await saveFeedback();
-            });
-
-            // Copy
-            document.getElementById('copy-btn').addEventListener('click', copyWorkout);
         }
 
-        async function startDetailedAssessment() {
-            const name = document.getElementById('user-name').value;
-            const stats = document.getElementById('user-stats').value;
-            const departure = document.getElementById('departure-date').value;
-            const fitness = document.getElementById('fitness-level').value;
-
-            appState.tripProfile = {
-                name,
-                stats,
-                departure_date: departure,
-                fitness_level: fitness,
-                created_at: new Date().toISOString()
-            };
-
-            switchView('detailed-assessment');
-            await askInitialQuestion();
-        }
-
-        async function askInitialQuestion() {
-            const prompt = `You are a fitness coach conducting an initial assessment with someone preparing for 11 days of walking in Scandinavia and 7 days of golf in Ireland.
-
-User: ${appState.tripProfile.name}, ${appState.tripProfile.stats}, fitness level: ${appState.tripProfile.fitness_level}
-
-Ask your FIRST detailed question about their joint health, physical limitations, past injuries, or concerns. Be specific and thorough. Ask ONE question at a time.
-
-Your question should be conversational and empathetic. After they answer, you'll ask follow-ups to understand their physical condition fully.`;
-
-            const response = await callClaude(prompt);
-            appState.assessmentTranscript.push({ role: 'assistant', content: response });
-            
-            document.getElementById('assessment-chat').innerHTML = `
-                <div class="ai-message">${response}</div>
-            `;
-        }
-
-        async function continueAssessment() {
-            const response = document.getElementById('assessment-response').value;
-            appState.assessmentTranscript.push({ role: 'user', content: response });
-            
-            // SAVE TO LOCALSTORAGE immediately so answer isn't lost if page crashes
-            localStorage.setItem('travelstrong_assessment_transcript', JSON.stringify(appState.assessmentTranscript));
-            localStorage.setItem('travelstrong_trip_profile', JSON.stringify(appState.tripProfile));
-
-            const conversationHistory = appState.assessmentTranscript
-                .map(msg => `${msg.role === 'user' ? 'User' : 'Coach'}: ${msg.content}`)
-                .join('\n\n');
-
-            const prompt = `You are conducting a thorough fitness assessment. 
-
-Conversation so far:
-${conversationHistory}
-
-Ask your NEXT follow-up question to understand their physical condition better. Focus on:
-- Specific joint issues (ankles, knees, hips, shoulders, back)
-- Past injuries or surgeries
-- Current pain or stiffness
-- Limitations they've noticed
-- Activities that cause problems
-
-Ask ONE more detailed question. If you've asked enough questions to understand their condition thoroughly (after about 5-7 exchanges), end with: "ASSESSMENT_COMPLETE" and summarize their key limitations and concerns.`;
-
-            const nextQuestion = await callClaude(prompt);
-            
-            if (nextQuestion.includes('ASSESSMENT_COMPLETE')) {
-                await saveAssessment(nextQuestion);
-            } else {
-                appState.assessmentTranscript.push({ role: 'assistant', content: nextQuestion });
-                
-                const chat = document.getElementById('assessment-chat');
-                chat.innerHTML += `
-                    <div class="ai-message" style="margin-top: 1rem;">${nextQuestion}</div>
-                `;
-                document.getElementById('assessment-response').value = '';
-                document.getElementById('assessment-response').focus();
-            }
-        }
-
-        async function saveAssessment(summary) {
-            appState.assessment = {
-                summary,
-                transcript: appState.assessmentTranscript,
-                completed_at: new Date().toISOString()
-            };
-
-            // Generate a unique ID for this user if not already set
-            if (!appState.tripProfile.id) {
-                appState.tripProfile.id = generateUUID();
-            }
-
-            const profile = {
-                ...appState.tripProfile,
-                assessment_data: JSON.stringify(appState.assessment),
-                assessment_transcript: JSON.stringify(appState.assessmentTranscript),
-                injuries: summary,
-                updated_at: new Date().toISOString()
-            };
-
-            // LOG EXACTLY WHAT WILL BE SAVED
-            console.log('=== ABOUT TO SAVE TO SUPABASE ===');
-            console.log('Profile ID:', profile.id);
-            console.log('Name:', profile.name);
-            console.log('Assessment data length:', profile.assessment_data.length);
-            console.log('Assessment transcript length:', profile.assessment_transcript.length);
-            console.log('Full profile object:', profile);
-            console.log('=====================================');
+        async function saveCheckin() {
+            const answers = [];
+            const form = document.getElementById('checkin-form');
+            const textareas = form.querySelectorAll('textarea');
+            textareas.forEach(ta => answers.push(ta.value));
 
             try {
-                await getSupabase()
-                    .from('travelstrongusers')
-                    .upsert([profile], { onConflict: 'id' });
+                const checkinData = {
+                    date: appState.currentDate,
+                    workout_id: appState.todayWorkout.date,
+                    questions: appState.todayCheckin.questions,
+                    answers: answers,
+                    updated_at: new Date().toISOString()
+                };
 
-                console.log('✓ SUCCESS: Data saved to Supabase');
-                enableNav();
-                switchView('checkin');
-            } catch (err) {
-                console.error('✗ FAILED: Error saving assessment:', err);
-                alert('Error saving assessment: ' + err.message);
-            }
-        }
-
-        async function generateWorkout() {
-            const checkin = {
-                date: appState.currentDate,
-                yesterday_completion: document.getElementById('yesterday-completion').value,
-                yesterday_notes: document.getElementById('yesterday-notes').value,
-                did_walk: document.getElementById('did-walk').value,
-                walk_miles: parseFloat(document.getElementById('walk-miles').value) || null,
-                has_soreness: document.getElementById('has-soreness').value,
-                soreness_description: document.getElementById('soreness-description').value,
-                injuries_notes: document.getElementById('injuries-notes').value,
-                energy_level: document.getElementById('energy-level').value,
-                created_at: new Date().toISOString()
-            };
-
-            try {
-                await getSupabase()
+                const { error } = await supabase
                     .from('travelstrongcheckins')
-                    .upsert([checkin], { onConflict: 'date' });
+                    .upsert([checkinData], { onConflict: 'date' });
 
-                document.getElementById('checkin-form').style.display = 'none';
-                showLoading('Generating your personalized workout...');
-
-                const workout = await generateWorkoutWithAI(checkin);
-
-                await getSupabase()
-                    .from('travelstrongworkouts')
-                    .upsert([{
-                        date: appState.currentDate,
-                        title: workout.title,
-                        overview: workout.overview,
-                        activities: JSON.stringify(workout.activities),
-                        created_at: new Date().toISOString()
-                    }], { onConflict: 'date' });
-
-                appState.todayWorkout = workout;
-                displayWorkout(workout);
-                switchView('workout');
-                document.getElementById('checkin-form').style.display = 'block';
+                if (!error) {
+                    document.getElementById('checkin-content').innerHTML = '<p class="success">Check-in saved! Your workout for tomorrow will be generated.</p>';
+                    // Generate tomorrow's workout
+                    setTimeout(() => generateTodayWorkout(), 2000);
+                }
             } catch (err) {
-                alert('Error: ' + err.message);
-                document.getElementById('checkin-form').style.display = 'block';
+                alert('Error saving check-in: ' + err.message);
             }
         }
 
-        async function generateWorkoutWithAI(checkin) {
-            // Build assessment context from the 5 clean answer columns
-            const assessmentContext = appState.assessmentAnswers.join('\n\n');
+        function renderWorkout() {
+            const content = document.getElementById('workout-content');
+            
+            if (!appState.todayWorkout) {
+                content.innerHTML = '<p class="loading">Generating your personalized workout...</p>';
+                generateTodayWorkout();
+                return;
+            }
 
-            const prompt = `Build a personalized 25-30 min workout for someone preparing for 11 days of walking in Scandinavia and 7 days of golf in Ireland.
+            let html = `
+                <h3>${appState.todayWorkout.title}</h3>
+                <p>${appState.todayWorkout.overview}</p>
+            `;
+
+            if (appState.todayWorkout.activities) {
+                const activities = typeof appState.todayWorkout.activities === 'string' 
+                    ? JSON.parse(appState.todayWorkout.activities) 
+                    : appState.todayWorkout.activities;
+
+                activities.forEach(activity => {
+                    html += `
+                        <div class="workout-activity">
+                            <h4>${activity.name}</h4>
+                            <div class="meta">
+                                <div class="meta-item">⏱️ ${activity.duration}</div>
+                            </div>
+                            <p><strong>What to do:</strong> ${activity.description}</p>
+                            <p><strong>Form:</strong> ${activity.form}</p>
+                            ${activity.videoUrl ? `<p><a href="${activity.videoUrl}" target="_blank">📹 View form video</a></p>` : ''}
+                        </div>
+                    `;
+                });
+            }
+
+            content.innerHTML = html;
+        }
+
+        async function generateTodayWorkout() {
+            try {
+                const prompt = buildWorkoutPrompt();
+                const response = await callClaude(prompt);
+                
+                let parsed = response;
+                if (typeof response === 'string') {
+                    const jsonMatch = response.match(/\{[\s\S]*\}/);
+                    parsed = JSON.parse(jsonMatch[0]);
+                }
+
+                const workoutData = {
+                    date: appState.currentDate,
+                    title: parsed.workout.title,
+                    overview: parsed.workout.overview,
+                    activities: JSON.stringify(parsed.workout.activities),
+                    created_at: new Date().toISOString()
+                };
+
+                await supabase
+                    .from('travelstrongworkouts')
+                    .upsert([workoutData], { onConflict: 'date' });
+
+                // Save tomorrow's check-in questions
+                const tomorrow = new Date(appState.currentDate);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                const tomorrowDate = tomorrow.toISOString().split('T')[0];
+
+                const checkinData = {
+                    date: tomorrowDate,
+                    workout_id: workoutData.date,
+                    questions: parsed.tomorrow_checkin_questions || [],
+                    answers: [],
+                    updated_at: new Date().toISOString()
+                };
+
+                await supabase
+                    .from('travelstrongcheckins')
+                    .upsert([checkinData], { onConflict: 'date' });
+
+                appState.todayWorkout = workoutData;
+                renderWorkout();
+
+            } catch (err) {
+                console.error('Error generating workout:', err);
+                document.getElementById('workout-content').innerHTML = '<p class="error">Error generating workout. Please try again.</p>';
+            }
+        }
+
+        function buildWorkoutPrompt() {
+            const assessment = appState.assessmentAnswers.join('\n\n');
+            const history = appState.allCheckins
+                .filter(c => c.answers && c.answers.length > 0)
+                .reverse()
+                .map(c => `Date: ${c.date}\nQuestions & Answers:\n${c.questions.map((q, i) => `${q}\nAnswer: ${c.answers[i]}`).join('\n\n')}`)
+                .join('\n\n---\n\n');
+
+            return `You are an expert fitness coach preparing someone for 11 days of walking in Scandinavia and 7 days of golf in Ireland.
 
 PROFILE:
-- Name: ${appState.tripProfile.name}
-- Stats: ${appState.tripProfile.stats}
-- Fitness: ${appState.tripProfile.fitness_level}
+- Name: ${appState.profile?.name || 'User'}
+- Stats: ${appState.profile?.stats || 'Unknown'}
+- Fitness Level: ${appState.profile?.fitness_level || 'Unknown'}
+- Departure: ${appState.profile?.departure_date || 'Unknown'}
 
-INITIAL ASSESSMENT:
-${assessmentContext}
+INITIAL ASSESSMENT (from 5-question interview):
+${assessment}
 
-TODAY'S CHECK-IN:
-- Yesterday: ${checkin.yesterday_completion} ${checkin.yesterday_notes}
-- Walking: ${checkin.did_walk} ${checkin.walk_miles ? `(${checkin.walk_miles} mi)` : ''}
-- Soreness: ${checkin.soreness_description}
-- Energy: ${checkin.energy_level}
+HISTORY OF WORKOUTS AND CHECK-INS (user's progress so far):
+${history || 'No prior workouts yet - this is day 1'}
 
 REQUIREMENTS:
-1. Include walking (20-45 min, depending on condition)
-2. Focus on mobility/stretching for reported sore areas
-3. Bodyweight only, no gym equipment
-4. NO PUSHUPS or heavy shoulder work
-5. Emphasize: ankle mobility, knee stability, core, hip flexibility
+1. Generate a 25-30 minute personalized workout
+2. Based on assessment + user's progress/feedback
+3. Bodyweight only, NO PUSHUPS (shoulder injury)
+4. Emphasize: ankle mobility, knee stability, core, hip flexibility
+5. Include walking recommendation
+
+ALSO GENERATE:
+3-4 dynamic check-in questions for tomorrow based on today's workout focus
 
 Return ONLY valid JSON:
 {
-  "title": "Today's Workout",
-  "overview": "Brief summary of today's focus",
-  "activities": [
-    {"name": "Name", "duration": "X min", "description": "What to do", "form": "How to do it correctly", "videoUrl": "https://youtube.com/..."}
+  "workout": {
+    "title": "Workout Title",
+    "overview": "Brief summary of today's focus",
+    "activities": [
+      {
+        "name": "Activity Name",
+        "duration": "X minutes",
+        "description": "What to do",
+        "form": "How to do it correctly",
+        "videoUrl": "https://youtube.com/..." or null
+      }
+    ]
+  },
+  "tomorrow_checkin_questions": [
+    "Question 1 based on today's focus",
+    "Question 2",
+    "Question 3"
   ]
 }`;
-
-            try {
-                const response = await callClaude(prompt);
-                let content = response.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
-                const jsonMatch = content.match(/\{[\s\S]*\}/);
-                if (!jsonMatch) {
-                    console.error('Could not find JSON in response:', response.substring(0, 200));
-                    throw new Error('Could not parse workout - no JSON found in response');
-                }
-
-                const workout = JSON.parse(jsonMatch[0]);
-                console.log('✓ Workout generated successfully');
-                return workout;
-            } catch (err) {
-                console.error('✗ Error generating workout:', err.message);
-                throw err;
-            }
-        }
-
-        function displayWorkout(workout) {
-            document.getElementById('workout-title').textContent = workout.title;
-            let html = `<p style="color: #5a5a5a; margin-bottom: 1.5rem;">${workout.overview}</p>`;
-
-            workout.activities.forEach(activity => {
-                html += `
-                    <div class="workout-item">
-                        <h4>${activity.name}</h4>
-                        <div class="workout-meta">⏱️ ${activity.duration}</div>
-                        <div class="workout-description">${activity.description}</div>
-                        <div class="workout-form">
-                            <p><strong>Form:</strong> ${activity.form}</p>
-                            ${activity.videoUrl ? `<a href="${activity.videoUrl}" target="_blank" class="video-link">📹 View form</a>` : ''}
-                        </div>
-                    </div>
-                `;
-            });
-
-            document.getElementById('workout-content').innerHTML = html;
-            document.getElementById('copy-btn').style.display = 'block';
-        }
-
-        function copyWorkout() {
-            if (!appState.todayWorkout) return;
-            const text = appState.todayWorkout.activities.map(a => `${a.name} (${a.duration})`).join(' | ');
-            navigator.clipboard.writeText(text).then(() => {
-                const btn = document.getElementById('copy-btn');
-                const original = btn.textContent;
-                btn.textContent = '✓ Copied!';
-                setTimeout(() => { btn.textContent = original; }, 2000);
-            });
-        }
-
-        async function saveFeedback() {
-            const feedback = {
-                date: appState.currentDate,
-                completed_count: parseInt(document.getElementById('completed-count').value) || 0,
-                difficulty: document.getElementById('difficulty').value,
-                during_soreness: document.getElementById('during-soreness').value,
-                notes: document.getElementById('workout-notes').value,
-                created_at: new Date().toISOString()
-            };
-
-            try {
-                await getSupabase()
-                    .from('travelstrongfeedback')
-                    .upsert([feedback], { onConflict: 'date' });
-
-                alert('Feedback saved! Tomorrow\'s workout will adapt based on this.');
-                document.getElementById('workout-feedback-form').reset();
-            } catch (err) {
-                alert('Error: ' + err.message);
-            }
-        }
-
-        async function populateHistory() {
-            try {
-                const { data: workouts } = await getSupabase()
-                    .from('travelstrongworkouts')
-                    .select('*')
-                    .order('date', { ascending: false })
-                    .limit(10);
-
-                if (!workouts || workouts.length === 0) {
-                    document.getElementById('history-content').innerHTML = '<p>No workouts yet.</p>';
-                    return;
-                }
-
-                let html = '<div style="text-align: left;">';
-                for (const workout of workouts) {
-                    const { data: feedback } = await getSupabase()
-                        .from('travelstrongfeedback')
-                        .select('*')
-                        .eq('date', workout.date)
-                        .single();
-
-                    html += `
-                        <div style="padding: 1.5rem; margin-bottom: 1rem; background: rgba(250, 247, 242, 0.5); border-radius: 8px; border-left: 3px solid var(--accent);">
-                            <div style="font-weight: 600; margin-bottom: 0.5rem;">${new Date(workout.date).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}</div>
-                            <p style="color: #5a5a5a; margin-bottom: 0.8rem;">${workout.overview}</p>
-                            ${feedback ? `<div style="font-size: 0.9rem; color: var(--neutral);">Difficulty: ${feedback.difficulty} | Completed: ${feedback.completed_count} exercises</div>` : ''}
-                        </div>
-                    `;
-                }
-                html += '</div>';
-                document.getElementById('history-content').innerHTML = html;
-            } catch (err) {
-                document.getElementById('history-content').innerHTML = `<p>Error loading history</p>`;
-            }
-        }
-
-        async function populateSettings() {
-            if (appState.tripProfile) {
-                const dept = new Date(appState.tripProfile.departure_date);
-                const daysLeft = Math.ceil((dept - new Date()) / (24 * 60 * 60 * 1000));
-
-                document.getElementById('profile-summary').innerHTML = `
-                    <div style="display: grid; gap: 1rem;">
-                        <div style="padding: 1rem; background: rgba(196, 119, 59, 0.1); border-radius: 8px;">
-                            <div style="font-weight: 600;">Name</div>
-                            <div style="color: var(--accent); margin-top: 0.3rem;">${appState.tripProfile.name}</div>
-                        </div>
-                        <div style="padding: 1rem; background: rgba(196, 119, 59, 0.1); border-radius: 8px;">
-                            <div style="font-weight: 600;">Days Until Trip</div>
-                            <div style="color: var(--accent); margin-top: 0.3rem;">${daysLeft}</div>
-                        </div>
-                        <div style="padding: 1rem; background: rgba(196, 119, 59, 0.1); border-radius: 8px;">
-                            <div style="font-weight: 600;">Workouts Completed</div>
-                            <div style="color: var(--accent); margin-top: 0.3rem;" id="workouts-count">Loading...</div>
-                        </div>
-                    </div>
-                `;
-
-                supabase
-                    .from('travelstrongworkouts')
-                    .select('id')
-                    .then(({ data }) => {
-                        document.getElementById('workouts-count').textContent = (data || []).length;
-                    });
-            }
-        }
-
-        function showLoading(text) {
-            const loading = document.createElement('div');
-            loading.className = 'loading';
-            loading.id = 'loading-overlay';
-            loading.innerHTML = `<div class="spinner"></div><p style="margin-top: 1rem;">${text}</p>`;
-            document.getElementById('checkin-view').appendChild(loading);
         }
 
         async function callClaude(prompt) {
@@ -1129,11 +679,42 @@ Return ONLY valid JSON:
             return data.result || '';
         }
 
-        function resetApp() {
-            if (confirm('Reset everything?')) {
-                getSupabase().from('travelstrongusers').delete().gte('id', '0');
-                location.reload();
+        function renderHistory() {
+            const content = document.getElementById('history-content');
+            
+            if (!appState.allWorkouts.length) {
+                content.innerHTML = '<p>No workout history yet.</p>';
+                return;
             }
+
+            let html = '<div>';
+            appState.allWorkouts.forEach(workout => {
+                const checkin = appState.allCheckins.find(c => c.date === workout.date);
+                html += `
+                    <div class="card">
+                        <h3>${workout.date}</h3>
+                        <p><strong>${workout.title}</strong></p>
+                        <p>${workout.overview}</p>
+                        ${checkin && checkin.answers && checkin.answers.length > 0 ? `
+                            <h4 style="margin-top: 1rem;">Your Feedback:</h4>
+                            ${checkin.questions.map((q, i) => `
+                                <div class="question">
+                                    <p><strong>${q}</strong></p>
+                                    <p>${checkin.answers[i]}</p>
+                                </div>
+                            `).join('')}
+                        ` : '<p><em>No check-in feedback yet</em></p>'}
+                    </div>
+                `;
+            });
+            html += '</div>';
+            content.innerHTML = html;
+        }
+    </script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(() => {});
         }
     </script>
 </body>
