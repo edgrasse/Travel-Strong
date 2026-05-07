@@ -593,6 +593,9 @@
             currentDate: new Date().toISOString().split('T')[0]
         };
 
+        // EXPOSE APPSTATE GLOBALLY FOR DEBUGGING
+        window.appState = appState;
+
         // Generate a UUID v4
         function generateUUID() {
             return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -604,6 +607,20 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             registerServiceWorker();
+            
+            // RESTORE from localStorage if assessment was in progress
+            const savedTranscript = localStorage.getItem('travelstrong_assessment_transcript');
+            const savedProfile = localStorage.getItem('travelstrong_trip_profile');
+            
+            if (savedTranscript) {
+                appState.assessmentTranscript = JSON.parse(savedTranscript);
+                console.log('Restored assessment transcript from localStorage:', appState.assessmentTranscript.length, 'messages');
+            }
+            if (savedProfile) {
+                appState.tripProfile = JSON.parse(savedProfile);
+                console.log('Restored trip profile from localStorage');
+            }
+            
             // Don't block app startup on Supabase errors
             loadAppState().catch(() => {
                 console.log('Supabase load failed, starting with fresh app');
@@ -774,6 +791,10 @@ Your question should be conversational and empathetic. After they answer, you'll
         async function continueAssessment() {
             const response = document.getElementById('assessment-response').value;
             appState.assessmentTranscript.push({ role: 'user', content: response });
+            
+            // SAVE TO LOCALSTORAGE immediately so answer isn't lost if page crashes
+            localStorage.setItem('travelstrong_assessment_transcript', JSON.stringify(appState.assessmentTranscript));
+            localStorage.setItem('travelstrong_trip_profile', JSON.stringify(appState.tripProfile));
 
             const conversationHistory = appState.assessmentTranscript
                 .map(msg => `${msg.role === 'user' ? 'User' : 'Coach'}: ${msg.content}`)
