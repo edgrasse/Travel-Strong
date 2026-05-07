@@ -590,6 +590,7 @@
             tripProfile: null,
             assessment: null,
             assessmentTranscript: [],
+            assessmentAnswers: [],
             todayWorkout: null,
             currentDate: new Date().toISOString().split('T')[0]
         };
@@ -636,31 +637,6 @@
             }
         }
 
-        // Helper function to safely parse JSON with repair capability
-        function safeParseJSON(jsonString, fieldName) {
-            if (!jsonString) return null;
-            
-            try {
-                return JSON.parse(jsonString);
-            } catch (initialErr) {
-                console.warn(`First parse attempt failed for ${fieldName}, attempting repair...`);
-                try {
-                    // Escape control characters that might be breaking JSON
-                    const repaired = jsonString
-                        .replace(/\n/g, '\\n')
-                        .replace(/\r/g, '\\r')
-                        .replace(/\t/g, '\\t');
-                    const result = JSON.parse(repaired);
-                    console.log(`✓ Successfully repaired ${fieldName}`);
-                    return result;
-                } catch (repairErr) {
-                    console.error(`Failed to repair ${fieldName}:`, repairErr.message);
-                    console.error(`Field length: ${jsonString.length}, Initial error: ${initialErr.message}`);
-                    return null;
-                }
-            }
-        }
-
         async function loadAppState() {
             try {
                 const { data, error } = await getSupabase()
@@ -685,11 +661,19 @@
                 if (data) {
                     appState.tripProfile = data;
                     
-                    // Use safe parsing with repair capability
-                    appState.assessment = safeParseJSON(data.assessment_data, 'assessment_data');
-                    appState.assessmentTranscript = safeParseJSON(data.assessment_transcript, 'assessment_transcript') || [];
+                    // Load the 5 question/answer pairs
+                    appState.assessmentAnswers = [
+                        data.answer_1 || '',
+                        data.answer_2 || '',
+                        data.answer_3 || '',
+                        data.answer_4 || '',
+                        data.answer_5 || ''
+                    ];
                     
-                    if (appState.assessment) {
+                    // Check if assessment is complete (has at least one answer)
+                    const hasAssessment = appState.assessmentAnswers.some(answer => answer && answer.length > 0);
+                    
+                    if (hasAssessment) {
                         switchView('checkin');
                     } else {
                         switchView('detailed-assessment');
@@ -945,58 +929,25 @@ Ask ONE more detailed question. If you've asked enough questions to understand t
             }
         }
 
-        // Helper function to safely escape content for embedding in prompts
-        function escapeForJSON(str) {
-            if (!str) return '';
-            return str
-                .replace(/\\/g, '\\\\')  // Escape backslashes first
-                .replace(/"/g, '\\"')     // Escape double quotes
-                .replace(/\n/g, '\\n')    // Escape newlines
-                .replace(/\r/g, '\\r')    // Escape carriage returns
-                .replace(/\t/g, '\\t');   // Escape tabs
-        }
-
         async function generateWorkoutWithAI(checkin) {
-            // Build assessment context from transcript
-            let assessmentContext = '';
-            if (appState.assessment && appState.assessment.summary) {
-                assessmentContext = appState.assessment.summary;
-            } else if (appState.assessmentTranscript && appState.assessmentTranscript.length > 0) {
-                // Fall back to formatted transcript if summary not available
-                assessmentContext = appState.assessmentTranscript
-                    .map(msg => `${msg.role === 'user' ? 'User' : 'Coach'}: ${msg.content}`)
-                    .join('\n\n');
-            } else {
-                assessmentContext = 'No assessment data available';
-            }
-
-            // Escape all user-provided content to prevent JSON breaking
-            const escapedName = escapeForJSON(appState.tripProfile.name);
-            const escapedStats = escapeForJSON(appState.tripProfile.stats);
-            const escapedFitness = escapeForJSON(appState.tripProfile.fitness_level);
-            const escapedAssessment = escapeForJSON(assessmentContext);
-            const escapedYesterday = escapeForJSON(checkin.yesterday_completion);
-            const escapedYesterdayNotes = escapeForJSON(checkin.yesterday_notes);
-            const escapedWalking = escapeForJSON(checkin.did_walk);
-            const escapedWalkMiles = escapeForJSON(checkin.walk_miles ? `${checkin.walk_miles} mi` : '');
-            const escapedSoreness = escapeForJSON(checkin.soreness_description);
-            const escapedEnergy = escapeForJSON(checkin.energy_level);
+            // Build assessment context from the 5 clean answer columns
+            const assessmentContext = appState.assessmentAnswers.join('\n\n');
 
             const prompt = `Build a personalized 25-30 min workout for someone preparing for 11 days of walking in Scandinavia and 7 days of golf in Ireland.
 
 PROFILE:
-- Name: ${escapedName}
-- Stats: ${escapedStats}
-- Fitness: ${escapedFitness}
+- Name: ${appState.tripProfile.name}
+- Stats: ${appState.tripProfile.stats}
+- Fitness: ${appState.tripProfile.fitness_level}
 
 INITIAL ASSESSMENT:
-${escapedAssessment}
+${assessmentContext}
 
 TODAY'S CHECK-IN:
-- Yesterday: ${escapedYesterday} ${escapedYesterdayNotes}
-- Walking: ${escapedWalking} ${escapedWalkMiles}
-- Soreness: ${escapedSoreness}
-- Energy: ${escapedEnergy}
+- Yesterday: ${checkin.yesterday_completion} ${checkin.yesterday_notes}
+- Walking: ${checkin.did_walk} ${checkin.walk_miles ? `(${checkin.walk_miles} mi)` : ''}
+- Soreness: ${checkin.soreness_description}
+- Energy: ${checkin.energy_level}
 
 REQUIREMENTS:
 1. Include walking (20-45 min, depending on condition)
@@ -1028,9 +979,6 @@ Return ONLY valid JSON:
                 return workout;
             } catch (err) {
                 console.error('✗ Error generating workout:', err.message);
-                console.error('Assessment context length:', assessmentContext.length);
-                console.error('appState.assessment:', appState.assessment);
-                console.error('appState.assessmentTranscript length:', appState.assessmentTranscript.length);
                 throw err;
             }
         }
