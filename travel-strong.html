@@ -564,17 +564,40 @@
                 const prompt = buildWorkoutPrompt();
                 const response = await callClaude(prompt);
                 
-                let parsed = response;
-                if (typeof response === 'string') {
-                    const jsonMatch = response.match(/\{[\s\S]*\}/);
-                    parsed = JSON.parse(jsonMatch[0]);
-                }
+                // Parse simple text format instead of JSON
+                // Format: WORKOUT_TITLE: ... \n OVERVIEW: ... \n ACTIVITY: ... \n QUESTIONS: ...
+                
+                const titleMatch = response.match(/WORKOUT_TITLE:\s*(.+?)(?=\nOVERVIEW:|$)/s);
+                const overviewMatch = response.match(/OVERVIEW:\s*(.+?)(?=\nACTIVITIES:|$)/s);
+                const activitiesMatch = response.match(/ACTIVITIES:\s*(.+?)(?=\nQUESTIONS:|$)/s);
+                const questionsMatch = response.match(/QUESTIONS:\s*\n([\s\S]+?)$/);
+
+                const title = titleMatch ? titleMatch[1].trim() : 'Today\'s Workout';
+                const overview = overviewMatch ? overviewMatch[1].trim() : 'Personalized workout';
+                
+                // Parse activities - each starts with "- "
+                const activitiesText = activitiesMatch ? activitiesMatch[1].trim() : '';
+                const activityLines = activitiesText.split('\n-').filter(a => a.trim());
+                const activities = activityLines.map(line => {
+                    const lines = line.split('\n').map(l => l.trim());
+                    return {
+                        name: lines[0] || 'Activity',
+                        duration: lines[1] || '10 min',
+                        description: lines[2] || 'Do this exercise',
+                        form: lines[3] || 'Proper form',
+                        videoUrl: null
+                    };
+                });
+
+                // Parse questions - each on a new line
+                const questionsText = questionsMatch ? questionsMatch[1].trim() : '';
+                const questions = questionsText.split('\n').filter(q => q.trim()).map(q => q.replace(/^\d+\.\s*/, '').trim());
 
                 const workoutData = {
                     date: appState.currentDate,
-                    title: parsed.workout.title,
-                    overview: parsed.workout.overview,
-                    activities: JSON.stringify(parsed.workout.activities),
+                    title: title,
+                    overview: overview,
+                    activities: JSON.stringify(activities),
                     created_at: new Date().toISOString()
                 };
 
@@ -590,7 +613,7 @@
                 const checkinData = {
                     date: tomorrowDate,
                     workout_id: workoutData.date,
-                    questions: parsed.tomorrow_checkin_questions || [],
+                    questions: questions,
                     answers: [],
                     updated_at: new Date().toISOString()
                 };
@@ -640,27 +663,33 @@ REQUIREMENTS:
 ALSO GENERATE:
 3-4 dynamic check-in questions for tomorrow based on today's workout focus
 
-Return ONLY valid JSON:
-{
-  "workout": {
-    "title": "Workout Title",
-    "overview": "Brief summary of today's focus",
-    "activities": [
-      {
-        "name": "Activity Name",
-        "duration": "X minutes",
-        "description": "What to do",
-        "form": "How to do it correctly",
-        "videoUrl": "https://youtube.com/..." or null
-      }
-    ]
-  },
-  "tomorrow_checkin_questions": [
-    "Question 1 based on today's focus",
-    "Question 2",
-    "Question 3"
-  ]
-}`;
+---
+
+Return your response in this plain text format (no JSON):
+
+WORKOUT_TITLE: [Title of today's workout]
+
+OVERVIEW: [One sentence summary of today's focus and goals]
+
+ACTIVITIES:
+- [Activity Name]
+[Duration, e.g., "10 minutes"]
+[What to do - step by step]
+[Form tips - how to do it correctly]
+
+- [Activity Name]
+[Duration]
+[What to do]
+[Form tips]
+
+(Repeat for 4-6 activities total, filling a 25-30 minute workout)
+
+QUESTIONS:
+1. [First dynamic question based on today's workout focus]
+2. [Second question]
+3. [Third question]
+4. [Optional fourth question]
+`;
         }
 
         async function callClaude(prompt) {
