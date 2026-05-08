@@ -273,7 +273,6 @@
         </nav>
 
         <main id="main-content">
-            <!-- Assessment View -->
             <div id="assessment-view" class="view active">
                 <div class="card">
                     <h2>Initial Assessment</h2>
@@ -283,7 +282,6 @@
                 </div>
             </div>
 
-            <!-- Morning Check-In View -->
             <div id="checkin-view" class="view">
                 <div class="card">
                     <h2>Morning Check-In</h2>
@@ -293,7 +291,6 @@
                 </div>
             </div>
 
-            <!-- Today's Workout View -->
             <div id="workout-view" class="view">
                 <div class="card">
                     <h2>Today's Workout</h2>
@@ -303,7 +300,6 @@
                 </div>
             </div>
 
-            <!-- History View -->
             <div id="history-view" class="view">
                 <div class="card">
                     <h2>History</h2>
@@ -313,7 +309,6 @@
                 </div>
             </div>
 
-            <!-- Settings View -->
             <div id="settings-view" class="view">
                 <div class="card">
                     <h2>Settings</h2>
@@ -343,7 +338,6 @@
             currentDate: new Date().toISOString().split('T')[0]
         };
 
-        // Initialize
         window.addEventListener('DOMContentLoaded', async () => {
             supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             setupNavigation();
@@ -355,17 +349,16 @@
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const view = e.target.dataset.view;
-                    switchView(view);
+                    switchView(view, e.target);
                 });
             });
         }
 
-        function switchView(viewName) {
+        function switchView(viewName, target) {
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            
             document.getElementById(`${viewName}-view`).classList.add('active');
-            event.target.classList.add('active');
+            if (target) target.classList.add('active');
 
             if (viewName === 'assessment') renderAssessment();
             if (viewName === 'checkin') renderCheckin();
@@ -375,7 +368,6 @@
 
         async function loadData() {
             try {
-                // Load profile and assessment answers
                 const { data: profileData } = await supabaseClient
                     .from('travelstrongusers')
                     .select('*')
@@ -393,27 +385,21 @@
                     ];
                 }
 
-                // Load all workouts
                 const { data: workoutData } = await supabaseClient
                     .from('travelstrongworkouts')
                     .select('*')
                     .order('date', { ascending: false });
 
                 appState.allWorkouts = workoutData || [];
+                appState.todayWorkout = appState.allWorkouts.find(w => w.date === appState.currentDate);
 
-                // Load all check-ins
                 const { data: checkinData } = await supabaseClient
                     .from('travelstrongcheckins')
                     .select('*')
                     .order('date', { ascending: false });
 
                 appState.allCheckins = checkinData || [];
-
-                // Check if we have a check-in for today
                 appState.todayCheckin = appState.allCheckins.find(c => c.date === appState.currentDate);
-
-                // Check if we have a workout for today
-                appState.todayWorkout = appState.allWorkouts.find(w => w.date === appState.currentDate);
 
             } catch (err) {
                 console.error('Error loading data:', err);
@@ -422,8 +408,8 @@
 
         function renderAssessment() {
             const content = document.getElementById('assessment-content');
-            if (!appState.assessmentAnswers.length) {
-                content.innerHTML = '<p class="loading">No assessment found.</p>';
+            if (!appState.assessmentAnswers.some(a => a)) {
+                content.innerHTML = '<p>No assessment found.</p>';
                 return;
             }
 
@@ -450,14 +436,13 @@
 
         function renderCheckin() {
             const content = document.getElementById('checkin-content');
-            
+
             if (!appState.todayWorkout) {
-                content.innerHTML = '<p class="error">No workout generated yet. Please check back later.</p>';
+                content.innerHTML = '<p class="error">No workout generated yet. Please go to Today\'s Workout first.</p>';
                 return;
             }
 
             if (appState.todayCheckin && appState.todayCheckin.answers && appState.todayCheckin.answers.length > 0) {
-                // Already answered today
                 let html = '<div class="success">You\'ve already checked in today!</div>';
                 appState.todayCheckin.questions.forEach((q, i) => {
                     html += `
@@ -471,18 +456,20 @@
                 return;
             }
 
-            // Show form for today's dynamic questions
-            let html = '<form id="checkin-form">';
-            if (appState.todayCheckin && appState.todayCheckin.questions) {
-                appState.todayCheckin.questions.forEach((q, i) => {
-                    html += `
-                        <div class="question">
-                            <label for="answer-${i}"><strong>${q}</strong></label>
-                            <textarea id="answer-${i}" placeholder="Your answer..."></textarea>
-                        </div>
-                    `;
-                });
+            if (!appState.todayCheckin || !appState.todayCheckin.questions || appState.todayCheckin.questions.length === 0) {
+                content.innerHTML = '<p class="error">No check-in questions found for today. Please go to Today\'s Workout to generate today\'s workout first.</p>';
+                return;
             }
+
+            let html = '<form id="checkin-form">';
+            appState.todayCheckin.questions.forEach((q, i) => {
+                html += `
+                    <div class="question">
+                        <label for="answer-${i}"><strong>${q}</strong></label>
+                        <textarea id="answer-${i}" placeholder="Your answer..."></textarea>
+                    </div>
+                `;
+            });
             html += '<button type="submit">Save Check-In</button>';
             html += '</form>';
             content.innerHTML = html;
@@ -513,9 +500,10 @@
                     .upsert([checkinData], { onConflict: 'date' });
 
                 if (!error) {
-                    document.getElementById('checkin-content').innerHTML = '<p class="success">Check-in saved! Your workout for tomorrow will be generated.</p>';
-                    // Generate tomorrow's workout
+                    document.getElementById('checkin-content').innerHTML = '<p class="success">Check-in saved! Generating tomorrow\'s workout...</p>';
                     setTimeout(() => generateTodayWorkout(), 2000);
+                } else {
+                    alert('Error saving check-in: ' + error.message);
                 }
             } catch (err) {
                 alert('Error saving check-in: ' + err.message);
@@ -524,7 +512,7 @@
 
         function renderWorkout() {
             const content = document.getElementById('workout-content');
-            
+
             if (!appState.todayWorkout) {
                 content.innerHTML = '<p class="loading">Generating your personalized workout...</p>';
                 generateTodayWorkout();
@@ -532,13 +520,14 @@
             }
 
             let html = `
+                <button id="copy-btn" onclick="copyWorkout()" style="margin-bottom:1.5rem;width:100%;">📋 Copy Workout to Clipboard</button>
                 <h3>${appState.todayWorkout.title}</h3>
-                <p>${appState.todayWorkout.overview}</p>
+                <p style="margin-bottom:1rem;">${appState.todayWorkout.overview}</p>
             `;
 
             if (appState.todayWorkout.activities) {
-                const activities = typeof appState.todayWorkout.activities === 'string' 
-                    ? JSON.parse(appState.todayWorkout.activities) 
+                const activities = typeof appState.todayWorkout.activities === 'string'
+                    ? JSON.parse(appState.todayWorkout.activities)
                     : appState.todayWorkout.activities;
 
                 activities.forEach(activity => {
@@ -559,14 +548,25 @@
             content.innerHTML = html;
         }
 
+        function copyWorkout() {
+            if (!appState.todayWorkout) return;
+            const activities = typeof appState.todayWorkout.activities === 'string'
+                ? JSON.parse(appState.todayWorkout.activities)
+                : appState.todayWorkout.activities;
+            const text = `${appState.todayWorkout.title} | ${activities.map(a => `${a.name} (${a.duration})`).join(' | ')}`;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.getElementById('copy-btn');
+                const original = btn.textContent;
+                btn.textContent = '✓ Copied!';
+                setTimeout(() => { btn.textContent = original; }, 2000);
+            });
+        }
+
         async function generateTodayWorkout() {
             try {
                 const prompt = buildWorkoutPrompt();
                 const response = await callClaude(prompt);
-                
-                // Parse simple text format instead of JSON
-                // Format: WORKOUT_TITLE: ... \n OVERVIEW: ... \n ACTIVITY: ... \n QUESTIONS: ...
-                
+
                 const titleMatch = response.match(/WORKOUT_TITLE:\s*(.+?)(?=\nOVERVIEW:|$)/s);
                 const overviewMatch = response.match(/OVERVIEW:\s*(.+?)(?=\nACTIVITIES:|$)/s);
                 const activitiesMatch = response.match(/ACTIVITIES:\s*(.+?)(?=\nQUESTIONS:|$)/s);
@@ -574,14 +574,13 @@
 
                 const title = titleMatch ? titleMatch[1].trim() : 'Today\'s Workout';
                 const overview = overviewMatch ? overviewMatch[1].trim() : 'Personalized workout';
-                
-                // Parse activities - each starts with "- "
+
                 const activitiesText = activitiesMatch ? activitiesMatch[1].trim() : '';
                 const activityLines = activitiesText.split('\n-').filter(a => a.trim());
                 const activities = activityLines.map(line => {
-                    const lines = line.split('\n').map(l => l.trim());
+                    const lines = line.split('\n').map(l => l.trim()).filter(l => l);
                     return {
-                        name: lines[0] || 'Activity',
+                        name: lines[0] ? lines[0].replace(/^-\s*/, '') : 'Activity',
                         duration: lines[1] || '10 min',
                         description: lines[2] || 'Do this exercise',
                         form: lines[3] || 'Proper form',
@@ -589,7 +588,6 @@
                     };
                 });
 
-                // Parse questions - each on a new line
                 const questionsText = questionsMatch ? questionsMatch[1].trim() : '';
                 const questions = questionsText.split('\n').filter(q => q.trim()).map(q => q.replace(/^\d+\.\s*/, '').trim());
 
@@ -605,7 +603,6 @@
                     .from('travelstrongworkouts')
                     .upsert([workoutData], { onConflict: 'date' });
 
-                // Save tomorrow's check-in questions
                 const tomorrow = new Date(appState.currentDate);
                 tomorrow.setDate(tomorrow.getDate() + 1);
                 const tomorrowDate = tomorrow.toISOString().split('T')[0];
@@ -710,7 +707,7 @@ QUESTIONS:
 
         function renderHistory() {
             const content = document.getElementById('history-content');
-            
+
             if (!appState.allWorkouts.length) {
                 content.innerHTML = '<p>No workout history yet.</p>';
                 return;
@@ -718,14 +715,14 @@ QUESTIONS:
 
             let html = '<div>';
             appState.allWorkouts.forEach(workout => {
-                const checkin = appState.allCheckins.find(c => c.date === workout.date);
+                const checkin = appState.allCheckins.find(c => c.workout_id === workout.date && c.answers && c.answers.length > 0);
                 html += `
                     <div class="card">
                         <h3>${workout.date}</h3>
                         <p><strong>${workout.title}</strong></p>
                         <p>${workout.overview}</p>
-                        ${checkin && checkin.answers && checkin.answers.length > 0 ? `
-                            <h4 style="margin-top: 1rem;">Your Feedback:</h4>
+                        ${checkin ? `
+                            <h4 style="margin-top: 1rem;">Your Check-In:</h4>
                             ${checkin.questions.map((q, i) => `
                                 <div class="question">
                                     <p><strong>${q}</strong></p>
@@ -739,9 +736,7 @@ QUESTIONS:
             html += '</div>';
             content.innerHTML = html;
         }
-    </script>
 
-    <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js').catch(() => {});
         }
