@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Version: 2.0.0 | Deployed: 2026-05-07_02-57-45 -->
+<!-- Version: 3.0.0 | Deployed: 2026-05-09_13-00-00 -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,6 +10,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Travel Strong">
     <link rel="manifest" href="manifest.json">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #3D2B1F;
@@ -21,14 +23,10 @@
             --error: #C65D5D;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--light);
             color: var(--primary);
         }
@@ -46,22 +44,16 @@
             margin-bottom: 0.5rem;
         }
 
-        header p {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
+        header p { font-size: 0.9rem; opacity: 0.9; }
 
-        .container {
-            display: flex;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+        .container { display: flex; max-width: 1400px; margin: 0 auto; }
 
         nav {
             width: 200px;
             background: white;
             padding: 2rem 1rem;
             border-right: 1px solid #e0e0e0;
+            min-height: calc(100vh - 120px);
         }
 
         nav button {
@@ -76,12 +68,11 @@
             text-align: left;
             border-left: 3px solid transparent;
             font-size: 0.95rem;
+            font-family: inherit;
             transition: all 0.2s;
         }
 
-        nav button:hover {
-            background: var(--light);
-        }
+        nav button:hover { background: var(--light); }
 
         nav button.active {
             background: var(--light);
@@ -89,18 +80,10 @@
             font-weight: 600;
         }
 
-        main {
-            flex: 1;
-            padding: 2rem;
-        }
+        main { flex: 1; padding: 2rem; }
 
-        .view {
-            display: none;
-        }
-
-        .view.active {
-            display: block;
-        }
+        .view { display: none; }
+        .view.active { display: block; }
 
         .card {
             background: white;
@@ -117,35 +100,7 @@
             margin-bottom: 1.5rem;
         }
 
-        h3 {
-            font-size: 1.2rem;
-            margin-top: 1.5rem;
-            margin-bottom: 0.75rem;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            margin-top: 1rem;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-
-        input, textarea, select {
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-family: inherit;
-            margin-bottom: 1rem;
-        }
-
-        textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
+        h3 { font-size: 1.2rem; margin-top: 1.5rem; margin-bottom: 0.75rem; }
 
         button {
             padding: 0.75rem 1.5rem;
@@ -155,25 +110,17 @@
             border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
+            font-family: inherit;
+            font-size: 0.95rem;
             transition: background 0.2s;
         }
 
-        button:hover {
-            background: #b8652e;
-        }
+        button:hover { background: #b8652e; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
 
-        button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
+        .loading { text-align: center; padding: 2rem; color: var(--neutral); }
 
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: var(--neutral);
-        }
-
-        .error {
+        .msg-error {
             background: #ffe0e0;
             color: var(--error);
             padding: 1rem;
@@ -181,7 +128,7 @@
             margin-bottom: 1rem;
         }
 
-        .success {
+        .msg-success {
             background: #e0ffe0;
             color: var(--success);
             padding: 1rem;
@@ -196,11 +143,6 @@
             margin-bottom: 1rem;
         }
 
-        .question p {
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-        }
-
         .workout-activity {
             background: var(--light);
             padding: 1rem;
@@ -209,34 +151,105 @@
             border-left: 3px solid var(--success);
         }
 
-        .workout-activity h4 {
-            margin-bottom: 0.5rem;
-        }
+        .workout-activity h4 { margin-bottom: 0.5rem; }
 
-        .meta {
+        .meta { display: flex; gap: 1rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+        .meta-item { font-size: 0.9rem; color: var(--neutral); }
+
+        /* ── Chat UI ── */
+        .chat-container {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
+            flex-direction: column;
+            height: 500px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            background: var(--light);
         }
 
-        .meta-item {
-            font-size: 0.9rem;
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .chat-bubble {
+            max-width: 80%;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .chat-bubble.coach {
+            background: white;
+            border: 1px solid #e0e0e0;
+            align-self: flex-start;
+            border-bottom-left-radius: 3px;
+        }
+
+        .chat-bubble.user {
+            background: var(--accent);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 3px;
+        }
+
+        .chat-bubble.thinking {
+            background: white;
+            border: 1px solid #e0e0e0;
+            align-self: flex-start;
+            color: var(--neutral);
+            font-style: italic;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .chat-input-area textarea {
+            flex: 1;
+            padding: 0.6rem 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            min-height: 44px;
+            max-height: 120px;
+            resize: none;
+        }
+
+        .chat-input-area button {
+            align-self: flex-end;
+            padding: 0.6rem 1.25rem;
+            white-space: nowrap;
+        }
+
+        .chat-hint {
+            margin-top: 0.75rem;
+            font-size: 0.85rem;
             color: var(--neutral);
         }
 
+        /* ── Responsive ── */
         @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
+            .container { flex-direction: column; }
 
             nav {
                 width: 100%;
+                min-height: unset;
                 border-right: none;
                 border-bottom: 1px solid #e0e0e0;
                 display: flex;
                 overflow-x: auto;
-                padding: 1rem 0;
+                padding: 0.75rem 0;
             }
 
             nav button {
@@ -247,20 +260,16 @@
                 margin-bottom: 0;
             }
 
-            header h1 {
-                font-size: 1.75rem;
-            }
-
-            main {
-                padding: 1rem;
-            }
+            header h1 { font-size: 1.75rem; }
+            main { padding: 1rem; }
+            .chat-container { height: 420px; }
         }
     </style>
 </head>
 <body>
     <header>
         <h1>Travel Strong</h1>
-        <p>AI-Adaptive Fitness Training for Scandinavia & Ireland</p>
+        <p>AI-Adaptive Fitness Training for Scandinavia &amp; Ireland</p>
     </header>
 
     <div class="container">
@@ -276,45 +285,35 @@
             <div id="assessment-view" class="view active">
                 <div class="card">
                     <h2>Initial Assessment</h2>
-                    <div id="assessment-content">
-                        <p class="loading">Loading assessment...</p>
-                    </div>
+                    <div id="assessment-content"><p class="loading">Loading...</p></div>
                 </div>
             </div>
 
             <div id="checkin-view" class="view">
                 <div class="card">
                     <h2>Morning Check-In</h2>
-                    <div id="checkin-content">
-                        <p class="loading">Loading check-in...</p>
-                    </div>
+                    <div id="checkin-content"><p class="loading">Loading...</p></div>
                 </div>
             </div>
 
             <div id="workout-view" class="view">
                 <div class="card">
                     <h2>Today's Workout</h2>
-                    <div id="workout-content">
-                        <p class="loading">Loading workout...</p>
-                    </div>
+                    <div id="workout-content"><p class="loading">Loading...</p></div>
                 </div>
             </div>
 
             <div id="history-view" class="view">
                 <div class="card">
                     <h2>History</h2>
-                    <div id="history-content">
-                        <p class="loading">Loading history...</p>
-                    </div>
+                    <div id="history-content"><p class="loading">Loading...</p></div>
                 </div>
             </div>
 
             <div id="settings-view" class="view">
                 <div class="card">
                     <h2>Settings</h2>
-                    <div id="settings-content">
-                        <p>Profile information and app settings go here.</p>
-                    </div>
+                    <div id="settings-content"><p>Profile information and app settings.</p></div>
                 </div>
             </div>
         </main>
@@ -335,9 +334,11 @@
             todayCheckin: null,
             allWorkouts: [],
             allCheckins: [],
-            currentDate: new Date().toISOString().split('T')[0]
+            currentDate: new Date().toISOString().split('T')[0],
+            checkinTranscript: []
         };
 
+        // ── Init ──────────────────────────────────────────────────────────────
         window.addEventListener('DOMContentLoaded', async () => {
             supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             setupNavigation();
@@ -345,11 +346,11 @@
             renderAssessment();
         });
 
+        // ── Navigation ────────────────────────────────────────────────────────
         function setupNavigation() {
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    const view = e.target.dataset.view;
-                    switchView(view, e.target);
+                    switchView(e.target.dataset.view, e.target);
                 });
             });
         }
@@ -357,15 +358,15 @@
         function switchView(viewName, target) {
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(`${viewName}-view`).classList.add('active');
+            document.getElementById(viewName + '-view').classList.add('active');
             if (target) target.classList.add('active');
-
             if (viewName === 'assessment') renderAssessment();
-            if (viewName === 'checkin') renderCheckin();
-            if (viewName === 'workout') renderWorkout();
-            if (viewName === 'history') renderHistory();
+            if (viewName === 'checkin')    renderCheckin();
+            if (viewName === 'workout')    renderWorkout();
+            if (viewName === 'history')    renderHistory();
         }
 
+        // ── Load Data ─────────────────────────────────────────────────────────
         async function loadData() {
             try {
                 const { data: profileData } = await supabaseClient
@@ -391,7 +392,7 @@
                     .order('date', { ascending: false });
 
                 appState.allWorkouts = workoutData || [];
-                appState.todayWorkout = appState.allWorkouts.find(w => w.date === appState.currentDate);
+                appState.todayWorkout = appState.allWorkouts.find(w => w.date === appState.currentDate) || null;
 
                 const { data: checkinData } = await supabaseClient
                     .from('travelstrongcheckins')
@@ -399,99 +400,196 @@
                     .order('date', { ascending: false });
 
                 appState.allCheckins = checkinData || [];
-                appState.todayCheckin = appState.allCheckins.find(c => c.date === appState.currentDate);
+                appState.todayCheckin = appState.allCheckins.find(c => c.date === appState.currentDate) || null;
 
             } catch (err) {
                 console.error('Error loading data:', err);
             }
         }
 
+        // ── Assessment View ───────────────────────────────────────────────────
         function renderAssessment() {
             const content = document.getElementById('assessment-content');
             if (!appState.assessmentAnswers.some(a => a)) {
-                content.innerHTML = '<p>No assessment found.</p>';
+                content.innerHTML = '<p>No assessment data found.</p>';
                 return;
             }
-
             const questions = [
                 'How are your knees and hips feeling these days?',
-                "Let's talk about your lower back and hips specifically. Do you experience any lower back stiffness or aching?",
+                "Let's talk about your lower back and hips. Do you experience any lower back stiffness or aching?",
                 "Let's talk about your ankles and feet. Do your ankles feel stable on uneven ground?",
                 'When you think about those long walking days, how does your cardiovascular system hold up?',
                 'Are there any upper body issues I should know about - shoulder, elbow, wrist?'
             ];
-
-            let html = '<div>';
+            let html = '';
             questions.forEach((q, i) => {
-                html += `
-                    <div class="question">
-                        <p><strong>Q${i+1}: ${q}</strong></p>
-                        <p>${appState.assessmentAnswers[i]}</p>
-                    </div>
-                `;
+                html += '<div class="question"><p><strong>Q' + (i+1) + ': ' + q + '</strong></p><p>' + appState.assessmentAnswers[i] + '</p></div>';
             });
-            html += '</div>';
             content.innerHTML = html;
         }
 
+        // ── Morning Check-In (Interactive Chat) ───────────────────────────────
         function renderCheckin() {
             const content = document.getElementById('checkin-content');
 
-            if (!appState.todayWorkout) {
-                content.innerHTML = '<p class="error">No workout generated yet. Please go to Today\'s Workout first.</p>';
-                return;
-            }
-
-            if (appState.todayCheckin && appState.todayCheckin.answers && appState.todayCheckin.answers.length > 0) {
-                let html = '<div class="success">You\'ve already checked in today!</div>';
-                appState.todayCheckin.questions.forEach((q, i) => {
-                    html += `
-                        <div class="question">
-                            <p><strong>${q}</strong></p>
-                            <p>${appState.todayCheckin.answers[i]}</p>
-                        </div>
-                    `;
-                });
+            // Already completed today
+            if (appState.todayCheckin && appState.todayCheckin.completed) {
+                let html = '<div class="msg-success">You have already checked in today!</div>';
+                if (appState.todayCheckin.summary) {
+                    html += '<div class="question"><p><strong>Today\'s check-in summary:</strong></p><p>' + appState.todayCheckin.summary + '</p></div>';
+                }
                 content.innerHTML = html;
                 return;
             }
 
-            if (!appState.todayCheckin || !appState.todayCheckin.questions || appState.todayCheckin.questions.length === 0) {
-                content.innerHTML = '<p class="error">No check-in questions found for today. Please go to Today\'s Workout to generate today\'s workout first.</p>';
-                return;
-            }
+            // Find yesterday's workout for context
+            const yesterday = new Date(appState.currentDate);
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yesterdayDate = yesterday.toISOString().split('T')[0];
+            const yesterdayWorkout = appState.allWorkouts.find(w => w.date === yesterdayDate);
 
-            let html = '<form id="checkin-form">';
-            appState.todayCheckin.questions.forEach((q, i) => {
-                html += `
-                    <div class="question">
-                        <label for="answer-${i}"><strong>${q}</strong></label>
-                        <textarea id="answer-${i}" placeholder="Your answer..."></textarea>
-                    </div>
-                `;
-            });
-            html += '<button type="submit">Save Check-In</button>';
-            html += '</form>';
-            content.innerHTML = html;
+            // Start the chat
+            appState.checkinTranscript = [];
 
-            document.getElementById('checkin-form').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                await saveCheckin();
+            content.innerHTML = '<div class="chat-container"><div class="chat-messages" id="chat-messages"></div><div class="chat-input-area"><textarea id="chat-input" placeholder="Type your response..." rows="1"></textarea><button id="chat-send" onclick="sendCheckinMessage()">Send</button></div></div><p class="chat-hint">Chat with your coach. When you are done, your workout will generate automatically.</p>';
+
+            // Attach enter key handler
+            const input = document.getElementById('chat-input');
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendCheckinMessage();
+                }
             });
+            input.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+            });
+
+            // Opening message
+            const yesterdayTitle = yesterdayWorkout ? yesterdayWorkout.title : 'your recent workout';
+            const name = appState.profile && appState.profile.name ? appState.profile.name : 'Ed';
+            const openingMessage = 'Good morning, ' + name + '! Yesterday you did "' + yesterdayTitle + '". How did it go? Tell me anything — what felt good, what was hard, any soreness or surprises.';
+            appendCoachMessage(openingMessage);
+            appState.checkinTranscript.push({ role: 'assistant', content: openingMessage });
         }
 
-        async function saveCheckin() {
-            const answers = [];
-            const form = document.getElementById('checkin-form');
-            const textareas = form.querySelectorAll('textarea');
-            textareas.forEach(ta => answers.push(ta.value));
+        function appendCoachMessage(text) {
+            const msgs = document.getElementById('chat-messages');
+            if (!msgs) return;
+            const div = document.createElement('div');
+            div.className = 'chat-bubble coach';
+            div.textContent = text;
+            msgs.appendChild(div);
+            msgs.scrollTop = msgs.scrollHeight;
+        }
+
+        function appendUserMessage(text) {
+            const msgs = document.getElementById('chat-messages');
+            if (!msgs) return;
+            const div = document.createElement('div');
+            div.className = 'chat-bubble user';
+            div.textContent = text;
+            msgs.appendChild(div);
+            msgs.scrollTop = msgs.scrollHeight;
+        }
+
+        function appendThinking(msg) {
+            const msgs = document.getElementById('chat-messages');
+            if (!msgs) return;
+            const existing = document.getElementById('thinking-bubble');
+            if (existing) existing.remove();
+            const div = document.createElement('div');
+            div.className = 'chat-bubble thinking';
+            div.id = 'thinking-bubble';
+            div.textContent = msg || 'Coach is thinking...';
+            msgs.appendChild(div);
+            msgs.scrollTop = msgs.scrollHeight;
+        }
+
+        function removeThinking() {
+            const el = document.getElementById('thinking-bubble');
+            if (el) el.remove();
+        }
+
+        async function sendCheckinMessage() {
+            const input = document.getElementById('chat-input');
+            if (!input) return;
+            const userText = input.value.trim();
+            if (!userText) return;
+
+            input.value = '';
+            input.style.height = 'auto';
+            appendUserMessage(userText);
+            appState.checkinTranscript.push({ role: 'user', content: userText });
+
+            input.disabled = true;
+            document.getElementById('chat-send').disabled = true;
+            appendThinking('Coach is thinking...');
 
             try {
+                const response = await callClaudeChat(buildCheckinSystemPrompt(), appState.checkinTranscript);
+                removeThinking();
+
+                if (response.includes('[READY]')) {
+                    const cleanResponse = response.replace('[READY]', '').trim();
+                    if (cleanResponse) {
+                        appendCoachMessage(cleanResponse);
+                        appState.checkinTranscript.push({ role: 'assistant', content: cleanResponse });
+                    }
+                    await finishCheckin();
+                } else {
+                    appendCoachMessage(response);
+                    appState.checkinTranscript.push({ role: 'assistant', content: response });
+                    input.disabled = false;
+                    document.getElementById('chat-send').disabled = false;
+                    input.focus();
+                }
+            } catch (err) {
+                removeThinking();
+                appendCoachMessage('Sorry, I had trouble connecting. Please try again.');
+                input.disabled = false;
+                document.getElementById('chat-send').disabled = false;
+            }
+        }
+
+        function buildCheckinSystemPrompt() {
+            const assessment = appState.assessmentAnswers.join('\n\n');
+
+            const recentSummaries = appState.allCheckins
+                .filter(c => c.completed && c.summary)
+                .slice(0, 7)
+                .reverse()
+                .map(c => c.date + ': ' + c.summary)
+                .join('\n');
+
+            const yesterday = new Date(appState.currentDate);
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yesterdayDate = yesterday.toISOString().split('T')[0];
+            const yesterdayWorkout = appState.allWorkouts.find(w => w.date === yesterdayDate);
+
+            return 'You are an expert fitness coach conducting a morning check-in with Ed, who is preparing for 11 days of walking in Scandinavia and 7 days of golf in Ireland.\n\nINITIAL ASSESSMENT:\n' + assessment + '\n\nRECENT CHECK-IN SUMMARIES:\n' + (recentSummaries || 'No prior check-ins yet') + '\n\nYESTERDAY\'S WORKOUT: ' + (yesterdayWorkout ? yesterdayWorkout.title : 'No workout on record') + '\n\nYOUR JOB:\n- Have a natural, supportive conversation about how Ed is feeling\n- Ask about soreness, energy, sleep, how specific exercises felt\n- Probe follow-up questions based on his answers - one question at a time\n- After 4-6 exchanges when you have enough information, give a warm closing then add [READY] at the very end\n- Keep messages concise and conversational\n- Remember: NO PUSHUPS (left shoulder subscapularis tear), bodyweight only';
+        }
+
+        async function finishCheckin() {
+            appendThinking('Saving your check-in and generating your workout...');
+
+            const input = document.getElementById('chat-input');
+            const sendBtn = document.getElementById('chat-send');
+            if (input) input.disabled = true;
+            if (sendBtn) sendBtn.disabled = true;
+
+            try {
+                // Generate summary
+                const summary = await generateCheckinSummary();
+
+                // Save to Supabase
                 const checkinData = {
                     date: appState.currentDate,
-                    workout_id: appState.todayWorkout.date,
-                    questions: appState.todayCheckin.questions,
-                    answers: answers,
+                    workout_id: appState.todayWorkout ? appState.todayWorkout.date : null,
+                    transcript: appState.checkinTranscript,
+                    summary: summary,
+                    completed: true,
                     updated_at: new Date().toISOString()
                 };
 
@@ -499,17 +597,37 @@
                     .from('travelstrongcheckins')
                     .upsert([checkinData], { onConflict: 'date' });
 
-                if (!error) {
-                    document.getElementById('checkin-content').innerHTML = '<p class="success">Check-in saved! Generating tomorrow\'s workout...</p>';
-                    setTimeout(() => generateTodayWorkout(), 2000);
-                } else {
-                    alert('Error saving check-in: ' + error.message);
-                }
+                if (error) console.error('Error saving check-in:', error);
+
+                // Update local state
+                appState.todayCheckin = checkinData;
+                appState.allCheckins = appState.allCheckins.filter(c => c.date !== appState.currentDate);
+                appState.allCheckins.unshift(checkinData);
+
+                // Generate today's workout
+                await generateTodayWorkout();
+
+                // Switch to workout view
+                const workoutBtn = document.querySelector('[data-view="workout"]');
+                switchView('workout', workoutBtn);
+
             } catch (err) {
-                alert('Error saving check-in: ' + err.message);
+                console.error('Error finishing check-in:', err);
+                removeThinking();
+                appendCoachMessage('Something went wrong saving your check-in. Please refresh and try again.');
             }
         }
 
+        async function generateCheckinSummary() {
+            const transcriptText = appState.checkinTranscript
+                .map(m => (m.role === 'user' ? 'Ed' : 'Coach') + ': ' + m.content)
+                .join('\n');
+
+            const summary = await callClaude('Summarize this morning check-in in 2-3 sentences: what Ed reported about soreness, energy, and how the previous workout felt. Be specific.\n\n' + transcriptText);
+            return summary.trim();
+        }
+
+        // ── Today's Workout ───────────────────────────────────────────────────
         function renderWorkout() {
             const content = document.getElementById('workout-content');
 
@@ -519,46 +637,49 @@
                 return;
             }
 
-            let html = `
-                <button id="copy-btn" onclick="copyWorkout()" style="margin-bottom:1.5rem;width:100%;">📋 Copy Workout to Clipboard</button>
-                <h3>${appState.todayWorkout.title}</h3>
-                <p style="margin-bottom:1rem;">${appState.todayWorkout.overview}</p>
-            `;
-
-            if (appState.todayWorkout.activities) {
-                const activities = typeof appState.todayWorkout.activities === 'string'
+            let activities = [];
+            try {
+                activities = typeof appState.todayWorkout.activities === 'string'
                     ? JSON.parse(appState.todayWorkout.activities)
-                    : appState.todayWorkout.activities;
+                    : (appState.todayWorkout.activities || []);
+            } catch (e) { activities = []; }
 
-                activities.forEach(activity => {
-                    html += `
-                        <div class="workout-activity">
-                            <h4>${activity.name}</h4>
-                            <div class="meta">
-                                <div class="meta-item">⏱️ ${activity.duration}</div>
-                            </div>
-                            <p><strong>What to do:</strong> ${activity.description}</p>
-                            <p><strong>Form:</strong> ${activity.form}</p>
-                            ${activity.videoUrl ? `<p><a href="${activity.videoUrl}" target="_blank">📹 View form video</a></p>` : ''}
-                        </div>
-                    `;
-                });
-            }
+            let html = '<button onclick="copyWorkout()" style="margin-bottom:1.5rem;width:100%;">Copy Workout to Clipboard</button>';
+            html += '<h3>' + appState.todayWorkout.title + '</h3>';
+            html += '<p style="margin-bottom:1.5rem;">' + appState.todayWorkout.overview + '</p>';
+
+            activities.forEach(function(activity) {
+                html += '<div class="workout-activity">';
+                html += '<h4>' + activity.name + '</h4>';
+                html += '<div class="meta"><div class="meta-item">&#9201; ' + activity.duration + '</div></div>';
+                html += '<p><strong>What to do:</strong> ' + activity.description + '</p>';
+                html += '<p><strong>Form:</strong> ' + activity.form + '</p>';
+                if (activity.videoUrl) {
+                    html += '<p style="margin-top:0.5rem;"><a href="' + activity.videoUrl + '" target="_blank">View form video</a></p>';
+                }
+                html += '</div>';
+            });
 
             content.innerHTML = html;
         }
 
         function copyWorkout() {
             if (!appState.todayWorkout) return;
-            const activities = typeof appState.todayWorkout.activities === 'string'
-                ? JSON.parse(appState.todayWorkout.activities)
-                : appState.todayWorkout.activities;
-            const text = `${appState.todayWorkout.title} | ${activities.map(a => `${a.name} (${a.duration})`).join(' | ')}`;
-            navigator.clipboard.writeText(text).then(() => {
-                const btn = document.getElementById('copy-btn');
-                const original = btn.textContent;
-                btn.textContent = '✓ Copied!';
-                setTimeout(() => { btn.textContent = original; }, 2000);
+            let activities = [];
+            try {
+                activities = typeof appState.todayWorkout.activities === 'string'
+                    ? JSON.parse(appState.todayWorkout.activities)
+                    : (appState.todayWorkout.activities || []);
+            } catch (e) { activities = []; }
+
+            const lines = [appState.todayWorkout.title].concat(activities.map(a => '- ' + a.name + ' (' + a.duration + ')'));
+            navigator.clipboard.writeText(lines.join('\n')).then(function() {
+                const btn = document.querySelector('[onclick="copyWorkout()"]');
+                if (btn) {
+                    const orig = btn.textContent;
+                    btn.textContent = 'Copied!';
+                    setTimeout(function() { btn.textContent = orig; }, 2000);
+                }
             });
         }
 
@@ -567,34 +688,30 @@
                 const prompt = buildWorkoutPrompt();
                 const response = await callClaude(prompt);
 
-                const titleMatch = response.match(/WORKOUT_TITLE:\s*(.+?)(?=\nOVERVIEW:|$)/s);
+                const titleMatch    = response.match(/WORKOUT_TITLE:\s*(.+?)(?=\nOVERVIEW:|$)/s);
                 const overviewMatch = response.match(/OVERVIEW:\s*(.+?)(?=\nACTIVITIES:|$)/s);
-                const activitiesMatch = response.match(/ACTIVITIES:\s*(.+?)(?=\nQUESTIONS:|$)/s);
-                const questionsMatch = response.match(/QUESTIONS:\s*\n([\s\S]+?)$/);
+                const activitiesMatch = response.match(/ACTIVITIES:\s*([\s\S]+?)(?=\nQUESTIONS:|$|\n\n$)/);
 
-                const title = titleMatch ? titleMatch[1].trim() : 'Today\'s Workout';
+                const title    = titleMatch    ? titleMatch[1].trim()    : "Today's Workout";
                 const overview = overviewMatch ? overviewMatch[1].trim() : 'Personalized workout';
 
                 const activitiesText = activitiesMatch ? activitiesMatch[1].trim() : '';
-                const activityLines = activitiesText.split('\n-').filter(a => a.trim());
-                const activities = activityLines.map(line => {
-                    const lines = line.split('\n').map(l => l.trim()).filter(l => l);
+                const activityBlocks = activitiesText.split(/\n(?=-)/).filter(function(a) { return a.trim(); });
+                const activities = activityBlocks.map(function(block) {
+                    const lines = block.split('\n').map(function(l) { return l.trim(); }).filter(function(l) { return l; });
                     return {
-                        name: lines[0] ? lines[0].replace(/^-\s*/, '') : 'Activity',
-                        duration: lines[1] || '10 min',
+                        name:        (lines[0] || 'Activity').replace(/^-\s*/, ''),
+                        duration:    lines[1] || '10 min',
                         description: lines[2] || 'Do this exercise',
-                        form: lines[3] || 'Proper form',
-                        videoUrl: null
+                        form:        lines[3] || 'Proper form',
+                        videoUrl:    null
                     };
                 });
 
-                const questionsText = questionsMatch ? questionsMatch[1].trim() : '';
-                const questions = questionsText.split('\n').filter(q => q.trim()).map(q => q.replace(/^\d+\.\s*/, '').trim());
-
                 const workoutData = {
-                    date: appState.currentDate,
-                    title: title,
-                    overview: overview,
+                    date:       appState.currentDate,
+                    title:      title,
+                    overview:   overview,
                     activities: JSON.stringify(activities),
                     created_at: new Date().toISOString()
                 };
@@ -603,92 +720,44 @@
                     .from('travelstrongworkouts')
                     .upsert([workoutData], { onConflict: 'date' });
 
-                const tomorrow = new Date(appState.currentDate);
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                const tomorrowDate = tomorrow.toISOString().split('T')[0];
-
-                const checkinData = {
-                    date: tomorrowDate,
-                    workout_id: workoutData.date,
-                    questions: questions,
-                    answers: [],
-                    updated_at: new Date().toISOString()
-                };
-
-                await supabaseClient
-                    .from('travelstrongcheckins')
-                    .upsert([checkinData], { onConflict: 'date' });
-
                 appState.todayWorkout = workoutData;
+                appState.allWorkouts = appState.allWorkouts.filter(function(w) { return w.date !== appState.currentDate; });
+                appState.allWorkouts.unshift(workoutData);
+
                 renderWorkout();
 
             } catch (err) {
                 console.error('Error generating workout:', err);
-                document.getElementById('workout-content').innerHTML = '<p class="error">Error generating workout. Please try again.</p>';
+                const content = document.getElementById('workout-content');
+                if (content) content.innerHTML = '<p class="msg-error">Error generating workout. Please try again.</p>';
             }
         }
 
         function buildWorkoutPrompt() {
             const assessment = appState.assessmentAnswers.join('\n\n');
-            const history = appState.allCheckins
-                .filter(c => c.answers && c.answers.length > 0)
+
+            const checkinHistory = appState.allCheckins
+                .filter(function(c) { return c.completed && c.summary; })
+                .slice(0, 14)
                 .reverse()
-                .map(c => `Date: ${c.date}\nQuestions & Answers:\n${c.questions.map((q, i) => `${q}\nAnswer: ${c.answers[i]}`).join('\n\n')}`)
-                .join('\n\n---\n\n');
+                .map(function(c) { return c.date + ': ' + c.summary; })
+                .join('\n');
 
-            return `You are an expert fitness coach preparing someone for 11 days of walking in Scandinavia and 7 days of golf in Ireland.
+            const todayTranscript = (appState.todayCheckin && appState.todayCheckin.transcript)
+                ? appState.todayCheckin.transcript
+                    .map(function(m) { return (m.role === 'user' ? 'Ed' : 'Coach') + ': ' + m.content; })
+                    .join('\n')
+                : null;
 
-PROFILE:
-- Name: ${appState.profile?.name || 'User'}
-- Stats: ${appState.profile?.stats || 'Unknown'}
-- Fitness Level: ${appState.profile?.fitness_level || 'Unknown'}
-- Departure: ${appState.profile?.departure_date || 'Unknown'}
+            const name       = (appState.profile && appState.profile.name)           || 'Ed';
+            const stats      = (appState.profile && appState.profile.stats)           || 'Unknown';
+            const fitness    = (appState.profile && appState.profile.fitness_level)   || 'Unknown';
+            const departure  = (appState.profile && appState.profile.departure_date)  || 'Unknown';
 
-INITIAL ASSESSMENT (from 5-question interview):
-${assessment}
-
-HISTORY OF WORKOUTS AND CHECK-INS (user's progress so far):
-${history || 'No prior workouts yet - this is day 1'}
-
-REQUIREMENTS:
-1. Generate a 25-30 minute personalized workout
-2. Based on assessment + user's progress/feedback
-3. Bodyweight only, NO PUSHUPS (shoulder injury)
-4. Emphasize: ankle mobility, knee stability, core, hip flexibility
-5. Include walking recommendation
-
-ALSO GENERATE:
-3-4 dynamic check-in questions for tomorrow based on today's workout focus
-
----
-
-Return your response in this plain text format (no JSON):
-
-WORKOUT_TITLE: [Title of today's workout]
-
-OVERVIEW: [One sentence summary of today's focus and goals]
-
-ACTIVITIES:
-- [Activity Name]
-[Duration, e.g., "10 minutes"]
-[What to do - step by step]
-[Form tips - how to do it correctly]
-
-- [Activity Name]
-[Duration]
-[What to do]
-[Form tips]
-
-(Repeat for 4-6 activities total, filling a 25-30 minute workout)
-
-QUESTIONS:
-1. [First dynamic question based on today's workout focus]
-2. [Second question]
-3. [Third question]
-4. [Optional fourth question]
-`;
+            return 'You are an expert fitness coach preparing ' + name + ' for 11 days of walking in Scandinavia and 7 days of golf in Ireland.\n\nPROFILE:\n- Name: ' + name + '\n- Stats: ' + stats + '\n- Fitness Level: ' + fitness + '\n- Departure: ' + departure + '\n\nINITIAL ASSESSMENT:\n' + assessment + '\n\nCHECK-IN HISTORY (summaries):\n' + (checkinHistory || 'No prior check-ins yet - this is day 1') + '\n\n' + (todayTranscript ? "TODAY'S CHECK-IN CONVERSATION:\n" + todayTranscript + '\n\n' : '') + 'REQUIREMENTS:\n1. Generate a 25-30 minute personalized workout\n2. Bodyweight only - NO PUSHUPS (left shoulder subscapularis tear)\n3. Emphasize: ankle mobility, knee stability, core, hip flexibility\n4. Include a walking recommendation\n5. Adapt based on what Ed reported in today\'s check-in\n\nReturn in this exact plain text format:\n\nWORKOUT_TITLE: [title]\n\nOVERVIEW: [one sentence]\n\nACTIVITIES:\n- [Activity Name]\n[Duration]\n[What to do]\n[Form tips]\n\n- [Activity Name]\n[Duration]\n[What to do]\n[Form tips]\n\n(4-6 activities, 25-30 minutes total)\n';
         }
 
+        // ── Claude API ────────────────────────────────────────────────────────
         async function callClaude(prompt) {
             const response = await fetch(WORKER_URL, {
                 method: 'POST',
@@ -700,11 +769,32 @@ QUESTIONS:
                     messages: [{ role: 'user', content: prompt }]
                 })
             });
-
             const data = await response.json();
             return data.result || '';
         }
 
+        async function callClaudeChat(systemPrompt, messages) {
+            // Prepend system prompt as first message to ensure worker compatibility
+            const fullMessages = [
+                { role: 'user', content: systemPrompt + '\n\n---\n\nBegin the conversation based on the messages that follow.' },
+                { role: 'assistant', content: 'Understood. I am ready to conduct the morning check-in.' }
+            ].concat(messages);
+
+            const response = await fetch(WORKER_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    appId: APP_ID,
+                    method: 'CLAUDE_API',
+                    claudeMethod: 'advisorChat',
+                    messages: fullMessages
+                })
+            });
+            const data = await response.json();
+            return data.result || '';
+        }
+
+        // ── History ───────────────────────────────────────────────────────────
         function renderHistory() {
             const content = document.getElementById('history-content');
 
@@ -713,32 +803,29 @@ QUESTIONS:
                 return;
             }
 
-            let html = '<div>';
-            appState.allWorkouts.forEach(workout => {
-                const checkin = appState.allCheckins.find(c => c.workout_id === workout.date && c.answers && c.answers.length > 0);
-                html += `
-                    <div class="card">
-                        <h3>${workout.date}</h3>
-                        <p><strong>${workout.title}</strong></p>
-                        <p>${workout.overview}</p>
-                        ${checkin ? `
-                            <h4 style="margin-top: 1rem;">Your Check-In:</h4>
-                            ${checkin.questions.map((q, i) => `
-                                <div class="question">
-                                    <p><strong>${q}</strong></p>
-                                    <p>${checkin.answers[i]}</p>
-                                </div>
-                            `).join('')}
-                        ` : '<p><em>No check-in feedback yet</em></p>'}
-                    </div>
-                `;
+            let html = '';
+            appState.allWorkouts.forEach(function(workout) {
+                const checkin = appState.allCheckins.find(function(c) {
+                    return c.date === workout.date && c.completed;
+                });
+                html += '<div class="card">';
+                html += '<h3>' + workout.date + '</h3>';
+                html += '<p><strong>' + workout.title + '</strong></p>';
+                html += '<p style="margin-bottom:0.75rem;">' + workout.overview + '</p>';
+                if (checkin && checkin.summary) {
+                    html += '<div class="question"><p><strong>Check-in:</strong></p><p>' + checkin.summary + '</p></div>';
+                } else {
+                    html += '<p><em>No check-in yet</em></p>';
+                }
+                html += '</div>';
             });
-            html += '</div>';
+
             content.innerHTML = html;
         }
 
+        // ── Service Worker ────────────────────────────────────────────────────
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').catch(() => {});
+            navigator.serviceWorker.register('sw.js').catch(function() {});
         }
     </script>
 </body>
