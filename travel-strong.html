@@ -631,6 +631,20 @@
         }
 
         // ── Today's Workout ───────────────────────────────────────────────────
+        function formatAsBullets(text) {
+            if (!text) return '';
+            // Split on period+space or period+newline, filter empty strings
+            const sentences = text.split(/\.\s+/).map(s => s.trim()).filter(s => s.length > 0);
+            if (sentences.length <= 1) return '<p>' + text + '</p>';
+            return '<ul style="margin:0.5rem 0 0 1.25rem;line-height:1.6;">' +
+                sentences.map(function(s) {
+                    // Re-add period if it doesn't already end with one
+                    const line = s.endsWith('.') ? s : s + '.';
+                    return '<li style="margin-bottom:0.35rem;">' + line + '</li>';
+                }).join('') +
+            '</ul>';
+        }
+
         function renderWorkout() {
             const content = document.getElementById('workout-content');
 
@@ -655,8 +669,8 @@
                 html += '<div class="workout-activity">';
                 html += '<h4>' + activity.name + '</h4>';
                 html += '<div class="meta"><div class="meta-item">&#9201; ' + activity.duration + '</div></div>';
-                html += '<p><strong>What to do:</strong> ' + activity.description + '</p>';
-                html += '<p><strong>Form:</strong> ' + activity.form + '</p>';
+                html += '<p style="margin-bottom:0.25rem;"><strong>What to do:</strong></p>' + formatAsBullets(activity.description);
+                html += '<p style="margin-top:0.75rem;margin-bottom:0.25rem;"><strong>Form:</strong></p>' + formatAsBullets(activity.form);
                 if (activity.videoUrl) {
                     html += '<p style="margin-top:0.5rem;"><a href="' + activity.videoUrl + '" target="_blank">View form video</a></p>';
                 }
