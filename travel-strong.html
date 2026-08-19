@@ -1,84 +1,104 @@
 <!DOCTYPE html>
-<!-- Version: 3.0.0 | Deployed: 2026-05-09_13-00-00 -->
+<!-- Version: 1.0.0 | Deployed: 2026-08-19_10-00-00 -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travel Strong</title>
+    <title>Be Strong</title>
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Travel Strong">
+    <meta name="apple-mobile-web-app-title" content="Be Strong">
     <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%233D2B1F'/><text y='72' x='50' text-anchor='middle' font-size='62' font-family='serif'>🥾</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%233D2B1F'/><text y='72' x='50' text-anchor='middle' font-size='62' font-family='serif'>🥾</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231B3A6B'/><text y='72' x='50' text-anchor='middle' font-size='62' font-family='serif'>💪</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231B3A6B'/><text y='72' x='50' text-anchor='middle' font-size='62' font-family='serif'>💪</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #3D2B1F;
-            --accent: #C4773B;
-            --light: #FAF7F2;
-            --neutral: #9A8B7E;
-            --success: #6B9E7F;
-            --warning: #D4A574;
-            --error: #C65D5D;
+            --primary: #1B3A6B;
+            --accent: #E85A1A;
+            --light: #F0F4FF;
+            --neutral: #7A8BA0;
+            --success: #2ECC71;
+            --warning: #F39C12;
+            --error: #E74C3C;
+            --dark: #1A1A2A;
+            --white: #FFFFFF;
+            --card-bg: #FFFFFF;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--light);
-            color: var(--primary);
+            color: var(--dark);
         }
 
         header {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, #0F2447 100%);
             color: white;
-            padding: 2rem;
+            padding: 1.5rem 2rem;
             text-align: center;
+            box-shadow: 0 4px 20px rgba(27,58,107,0.3);
         }
 
         header h1 {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Montserrat', sans-serif;
             font-size: 2.5rem;
-            margin-bottom: 0.5rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.25rem;
         }
 
-        header p { font-size: 0.9rem; opacity: 0.9; }
+        header h1 span { color: var(--accent); }
+
+        header p { font-size: 0.85rem; opacity: 0.8; letter-spacing: 0.5px; }
+
+        .location-bar {
+            background: var(--primary);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 0.5rem 2rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .location-bar span { color: var(--accent); font-weight: 600; }
 
         .container { display: flex; max-width: 1400px; margin: 0 auto; }
 
         nav {
-            width: 200px;
-            background: white;
-            padding: 2rem 1rem;
-            border-right: 1px solid #e0e0e0;
-            min-height: calc(100vh - 120px);
+            width: 210px;
+            background: var(--white);
+            padding: 1.5rem 1rem;
+            border-right: 1px solid #E0E8F0;
+            min-height: calc(100vh - 110px);
         }
 
         nav button {
             display: block;
             width: 100%;
-            padding: 1rem;
-            margin-bottom: 0.5rem;
+            padding: 0.85rem 1rem;
+            margin-bottom: 0.35rem;
             background: none;
             border: none;
-            color: var(--primary);
+            color: var(--dark);
             cursor: pointer;
             text-align: left;
-            border-left: 3px solid transparent;
-            font-size: 0.95rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
             font-family: inherit;
+            font-weight: 500;
             transition: all 0.2s;
         }
 
-        nav button:hover { background: var(--light); }
+        nav button:hover { background: var(--light); color: var(--primary); }
 
         nav button.active {
-            background: var(--light);
-            border-left-color: var(--accent);
+            background: var(--primary);
+            color: white;
             font-weight: 600;
         }
 
@@ -88,83 +108,156 @@
         .view.active { display: block; }
 
         .card {
-            background: white;
-            border-radius: 12px;
+            background: var(--card-bg);
+            border-radius: 16px;
             padding: 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border-left: 4px solid var(--accent);
+            box-shadow: 0 2px 16px rgba(27,58,107,0.08);
+            border-top: 4px solid var(--accent);
         }
 
         h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
             margin-bottom: 1.5rem;
+            color: var(--primary);
         }
 
-        h3 { font-size: 1.2rem; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--primary);
+        }
+
+        h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--dark);
+        }
 
         button {
             padding: 0.75rem 1.5rem;
             background: var(--accent);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 700;
             font-family: inherit;
             font-size: 0.95rem;
-            transition: background 0.2s;
+            transition: all 0.2s;
+            letter-spacing: 0.3px;
         }
 
-        button:hover { background: #b8652e; }
-        button:disabled { background: #ccc; cursor: not-allowed; }
+        button:hover { background: #D04A0E; transform: translateY(-1px); }
+        button:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+
+        .btn-secondary {
+            background: var(--primary);
+        }
+        .btn-secondary:hover { background: #142D54; }
 
         .loading { text-align: center; padding: 2rem; color: var(--neutral); }
 
         .msg-error {
-            background: #ffe0e0;
+            background: #FEE8E8;
             color: var(--error);
             padding: 1rem;
-            border-radius: 6px;
+            border-radius: 8px;
             margin-bottom: 1rem;
+            border-left: 4px solid var(--error);
         }
 
         .msg-success {
-            background: #e0ffe0;
-            color: var(--success);
+            background: #E8FAF0;
+            color: #1A7A45;
             padding: 1rem;
-            border-radius: 6px;
+            border-radius: 8px;
             margin-bottom: 1rem;
+            border-left: 4px solid var(--success);
         }
 
         .question {
             background: var(--light);
             padding: 1rem;
-            border-radius: 6px;
+            border-radius: 8px;
             margin-bottom: 1rem;
+            border-left: 3px solid var(--primary);
         }
 
         .workout-activity {
             background: var(--light);
-            padding: 1rem;
-            border-radius: 6px;
+            padding: 1.25rem;
+            border-radius: 10px;
             margin-bottom: 1rem;
-            border-left: 3px solid var(--success);
+            border-left: 4px solid var(--accent);
         }
 
-        .workout-activity h4 { margin-bottom: 0.5rem; }
+        .workout-activity h4 { margin-bottom: 0.5rem; font-size: 1.05rem; }
 
         .meta { display: flex; gap: 1rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
-        .meta-item { font-size: 0.9rem; color: var(--neutral); }
+        .meta-item {
+            font-size: 0.85rem;
+            color: var(--neutral);
+            background: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            border: 1px solid #E0E8F0;
+        }
+
+        .day-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.2rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+
+        /* ── Exercise Checkbox List ── */
+        .exercise-checklist {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .exercise-checklist label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid #E0E8F0;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .exercise-checklist label:last-child { border-bottom: none; }
+
+        .exercise-checklist input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--accent);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
 
         /* ── Chat UI ── */
         .chat-container {
             display: flex;
             flex-direction: column;
-            height: 500px;
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
+            height: 520px;
+            border: 1px solid #E0E8F0;
+            border-radius: 12px;
             overflow: hidden;
             background: var(--light);
         }
@@ -182,15 +275,16 @@
             max-width: 80%;
             padding: 0.75rem 1rem;
             border-radius: 12px;
-            line-height: 1.5;
+            line-height: 1.55;
             font-size: 0.95rem;
         }
 
         .chat-bubble.coach {
             background: white;
-            border: 1px solid #e0e0e0;
+            border: 1px solid #E0E8F0;
             align-self: flex-start;
             border-bottom-left-radius: 3px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
         }
 
         .chat-bubble.user {
@@ -202,10 +296,54 @@
 
         .chat-bubble.thinking {
             background: white;
-            border: 1px solid #e0e0e0;
+            border: 1px solid #E0E8F0;
             align-self: flex-start;
             color: var(--neutral);
             font-style: italic;
+        }
+
+        /* Inline checkbox widget inside chat */
+        .chat-checklist {
+            background: white;
+            border: 1px solid #E0E8F0;
+            border-radius: 10px;
+            padding: 1rem;
+            align-self: flex-start;
+            max-width: 85%;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+
+        .chat-checklist p {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        .chat-checklist label {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 0.4rem 0;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-bottom: 1px solid #F0F4FF;
+        }
+
+        .chat-checklist label:last-of-type { border-bottom: none; }
+
+        .chat-checklist input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .chat-checklist button {
+            margin-top: 0.75rem;
+            width: 100%;
+            padding: 0.5rem;
+            font-size: 0.85rem;
         }
 
         .chat-input-area {
@@ -213,19 +351,20 @@
             gap: 0.5rem;
             padding: 0.75rem;
             background: white;
-            border-top: 1px solid #e0e0e0;
+            border-top: 1px solid #E0E8F0;
         }
 
         .chat-input-area textarea {
             flex: 1;
             padding: 0.6rem 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 6px;
+            border: 1px solid #E0E8F0;
+            border-radius: 8px;
             font-family: inherit;
             font-size: 0.95rem;
             min-height: 44px;
             max-height: 120px;
             resize: none;
+            background: var(--light);
         }
 
         .chat-input-area button {
@@ -236,8 +375,38 @@
 
         .chat-hint {
             margin-top: 0.75rem;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             color: var(--neutral);
+        }
+
+        /* ── Stat Cards ── */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--light);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid #E0E8F0;
+        }
+
+        .stat-card .stat-num {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .stat-card .stat-label {
+            font-size: 0.75rem;
+            color: var(--neutral);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         /* ── Responsive ── */
@@ -248,56 +417,53 @@
                 width: 100%;
                 min-height: unset;
                 border-right: none;
-                border-bottom: 1px solid #e0e0e0;
+                border-bottom: 1px solid #E0E8F0;
                 display: flex;
                 overflow-x: auto;
-                padding: 0.75rem 0;
+                padding: 0.5rem;
+                gap: 0.25rem;
             }
 
             nav button {
                 white-space: nowrap;
                 flex: 0 0 auto;
-                padding: 0.75rem 1rem;
-                margin-right: 0.5rem;
+                padding: 0.6rem 1rem;
                 margin-bottom: 0;
             }
 
-            header h1 { font-size: 1.75rem; }
+            header h1 { font-size: 1.8rem; }
             main { padding: 1rem; }
-            .chat-container { height: 420px; }
+            .chat-container { height: 440px; }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Travel Strong</h1>
-        <p>AI-Adaptive Fitness Training for Scandinavia &amp; Ireland</p>
+        <h1>Be <span>Strong</span></h1>
+        <p>YOUR DAILY PERSONAL TRAINER</p>
     </header>
+    <div class="location-bar" id="location-bar">
+        📍 Loading location...
+    </div>
 
     <div class="container">
         <nav id="navigation">
-            <button class="nav-btn active" data-view="assessment">Initial Assessment</button>
-            <button class="nav-btn" data-view="checkin">Morning Check-In</button>
+            <button class="nav-btn active" data-view="checkin">Morning Check-In</button>
             <button class="nav-btn" data-view="workout">Today's Workout</button>
             <button class="nav-btn" data-view="history">History</button>
-            <button class="nav-btn" data-view="settings">Settings</button>
+            <button class="nav-btn" data-view="profile">Profile</button>
         </nav>
 
         <main id="main-content">
-            <div id="assessment-view" class="view active">
-                <div class="card">
-                    <h2>Initial Assessment</h2>
-                    <div id="assessment-content"><p class="loading">Loading...</p></div>
-                </div>
-            </div>
-
-            <div id="checkin-view" class="view">
+            <!-- Morning Check-In -->
+            <div id="checkin-view" class="view active">
                 <div class="card">
                     <h2>Morning Check-In</h2>
                     <div id="checkin-content"><p class="loading">Loading...</p></div>
                 </div>
             </div>
 
+            <!-- Today's Workout -->
             <div id="workout-view" class="view">
                 <div class="card">
                     <h2>Today's Workout</h2>
@@ -305,6 +471,7 @@
                 </div>
             </div>
 
+            <!-- History -->
             <div id="history-view" class="view">
                 <div class="card">
                     <h2>History</h2>
@@ -312,10 +479,11 @@
                 </div>
             </div>
 
-            <div id="settings-view" class="view">
+            <!-- Profile -->
+            <div id="profile-view" class="view">
                 <div class="card">
-                    <h2>Settings</h2>
-                    <div id="settings-content"><p>Profile information and app settings.</p></div>
+                    <h2>Profile</h2>
+                    <div id="profile-content"><p class="loading">Loading...</p></div>
                 </div>
             </div>
         </main>
@@ -332,20 +500,41 @@
         let appState = {
             profile: null,
             assessmentAnswers: [],
+            currentLocation: null,       // { location, days_planned, start_date, end_date }
             todayWorkout: null,
             todayCheckin: null,
+            yesterdayWorkout: null,
             allWorkouts: [],
             allCheckins: [],
             currentDate: new Date().toISOString().split('T')[0],
-            checkinTranscript: []
+            checkinTranscript: [],
+            showingChecklist: false      // true when exercise checkbox is visible in chat
         };
+
+        // Equipment by location
+        const EQUIPMENT = {
+            home: 'Dumbbells (2.5lb to 50lb), treadmill, pool, outdoor bike, bodyweight',
+            karmel: 'Kettlebells (5lb, 10lb, 15lb), outdoor bike, bodyweight'
+        };
+
+        // Workout split cycle
+        const SPLIT_CYCLE = [
+            'Legs & Glutes',
+            'Push — Shoulders, Chest & Triceps',
+            'Pull — Back & Biceps',
+            'Core & Mobility',
+            'Active Recovery — Walk, Bike or Swim',
+            'Full Body Compound',
+            'Rest & Deep Stretch'
+        ];
 
         // ── Init ──────────────────────────────────────────────────────────────
         window.addEventListener('DOMContentLoaded', async () => {
             supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             setupNavigation();
             await loadData();
-            renderAssessment();
+            updateLocationBar();
+            renderCheckin();
         });
 
         // ── Navigation ────────────────────────────────────────────────────────
@@ -362,15 +551,16 @@
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(viewName + '-view').classList.add('active');
             if (target) target.classList.add('active');
-            if (viewName === 'assessment') renderAssessment();
-            if (viewName === 'checkin')    renderCheckin();
-            if (viewName === 'workout')    renderWorkout();
-            if (viewName === 'history')    renderHistory();
+            if (viewName === 'checkin')  renderCheckin();
+            if (viewName === 'workout')  renderWorkout();
+            if (viewName === 'history')  renderHistory();
+            if (viewName === 'profile')  renderProfile();
         }
 
         // ── Load Data ─────────────────────────────────────────────────────────
         async function loadData() {
             try {
+                // Load profile
                 const { data: profileData } = await supabaseClient
                     .from('travelstrongusers')
                     .select('*')
@@ -388,6 +578,19 @@
                     ];
                 }
 
+                // Load current location
+                const { data: locationData } = await supabaseClient
+                    .from('travelstronglocation')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(1)
+                    .single();
+
+                if (locationData) {
+                    appState.currentLocation = locationData;
+                }
+
+                // Load all workouts
                 const { data: workoutData } = await supabaseClient
                     .from('travelstrongworkouts')
                     .select('*')
@@ -396,6 +599,13 @@
                 appState.allWorkouts = workoutData || [];
                 appState.todayWorkout = appState.allWorkouts.find(w => w.date === appState.currentDate) || null;
 
+                // Find yesterday's workout
+                const yesterday = new Date(appState.currentDate);
+                yesterday.setDate(yesterday.getDate() - 1);
+                const yesterdayDate = yesterday.toISOString().split('T')[0];
+                appState.yesterdayWorkout = appState.allWorkouts.find(w => w.date === yesterdayDate) || null;
+
+                // Load all checkins
                 const { data: checkinData } = await supabaseClient
                     .from('travelstrongcheckins')
                     .select('*')
@@ -409,54 +619,52 @@
             }
         }
 
-        // ── Assessment View ───────────────────────────────────────────────────
-        function renderAssessment() {
-            const content = document.getElementById('assessment-content');
-            if (!appState.assessmentAnswers.some(a => a)) {
-                content.innerHTML = '<p>No assessment data found.</p>';
+        // ── Location Bar ──────────────────────────────────────────────────────
+        function updateLocationBar() {
+            const bar = document.getElementById('location-bar');
+            if (!appState.currentLocation) {
+                bar.innerHTML = '📍 Location unknown — tell your coach where you are in the morning check-in';
                 return;
             }
-            const questions = [
-                'How are your knees and hips feeling these days?',
-                "Let's talk about your lower back and hips. Do you experience any lower back stiffness or aching?",
-                "Let's talk about your ankles and feet. Do your ankles feel stable on uneven ground?",
-                'When you think about those long walking days, how does your cardiovascular system hold up?',
-                'Are there any upper body issues I should know about - shoulder, elbow, wrist?'
-            ];
-            let html = '';
-            questions.forEach((q, i) => {
-                html += '<div class="question"><p><strong>Q' + (i+1) + ': ' + q + '</strong></p><p>' + appState.assessmentAnswers[i] + '</p></div>';
-            });
-            html += '<p style="margin-top:2rem;font-size:0.8rem;color:var(--neutral);border-top:1px solid #e0e0e0;padding-top:1rem;">Version 3.0.0 &nbsp;|&nbsp; Build 2026-05-09</p>';
-            content.innerHTML = html;
+            const loc = appState.currentLocation;
+            const locName = loc.location === 'home' ? 'Home' : 'Karmel';
+            const equipment = loc.location === 'home'
+                ? 'Dumbbells + Treadmill + Pool'
+                : 'Kettlebells + Outdoor Bike';
+
+            // Calculate days remaining
+            let daysInfo = '';
+            if (loc.end_date) {
+                const end = new Date(loc.end_date);
+                const today = new Date(appState.currentDate);
+                const daysLeft = Math.ceil((end - today) / (1000 * 60 * 60 * 24));
+                if (daysLeft > 0) daysInfo = ' &nbsp;·&nbsp; ' + daysLeft + ' day' + (daysLeft !== 1 ? 's' : '') + ' remaining';
+                else if (daysLeft === 0) daysInfo = ' &nbsp;·&nbsp; Last day here';
+            }
+            bar.innerHTML = '📍 <span>' + locName + '</span> &nbsp;·&nbsp; ' + equipment + daysInfo;
         }
 
-        // ── Morning Check-In (Interactive Chat) ───────────────────────────────
+        // ── Morning Check-In ──────────────────────────────────────────────────
         function renderCheckin() {
             const content = document.getElementById('checkin-content');
 
             // Already completed today
             if (appState.todayCheckin && appState.todayCheckin.completed) {
-                let html = '<div class="msg-success">You have already checked in today!</div>';
+                let html = '<div class="msg-success">✓ Check-in complete for today!</div>';
                 if (appState.todayCheckin.summary) {
-                    html += '<div class="question"><p><strong>Today\'s check-in summary:</strong></p><p>' + appState.todayCheckin.summary + '</p></div>';
+                    html += '<div class="question"><p><strong>Summary:</strong></p><p>' + appState.todayCheckin.summary + '</p></div>';
                 }
+                html += '<button onclick="switchView(\'workout\', document.querySelector(\'[data-view=workout]\'))" class="btn-secondary" style="margin-top:1rem;">View Today\'s Workout →</button>';
                 content.innerHTML = html;
                 return;
             }
 
-            // Find yesterday's workout for context
-            const yesterday = new Date(appState.currentDate);
-            yesterday.setDate(yesterday.getDate() - 1);
-            const yesterdayDate = yesterday.toISOString().split('T')[0];
-            const yesterdayWorkout = appState.allWorkouts.find(w => w.date === yesterdayDate);
-
-            // Start the chat
+            // Start chat
             appState.checkinTranscript = [];
+            appState.showingChecklist = false;
 
-            content.innerHTML = '<div class="chat-container"><div class="chat-messages" id="chat-messages"></div><div class="chat-input-area"><textarea id="chat-input" placeholder="Type your response..." rows="1"></textarea><button id="chat-send" onclick="sendCheckinMessage()">Send</button></div></div><p class="chat-hint">Chat with your coach. When you are done, your workout will generate automatically.</p>';
+            content.innerHTML = '<div class="chat-container"><div class="chat-messages" id="chat-messages"></div><div class="chat-input-area"><textarea id="chat-input" placeholder="Type your response..." rows="1"></textarea><button id="chat-send" onclick="sendCheckinMessage()">Send</button></div></div><p class="chat-hint">Chat with your coach. Your workout generates automatically when ready.</p>';
 
-            // Attach enter key handler
             const input = document.getElementById('chat-input');
             input.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter' && !e.shiftKey) {
@@ -470,11 +678,39 @@
             });
 
             // Opening message
-            const yesterdayTitle = yesterdayWorkout ? yesterdayWorkout.title : 'your recent workout';
-            const name = appState.profile && appState.profile.name ? appState.profile.name : 'Ed';
-            const openingMessage = 'Good morning, ' + name + '! Yesterday you did "' + yesterdayTitle + '". How did it go? Tell me anything — what felt good, what was hard, any soreness or surprises.';
-            appendCoachMessage(openingMessage);
-            appState.checkinTranscript.push({ role: 'assistant', content: openingMessage });
+            const name = (appState.profile && appState.profile.name) ? appState.profile.name : 'Ed';
+            const greeting = buildOpeningMessage(name);
+            appendCoachMessage(greeting);
+            appState.checkinTranscript.push({ role: 'assistant', content: greeting });
+        }
+
+        function buildOpeningMessage(name) {
+            const hour = new Date().getHours();
+            const timeGreeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+
+            // Check if location needs updating
+            let locationNote = '';
+            if (!appState.currentLocation) {
+                locationNote = " First — where are you today, home or Karmel?";
+            } else {
+                const loc = appState.currentLocation;
+                if (loc.end_date) {
+                    const end = new Date(loc.end_date);
+                    const today = new Date(appState.currentDate);
+                    const daysLeft = Math.ceil((end - today) / (1000 * 60 * 60 * 24));
+                    if (daysLeft <= 0) {
+                        locationNote = " Looks like your time at " + (loc.location === 'home' ? 'home' : 'Karmel') + " has ended — where are you now?";
+                    }
+                }
+            }
+
+            // Reference yesterday's workout
+            let yesterdayNote = '';
+            if (appState.yesterdayWorkout) {
+                yesterdayNote = ' Yesterday was "' + appState.yesterdayWorkout.title + '."';
+            }
+
+            return timeGreeting + ', ' + name + '!' + locationNote + yesterdayNote + ' How are you feeling today?';
         }
 
         function appendCoachMessage(text) {
@@ -515,9 +751,62 @@
             if (el) el.remove();
         }
 
+        function showExerciseChecklist(exercises) {
+            const msgs = document.getElementById('chat-messages');
+            if (!msgs) return;
+
+            const div = document.createElement('div');
+            div.className = 'chat-checklist';
+            div.id = 'exercise-checklist';
+
+            let html = '<p>Check what you completed:</p>';
+            exercises.forEach(function(ex, i) {
+                html += '<label><input type="checkbox" id="ex-' + i + '" value="' + ex + '" checked> ' + ex + '</label>';
+            });
+            html += '<button onclick="submitChecklist()">Done</button>';
+            div.innerHTML = html;
+            msgs.appendChild(div);
+            msgs.scrollTop = msgs.scrollHeight;
+            appState.showingChecklist = true;
+        }
+
+        function submitChecklist() {
+            const checklist = document.getElementById('exercise-checklist');
+            if (!checklist) return;
+
+            const checked = [];
+            const unchecked = [];
+            checklist.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
+                if (cb.checked) checked.push(cb.value);
+                else unchecked.push(cb.value);
+            });
+
+            checklist.remove();
+            appState.showingChecklist = false;
+
+            let response = '';
+            if (unchecked.length === 0) {
+                response = 'I completed all of them.';
+            } else {
+                response = 'I completed: ' + checked.join(', ') + '. I skipped: ' + unchecked.join(', ') + '.';
+            }
+
+            appendUserMessage(response);
+            appState.checkinTranscript.push({ role: 'user', content: response });
+
+            // Re-enable input and continue chat
+            const input = document.getElementById('chat-input');
+            const sendBtn = document.getElementById('chat-send');
+            if (input) input.disabled = false;
+            if (sendBtn) sendBtn.disabled = false;
+
+            // Continue the conversation
+            continueCheckinChat();
+        }
+
         async function sendCheckinMessage() {
             const input = document.getElementById('chat-input');
-            if (!input) return;
+            if (!input || appState.showingChecklist) return;
             const userText = input.value.trim();
             if (!userText) return;
 
@@ -528,13 +817,53 @@
 
             input.disabled = true;
             document.getElementById('chat-send').disabled = true;
+
+            await continueCheckinChat();
+        }
+
+        async function continueCheckinChat() {
             appendThinking('Coach is thinking...');
 
             try {
                 const response = await callClaudeChat(buildCheckinSystemPrompt(), appState.checkinTranscript);
                 removeThinking();
 
-                if (response.includes('[READY]')) {
+                // Check for special tokens
+                if (response.includes('[CHECKLIST]')) {
+                    // Extract exercise list between [CHECKLIST] and [/CHECKLIST]
+                    const match = response.match(/\[CHECKLIST\]([\s\S]*?)\[\/CHECKLIST\]/);
+                    const cleanResponse = response.replace(/\[CHECKLIST\][\s\S]*?\[\/CHECKLIST\]/, '').trim();
+                    if (cleanResponse) {
+                        appendCoachMessage(cleanResponse);
+                        appState.checkinTranscript.push({ role: 'assistant', content: cleanResponse });
+                    }
+                    if (match) {
+                        const exercises = match[1].trim().split('\n').map(e => e.replace(/^[-•]\s*/, '').trim()).filter(e => e);
+                        showExerciseChecklist(exercises);
+                    }
+                } else if (response.includes('[LOCATION]')) {
+                    // Extract location info between [LOCATION] and [/LOCATION]
+                    const match = response.match(/\[LOCATION\]([\s\S]*?)\[\/LOCATION\]/);
+                    const cleanResponse = response.replace(/\[LOCATION\][\s\S]*?\[\/LOCATION\]/, '').trim();
+                    if (cleanResponse) {
+                        appendCoachMessage(cleanResponse);
+                        appState.checkinTranscript.push({ role: 'assistant', content: cleanResponse });
+                    }
+                    if (match) {
+                        try {
+                            const locData = JSON.parse(match[1].trim());
+                            await saveLocation(locData);
+                        } catch (e) {
+                            console.error('Error parsing location data:', e);
+                        }
+                    }
+                    // Re-enable and continue
+                    const input = document.getElementById('chat-input');
+                    const sendBtn = document.getElementById('chat-send');
+                    if (input) input.disabled = false;
+                    if (sendBtn) sendBtn.disabled = false;
+                    if (input) input.focus();
+                } else if (response.includes('[READY]')) {
                     const cleanResponse = response.replace('[READY]', '').trim();
                     if (cleanResponse) {
                         appendCoachMessage(cleanResponse);
@@ -544,38 +873,82 @@
                 } else {
                     appendCoachMessage(response);
                     appState.checkinTranscript.push({ role: 'assistant', content: response });
-                    input.disabled = false;
-                    document.getElementById('chat-send').disabled = false;
-                    input.focus();
+                    const input = document.getElementById('chat-input');
+                    const sendBtn = document.getElementById('chat-send');
+                    if (input) input.disabled = false;
+                    if (sendBtn) sendBtn.disabled = false;
+                    if (input) input.focus();
                 }
             } catch (err) {
                 removeThinking();
                 appendCoachMessage('Sorry, I had trouble connecting. Please try again.');
-                input.disabled = false;
-                document.getElementById('chat-send').disabled = false;
+                const input = document.getElementById('chat-input');
+                const sendBtn = document.getElementById('chat-send');
+                if (input) input.disabled = false;
+                if (sendBtn) sendBtn.disabled = false;
+            }
+        }
+
+        async function saveLocation(locData) {
+            try {
+                const startDate = appState.currentDate;
+                const endDate = new Date(appState.currentDate);
+                endDate.setDate(endDate.getDate() + (locData.days_planned || 1) - 1);
+                const endDateStr = endDate.toISOString().split('T')[0];
+
+                const locationRecord = {
+                    location: locData.location,
+                    days_planned: locData.days_planned || 1,
+                    start_date: startDate,
+                    end_date: endDateStr
+                };
+
+                const { error } = await supabaseClient
+                    .from('travelstronglocation')
+                    .insert([locationRecord]);
+
+                if (!error) {
+                    appState.currentLocation = locationRecord;
+                    updateLocationBar();
+                }
+            } catch (err) {
+                console.error('Error saving location:', err);
             }
         }
 
         function buildCheckinSystemPrompt() {
             const assessment = appState.assessmentAnswers.join('\n\n');
+            const locationName = appState.currentLocation ? appState.currentLocation.location : 'unknown';
+            const equipment = appState.currentLocation ? EQUIPMENT[appState.currentLocation.location] : 'unknown';
 
             const recentSummaries = appState.allCheckins
                 .filter(c => c.completed && c.summary)
-                .slice(0, 7)
+                .slice(0, 14)
                 .reverse()
                 .map(c => c.date + ': ' + c.summary)
                 .join('\n');
 
-            const yesterday = new Date(appState.currentDate);
-            yesterday.setDate(yesterday.getDate() - 1);
-            const yesterdayDate = yesterday.toISOString().split('T')[0];
-            const yesterdayWorkout = appState.allWorkouts.find(w => w.date === yesterdayDate);
+            // Calculate cycle day
+            const completedWorkouts = appState.allWorkouts.length;
+            const cycleDay = completedWorkouts % SPLIT_CYCLE.length;
+            const todayFocus = SPLIT_CYCLE[cycleDay];
 
-            return 'You are an expert fitness coach conducting a morning check-in with Ed, who is preparing for 11 days of walking in Scandinavia and 7 days of golf in Ireland.\n\nINITIAL ASSESSMENT:\n' + assessment + '\n\nRECENT CHECK-IN SUMMARIES:\n' + (recentSummaries || 'No prior check-ins yet') + '\n\nYESTERDAY\'S WORKOUT: ' + (yesterdayWorkout ? yesterdayWorkout.title : 'No workout on record') + '\n\nYOUR JOB:\n- Have a natural, supportive conversation about how Ed is feeling\n- Ask about soreness, energy, sleep, how specific exercises felt\n- Probe follow-up questions based on his answers - one question at a time\n- After 4-6 exchanges when you have enough information, give a warm closing then add [READY] at the very end\n- Keep messages concise and conversational\n- Remember: NO PUSHUPS (left shoulder subscapularis tear), bodyweight only';
+            // Yesterday's activities for checklist
+            let yesterdayActivities = '';
+            if (appState.yesterdayWorkout && appState.yesterdayWorkout.activities) {
+                try {
+                    const acts = typeof appState.yesterdayWorkout.activities === 'string'
+                        ? JSON.parse(appState.yesterdayWorkout.activities)
+                        : appState.yesterdayWorkout.activities;
+                    yesterdayActivities = acts.map(a => a.name).join('\n');
+                } catch (e) { yesterdayActivities = ''; }
+            }
+
+            return 'You are Ed\'s personal fitness coach. Ed is working on strength, mobility, weight management, and overall fitness. He stopped taking GLP-1 medication 3 weeks ago and feels great.\n\nPHYSICAL PROFILE:\n' + assessment + '\n\nKEY LIMITATIONS: Bad knees, left shoulder subscapularis tear (NO PUSHUPS), lower back issues, ankle reconstruction (right). Focus on controlled movement, proper form, no high-impact.\n\nCURRENT LOCATION: ' + locationName + '\nAVAILABLE EQUIPMENT: ' + equipment + '\n\nTODAY\'S PLANNED FOCUS: ' + todayFocus + ' (Day ' + (cycleDay + 1) + ' of 7-day cycle)\n\nRECENT CHECK-IN HISTORY:\n' + (recentSummaries || 'No prior check-ins') + '\n\nYESTERDAY\'S WORKOUT: ' + (appState.yesterdayWorkout ? appState.yesterdayWorkout.title : 'None on record') + '\nYESTERDAY\'S EXERCISES:\n' + (yesterdayActivities || 'None') + '\n\nYOUR JOB DURING THIS CHAT:\n1. If location is unknown or has changed, ask where Ed is and how many days he plans to be there. When you have that info, output: [LOCATION]{"location":"home","days_planned":3}[/LOCATION] (use "home" or "karmel")\n2. Ask if Ed completed yesterday\'s workout. If partial/no, output: [CHECKLIST] followed by each exercise name on its own line, then [/CHECKLIST]. Wait for his selections before continuing.\n3. Ask about sleep, energy levels, any soreness or pain today\n4. Ask how eating went generally (too much/little, healthy/not)\n5. Ask how much time Ed has today\n6. After covering all of the above (5-8 exchanges), end with a warm closing and add [READY] at the very end\n\nRULES:\n- One question at a time\n- Keep messages concise and motivating\n- Never ask more than asked above\n- When closing before [READY], do NOT ask another question';
         }
 
         async function finishCheckin() {
-            appendThinking('Saving your check-in and generating your workout...');
+            appendThinking('Saving check-in and building your workout...');
 
             const input = document.getElementById('chat-input');
             const sendBtn = document.getElementById('chat-send');
@@ -583,10 +956,8 @@
             if (sendBtn) sendBtn.disabled = true;
 
             try {
-                // Generate summary
                 const summary = await generateCheckinSummary();
 
-                // Save to Supabase
                 const checkinData = {
                     date: appState.currentDate,
                     workout_id: appState.todayWorkout ? appState.todayWorkout.date : null,
@@ -602,22 +973,19 @@
 
                 if (error) console.error('Error saving check-in:', error);
 
-                // Update local state
                 appState.todayCheckin = checkinData;
                 appState.allCheckins = appState.allCheckins.filter(c => c.date !== appState.currentDate);
                 appState.allCheckins.unshift(checkinData);
 
-                // Generate today's workout
                 await generateTodayWorkout();
 
-                // Switch to workout view
                 const workoutBtn = document.querySelector('[data-view="workout"]');
                 switchView('workout', workoutBtn);
 
             } catch (err) {
                 console.error('Error finishing check-in:', err);
                 removeThinking();
-                appendCoachMessage('Something went wrong saving your check-in. Please refresh and try again.');
+                appendCoachMessage('Something went wrong. Please refresh and try again.');
             }
         }
 
@@ -626,23 +994,20 @@
                 .map(m => (m.role === 'user' ? 'Ed' : 'Coach') + ': ' + m.content)
                 .join('\n');
 
-            const summary = await callClaude('Summarize this morning check-in in 2-3 sentences: what Ed reported about soreness, energy, and how the previous workout felt. Be specific.\n\n' + transcriptText);
+            const summary = await callClaude('Summarize this morning check-in in 2-3 sentences. Cover: location, whether Ed completed yesterday\'s workout, energy/soreness, eating, and time available today.\n\n' + transcriptText);
             return summary.trim();
         }
 
         // ── Today's Workout ───────────────────────────────────────────────────
         function formatAsBullets(text) {
             if (!text) return '';
-            // Split on period+space or period+newline, filter empty strings
             const sentences = text.split(/\.\s+/).map(s => s.trim()).filter(s => s.length > 0);
             if (sentences.length <= 1) return '<p>' + text + '</p>';
-            return '<ul style="margin:0.5rem 0 0 1.25rem;line-height:1.6;">' +
+            return '<ul style="margin:0.5rem 0 0 1.25rem;line-height:1.7;">' +
                 sentences.map(function(s) {
-                    // Re-add period if it doesn't already end with one
                     const line = s.endsWith('.') ? s : s + '.';
-                    return '<li style="margin-bottom:0.35rem;">' + line + '</li>';
-                }).join('') +
-            '</ul>';
+                    return '<li style="margin-bottom:0.4rem;">' + line + '</li>';
+                }).join('') + '</ul>';
         }
 
         function renderWorkout() {
@@ -661,18 +1026,39 @@
                     : (appState.todayWorkout.activities || []);
             } catch (e) { activities = []; }
 
-            let html = '<button onclick="copyWorkout()" style="margin-bottom:1.5rem;width:100%;">Copy Workout to Clipboard</button>';
-            html += '<h3>' + appState.todayWorkout.title + '</h3>';
-            html += '<p style="margin-bottom:1.5rem;">' + appState.todayWorkout.overview + '</p>';
+            let html = '<button onclick="copyWorkout()" style="margin-bottom:1.5rem;width:100%;">📋 Copy Workout to Clipboard</button>';
+
+            if (appState.todayWorkout.day_focus) {
+                html += '<div class="day-badge">' + appState.todayWorkout.day_focus + '</div>';
+            }
+
+            html += '<h3 style="margin-top:0;">' + appState.todayWorkout.title + '</h3>';
+            html += '<p style="margin-bottom:1.5rem;color:var(--neutral);">' + appState.todayWorkout.overview + '</p>';
+
+            // Stats row
+            const totalMins = activities.reduce(function(sum, a) {
+                const mins = parseInt(a.duration) || 0;
+                return sum + mins;
+            }, 0);
+
+            html += '<div class="stat-grid">';
+            html += '<div class="stat-card"><div class="stat-num">' + activities.length + '</div><div class="stat-label">Exercises</div></div>';
+            html += '<div class="stat-card"><div class="stat-num">' + (totalMins || '30') + '</div><div class="stat-label">Minutes</div></div>';
+            html += '<div class="stat-card"><div class="stat-num">' + (appState.currentLocation ? (appState.currentLocation.location === 'home' ? '🏠' : '🏡') : '📍') + '</div><div class="stat-label">' + (appState.currentLocation ? (appState.currentLocation.location === 'home' ? 'Home' : 'Karmel') : 'Location') + '</div></div>';
+            html += '</div>';
 
             activities.forEach(function(activity) {
                 html += '<div class="workout-activity">';
                 html += '<h4>' + activity.name + '</h4>';
-                html += '<div class="meta"><div class="meta-item">&#9201; ' + activity.duration + '</div></div>';
+                html += '<div class="meta"><div class="meta-item">⏱️ ' + activity.duration + '</div>';
+                if (activity.sets) html += '<div class="meta-item">🔄 ' + activity.sets + '</div>';
+                if (activity.reps) html += '<div class="meta-item">💪 ' + activity.reps + '</div>';
+                if (activity.weight) html += '<div class="meta-item">🏋️ ' + activity.weight + '</div>';
+                html += '</div>';
                 html += '<p style="margin-bottom:0.25rem;"><strong>What to do:</strong></p>' + formatAsBullets(activity.description);
                 html += '<p style="margin-top:0.75rem;margin-bottom:0.25rem;"><strong>Form:</strong></p>' + formatAsBullets(activity.form);
                 if (activity.videoUrl) {
-                    html += '<p style="margin-top:0.5rem;"><a href="' + activity.videoUrl + '" target="_blank">View form video</a></p>';
+                    html += '<p style="margin-top:0.5rem;"><a href="' + activity.videoUrl + '" target="_blank" style="color:var(--accent);">📹 Watch form video</a></p>';
                 }
                 html += '</div>';
             });
@@ -689,12 +1075,14 @@
                     : (appState.todayWorkout.activities || []);
             } catch (e) { activities = []; }
 
-            const lines = [appState.todayWorkout.title, ''].concat(activities.map(a => '- ' + a.name + ' (' + a.duration + '): ' + a.description));
+            const lines = [appState.todayWorkout.title, ''].concat(
+                activities.map(a => '• ' + a.name + ' (' + a.duration + ')' + (a.sets ? ' — ' + a.sets + ' sets' : '') + (a.reps ? ' x ' + a.reps : '') + ': ' + a.description)
+            );
             navigator.clipboard.writeText(lines.join('\n')).then(function() {
                 const btn = document.querySelector('[onclick="copyWorkout()"]');
                 if (btn) {
                     const orig = btn.textContent;
-                    btn.textContent = 'Copied!';
+                    btn.textContent = '✓ Copied!';
                     setTimeout(function() { btn.textContent = orig; }, 2000);
                 }
             });
@@ -705,20 +1093,34 @@
                 const prompt = buildWorkoutPrompt();
                 const response = await callClaude(prompt);
 
-                const titleMatch    = response.match(/WORKOUT_TITLE:\s*(.+?)(?=\nOVERVIEW:|$)/s);
-                const overviewMatch = response.match(/OVERVIEW:\s*(.+?)(?=\nACTIVITIES:|$)/s);
-                const activitiesMatch = response.match(/ACTIVITIES:\s*([\s\S]+?)(?=\nQUESTIONS:|$|\n\n$)/);
+                const titleMatch     = response.match(/WORKOUT_TITLE:\s*(.+?)(?=\nOVERVIEW:|$)/s);
+                const overviewMatch  = response.match(/OVERVIEW:\s*(.+?)(?=\nFOCUS:|$)/s);
+                const focusMatch     = response.match(/FOCUS:\s*(.+?)(?=\nACTIVITIES:|$)/s);
+                const activitiesMatch = response.match(/ACTIVITIES:\s*([\s\S]+?)(?=\n\n$|$)/);
 
                 const title    = titleMatch    ? titleMatch[1].trim()    : "Today's Workout";
                 const overview = overviewMatch ? overviewMatch[1].trim() : 'Personalized workout';
+                const focus    = focusMatch    ? focusMatch[1].trim()    : '';
 
                 const activitiesText = activitiesMatch ? activitiesMatch[1].trim() : '';
-                const activityBlocks = activitiesText.split(/\n(?=-)/).filter(function(a) { return a.trim(); });
+                const activityBlocks = activitiesText.split(/\n(?=-)/).filter(a => a.trim());
                 const activities = activityBlocks.map(function(block) {
-                    const lines = block.split('\n').map(function(l) { return l.trim(); }).filter(function(l) { return l; });
+                    const lines = block.split('\n').map(l => l.trim()).filter(l => l);
+                    const nameLine = (lines[0] || 'Activity').replace(/^-\s*/, '');
+
+                    // Parse sets/reps/weight from second line if present
+                    const metaLine = lines[1] || '';
+                    const durationMatch = metaLine.match(/(\d+\s*(?:min|minutes|seconds|secs))/i);
+                    const setsMatch = metaLine.match(/(\d+)\s*sets?/i);
+                    const repsMatch = metaLine.match(/(\d+)(?:-(\d+))?\s*reps?/i);
+                    const weightMatch = metaLine.match(/(\d+(?:\.\d+)?)\s*(?:lb|lbs|kg|pound)/i);
+
                     return {
-                        name:        (lines[0] || 'Activity').replace(/^-\s*/, ''),
-                        duration:    lines[1] || '10 min',
+                        name:        nameLine,
+                        duration:    durationMatch ? durationMatch[1] : metaLine || '10 min',
+                        sets:        setsMatch ? setsMatch[1] + ' sets' : null,
+                        reps:        repsMatch ? repsMatch[1] + (repsMatch[2] ? '-' + repsMatch[2] : '') + ' reps' : null,
+                        weight:      weightMatch ? weightMatch[1] + 'lb' : null,
                         description: lines[2] || 'Do this exercise',
                         form:        lines[3] || 'Proper form',
                         videoUrl:    null
@@ -729,6 +1131,7 @@
                     date:       appState.currentDate,
                     title:      title,
                     overview:   overview,
+                    day_focus:  focus,
                     activities: JSON.stringify(activities),
                     created_at: new Date().toISOString()
                 };
@@ -738,7 +1141,7 @@
                     .upsert([workoutData], { onConflict: 'date' });
 
                 appState.todayWorkout = workoutData;
-                appState.allWorkouts = appState.allWorkouts.filter(function(w) { return w.date !== appState.currentDate; });
+                appState.allWorkouts = appState.allWorkouts.filter(w => w.date !== appState.currentDate);
                 appState.allWorkouts.unshift(workoutData);
 
                 renderWorkout();
@@ -752,26 +1155,34 @@
 
         function buildWorkoutPrompt() {
             const assessment = appState.assessmentAnswers.join('\n\n');
+            const locationName = appState.currentLocation ? appState.currentLocation.location : 'home';
+            const equipment = EQUIPMENT[locationName] || EQUIPMENT.home;
 
             const checkinHistory = appState.allCheckins
-                .filter(function(c) { return c.completed && c.summary; })
+                .filter(c => c.completed && c.summary)
                 .slice(0, 14)
                 .reverse()
-                .map(function(c) { return c.date + ': ' + c.summary; })
+                .map(c => c.date + ': ' + c.summary)
                 .join('\n');
 
             const todayTranscript = (appState.todayCheckin && appState.todayCheckin.transcript)
                 ? appState.todayCheckin.transcript
-                    .map(function(m) { return (m.role === 'user' ? 'Ed' : 'Coach') + ': ' + m.content; })
+                    .map(m => (m.role === 'user' ? 'Ed' : 'Coach') + ': ' + m.content)
                     .join('\n')
                 : null;
 
-            const name       = (appState.profile && appState.profile.name)           || 'Ed';
-            const stats      = (appState.profile && appState.profile.stats)           || 'Unknown';
-            const fitness    = (appState.profile && appState.profile.fitness_level)   || 'Unknown';
-            const departure  = (appState.profile && appState.profile.departure_date)  || 'Unknown';
+            // Workout history summary
+            const workoutHistory = appState.allWorkouts
+                .slice(0, 14)
+                .reverse()
+                .map(w => w.date + ': ' + w.title + (w.day_focus ? ' [' + w.day_focus + ']' : ''))
+                .join('\n');
 
-            return 'You are an expert fitness coach preparing ' + name + ' for 11 days of walking in Scandinavia and 7 days of golf in Ireland.\n\nPROFILE:\n- Name: ' + name + '\n- Stats: ' + stats + '\n- Fitness Level: ' + fitness + '\n- Departure: ' + departure + '\n\nINITIAL ASSESSMENT:\n' + assessment + '\n\nCHECK-IN HISTORY (summaries):\n' + (checkinHistory || 'No prior check-ins yet - this is day 1') + '\n\n' + (todayTranscript ? "TODAY'S CHECK-IN CONVERSATION:\n" + todayTranscript + '\n\n' : '') + 'REQUIREMENTS:\n1. Generate a 25-30 minute personalized workout\n2. Bodyweight only - NO PUSHUPS (left shoulder subscapularis tear)\n3. Emphasize: ankle mobility, knee stability, core, hip flexibility\n4. Include a walking recommendation\n5. Adapt based on what Ed reported in today\'s check-in\n\nReturn in this exact plain text format:\n\nWORKOUT_TITLE: [title]\n\nOVERVIEW: [one sentence]\n\nACTIVITIES:\n- [Activity Name]\n[Duration]\n[What to do]\n[Form tips]\n\n- [Activity Name]\n[Duration]\n[What to do]\n[Form tips]\n\n(4-6 activities, 25-30 minutes total)\n';
+            // Cycle day
+            const cycleDay = appState.allWorkouts.length % SPLIT_CYCLE.length;
+            const todayFocus = SPLIT_CYCLE[cycleDay];
+
+            return 'You are Ed\'s personal trainer. Build him a personalized workout for today.\n\nPROFILE:\n- Name: Ed\n- Stats: ' + ((appState.profile && appState.profile.stats) || 'Unknown') + '\n- Fitness Level: ' + ((appState.profile && appState.profile.fitness_level) || 'Intermediate') + '\n\nPHYSICAL ASSESSMENT:\n' + assessment + '\n\nKEY LIMITATIONS:\n- Bad knees — no high-impact, no deep squats past comfort\n- Left shoulder subscapularis tear — NO PUSHUPS, no overhead pressing\n- Lower back issues — no deadlifts with heavy load, always engage core\n- Right ankle reconstruction — watch balance exercises\n- Focus: controlled movement, full ROM where comfortable, no pain\n\nLOCATION: ' + locationName + '\nEQUIPMENT: ' + equipment + '\n\nTODAY\'S FOCUS: ' + todayFocus + ' (Cycle day ' + (cycleDay + 1) + ' of 7)\n\nRECENT WORKOUT HISTORY:\n' + (workoutHistory || 'No prior workouts') + '\n\nCHECK-IN HISTORY:\n' + (checkinHistory || 'No prior check-ins') + '\n\n' + (todayTranscript ? "TODAY'S CHECK-IN:\n" + todayTranscript + '\n\n' : '') + 'BUILD REQUIREMENTS:\n1. 30-45 minutes total\n2. Always open with 5 min mobility/warm-up\n3. Always close with 5 min stretching\n4. Use available equipment at ' + locationName + '\n5. Match intensity to what Ed reported in check-in\n6. Include sets, reps, and weights where applicable\n7. Every session includes some mobility work regardless of focus\n8. Progress from previous sessions — don\'t repeat the same workout\n9. Swimming, biking, and walking are valid recommendations for cardio\n\nReturn in this EXACT plain text format:\n\nWORKOUT_TITLE: [energetic, specific title]\n\nOVERVIEW: [one motivating sentence about today\'s focus]\n\nFOCUS: [' + todayFocus + ']\n\nACTIVITIES:\n- [Activity Name]\n[Duration or Sets x Reps, e.g. "3 sets x 12 reps" or "5 minutes"]\n[What to do — clear step by step]\n[Form cues — what to watch for]\n\n- [Activity Name]\n[Duration or Sets x Reps]\n[What to do]\n[Form cues]\n\n(5-8 activities, 30-45 minutes total, mobility built in)\n';
         }
 
         // ── Claude API ────────────────────────────────────────────────────────
@@ -791,10 +1202,9 @@
         }
 
         async function callClaudeChat(systemPrompt, messages) {
-            // Prepend system prompt as first message to ensure worker compatibility
             const fullMessages = [
-                { role: 'user', content: systemPrompt + '\n\n---\n\nBegin the conversation based on the messages that follow.' },
-                { role: 'assistant', content: 'Understood. I am ready to conduct the morning check-in.' }
+                { role: 'user', content: systemPrompt + '\n\n---\n\nBegin the check-in based on the conversation that follows.' },
+                { role: 'assistant', content: 'Understood. I am ready to conduct the morning check-in as Ed\'s personal trainer.' }
             ].concat(messages);
 
             const response = await fetch(WORKER_URL, {
@@ -820,23 +1230,61 @@
                 return;
             }
 
-            let html = '';
+            // Stats
+            const totalWorkouts = appState.allWorkouts.length;
+            const completedCheckins = appState.allCheckins.filter(c => c.completed).length;
+
+            let html = '<div class="stat-grid" style="margin-bottom:2rem;">';
+            html += '<div class="stat-card"><div class="stat-num">' + totalWorkouts + '</div><div class="stat-label">Workouts</div></div>';
+            html += '<div class="stat-card"><div class="stat-num">' + completedCheckins + '</div><div class="stat-label">Check-ins</div></div>';
+            html += '<div class="stat-card"><div class="stat-num">' + SPLIT_CYCLE[appState.allWorkouts.length % SPLIT_CYCLE.length].split(' ')[0] + '</div><div class="stat-label">Next Focus</div></div>';
+            html += '</div>';
+
             appState.allWorkouts.forEach(function(workout) {
-                const checkin = appState.allCheckins.find(function(c) {
-                    return c.date === workout.date && c.completed;
-                });
-                html += '<div class="card">';
-                html += '<h3>' + workout.date + '</h3>';
-                html += '<p><strong>' + workout.title + '</strong></p>';
-                html += '<p style="margin-bottom:0.75rem;">' + workout.overview + '</p>';
+                const checkin = appState.allCheckins.find(c => c.date === workout.date && c.completed);
+                html += '<div class="card" style="border-top-color:var(--primary);">';
+                html += '<p style="font-size:0.8rem;color:var(--neutral);margin-bottom:0.25rem;">' + workout.date + '</p>';
+                if (workout.day_focus) html += '<div class="day-badge" style="font-size:0.7rem;">' + workout.day_focus + '</div>';
+                html += '<h4 style="margin-top:0.25rem;">' + workout.title + '</h4>';
+                html += '<p style="color:var(--neutral);font-size:0.9rem;margin-bottom:0.75rem;">' + workout.overview + '</p>';
                 if (checkin && checkin.summary) {
-                    html += '<div class="question"><p><strong>Check-in:</strong></p><p>' + checkin.summary + '</p></div>';
-                } else {
-                    html += '<p><em>No check-in yet</em></p>';
+                    html += '<div class="question"><p style="font-size:0.8rem;font-weight:600;color:var(--neutral);margin-bottom:0.25rem;">CHECK-IN</p><p style="font-size:0.9rem;">' + checkin.summary + '</p></div>';
                 }
                 html += '</div>';
             });
 
+            content.innerHTML = html;
+        }
+
+        // ── Profile ───────────────────────────────────────────────────────────
+        function renderProfile() {
+            const content = document.getElementById('profile-content');
+            const questions = [
+                'How are your knees and hips feeling these days?',
+                "Lower back and hips — any stiffness or aching?",
+                "Ankles and feet — stability on uneven ground?",
+                'Cardiovascular — how do you hold up on longer efforts?',
+                'Upper body — any shoulder, elbow, or wrist issues?'
+            ];
+
+            let html = '<div style="margin-bottom:1.5rem;">';
+            if (appState.profile) {
+                html += '<p><strong>Name:</strong> ' + (appState.profile.name || 'Ed') + '</p>';
+                html += '<p style="margin-top:0.5rem;"><strong>Fitness Level:</strong> ' + (appState.profile.fitness_level || 'Unknown') + '</p>';
+                html += '<p style="margin-top:0.5rem;"><strong>Current Location:</strong> ' + (appState.currentLocation ? (appState.currentLocation.location === 'home' ? 'Home' : 'Karmel') : 'Unknown') + '</p>';
+            }
+            html += '</div>';
+
+            html += '<h3>Physical Assessment</h3>';
+            if (appState.assessmentAnswers.some(a => a)) {
+                questions.forEach(function(q, i) {
+                    html += '<div class="question"><p><strong>' + q + '</strong></p><p>' + (appState.assessmentAnswers[i] || 'No answer recorded') + '</p></div>';
+                });
+            } else {
+                html += '<p class="msg-error">No assessment data found.</p>';
+            }
+
+            html += '<p style="margin-top:2rem;font-size:0.8rem;color:var(--neutral);border-top:1px solid #E0E8F0;padding-top:1rem;">Be Strong v1.0.0 &nbsp;|&nbsp; Build 2026-08-19</p>';
             content.innerHTML = html;
         }
 
